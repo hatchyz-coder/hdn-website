@@ -738,9 +738,73 @@
       line-height: 1.35;
     }
 
+    .profile-name {
+      margin: 8px 0 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .profile-name span {
+      display: block;
+      color: var(--red-2);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .profile-name strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--ink);
+      font-size: 28px;
+      line-height: 1.25;
+    }
+
     .profile p {
       color: #435147;
       font-weight: 600;
+    }
+
+    .company-overview {
+      margin-top: 34px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .company-overview h3 {
+      margin: 0 0 16px;
+      font-size: 24px;
+      line-height: 1.35;
+    }
+
+    .company-list {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      margin: 0;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+      background: var(--white);
+    }
+
+    .company-list dt,
+    .company-list dd {
+      margin: 0;
+      padding: 14px 16px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .company-list dt {
+      background: var(--soft);
+      color: var(--red-2);
+      font-weight: 900;
+    }
+
+    .company-list dd {
+      color: #435147;
+      font-weight: 700;
     }
 
     .band-visual {
@@ -915,6 +979,14 @@
 
       .profile {
         gap: 24px;
+      }
+
+      .company-list {
+        grid-template-columns: 1fr;
+      }
+
+      .company-list dt {
+        border-bottom: 0;
       }
     }
   </style>
@@ -1300,9 +1372,13 @@
           </div>
           <div>
             <p class="eyebrow">Profile</p>
+            <div class="profile-name">
+              <span>代表取締役</span>
+              <strong>羽田野 剛士</strong>
+            </div>
             <h2>医療マーケティングとIT実装をつなぎ、現場で動く成長導線をつくります。</h2>
             <p>
-              羽田野剛士。1980年、大分県出身。徳島大学工学部電気電子工学科卒業、同大学院先端技術科学教育部修了。
+              1980年、大分県出身。徳島大学工学部電気電子工学科卒業、同大学院先端技術科学教育部修了。
               工学領域で培った構造化・実装の視点を土台に、医療領域のマーケティング支援、事業開発、オンライン診療・自由診療導入支援に携わってきました。
             </p>
             <p>
@@ -1319,6 +1395,21 @@
               <li>薬機法・景表法・医療広告ガイドラインに配慮した訴求設計</li>
               <li>医療機関、EC、エンタメ、団体向けのLINE活用・決済導線構築</li>
             </ul>
+            <div class="company-overview">
+              <h3>会社概要</h3>
+              <dl class="company-list">
+                <dt>会社名</dt>
+                <dd>株式会社HDN</dd>
+                <dt>代表者</dt>
+                <dd>代表取締役 羽田野 剛士</dd>
+                <dt>所在地</dt>
+                <dd>〒103-0027 東京都中央区日本橋3丁目2番14号 日本橋KNビル4F</dd>
+                <dt>事業内容</dt>
+                <dd>医療機関向けコンサルティング、自由診療導入支援、LHub導入・運用支援、患者CRM・予約・問診・決済導線設計、広告表現確認</dd>
+                <dt>対応領域</dt>
+                <dd>保険診療クリニック、美容医療、オンライン診療、医科歯科連携、医療業界参入支援、EC・各種団体向けLINE活用</dd>
+              </dl>
+            </div>
           </div>
         </div>
       </div>
