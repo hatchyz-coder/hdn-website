@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LHub | 医療機関のLINE患者CRM・予約・問診・決済基盤</title>
+  <meta name="description" content="LHubは、医療機関のLINE公式アカウントを患者CRM基盤へ進化させ、予約、問診、決済、顧客管理、シナリオ配信、リッチメニュー出し分けを一気通貫で支援します。">
+  <style>
+    :root {
+      --ink: #102033;
+      --muted: #607083;
+      --line: #dbe8e2;
+      --soft: #f3fbf7;
+      --soft-2: #e7f6f0;
+      --navy: #0b2545;
+      --navy-2: #071a33;
+      --green: #00a66a;
+      --green-2: #087a55;
+      --aqua: #dff8ef;
+      --white: #ffffff;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--white);
+      font-family: "BIZ UDPGothic", "BIZ UDP Gothic", "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
+      line-height: 1.75;
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      width: min(var(--max), calc(100% - 40px));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .brand-logo {
+      width: 118px;
+      height: auto;
+      display: block;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #23374f;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 6px;
+      border: 1px solid var(--green);
+      background: var(--green);
+      color: var(--white);
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .button.secondary {
+      border-color: rgba(255, 255, 255, 0.42);
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--white);
+    }
+
+    .hero {
+      color: var(--white);
+      background:
+        radial-gradient(circle at 83% 16%, rgba(0, 166, 106, 0.32), transparent 34%),
+        linear-gradient(135deg, var(--navy-2), var(--navy) 54%, #0d3e4d);
+    }
+
+    .hero-inner {
+      width: min(var(--max), calc(100% - 40px));
+      min-height: 650px;
+      margin: 0 auto;
+      padding: 74px 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(340px, 0.82fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: var(--green);
+    }
+
+    .hero h1 {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 24px 0 0;
+      max-width: 720px;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 18px;
+      line-height: 1.95;
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .dashboard {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .visual-card {
+      position: relative;
+      margin: 0;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    .visual-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .visual-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: rgba(9, 44, 61, 0.88);
+      border: 1px solid rgba(0, 166, 106, 0.36);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+    }
+
+    .visual-caption strong {
+      display: block;
+      color: #72f0bd;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .visual-caption span {
+      display: block;
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .dashboard-top {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .dashboard-top strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .dashboard-top span {
+      display: block;
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .journey {
+      padding: 18px;
+    }
+
+    .journey-row {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .journey-row:last-child { border-bottom: 0; }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 166, 106, 0.16);
+      color: #72f0bd;
+      font-weight: 900;
+    }
+
+    .journey-row h3 {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .journey-row p {
+      margin: 2px 0 0;
+      color: rgba(255, 255, 255, 0.64);
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .metric {
+      color: #72f0bd;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .section {
+      padding: 88px 0;
+    }
+
+    .section.alt {
+      background: var(--soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.76fr) minmax(280px, 0.58fr);
+      gap: 44px;
+      align-items: end;
+      margin-bottom: 38px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.3;
+    }
+
+    .section-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .grid-3,
+    .grid-4,
+    .grid-6 {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .grid-6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .card {
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .card p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 14px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--soft-2);
+      color: var(--green-2);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .feature-card {
+      border-top: 4px solid var(--green);
+    }
+
+    .feature-card ul {
+      padding: 0;
+      margin: 16px 0 0;
+      list-style: none;
+    }
+
+    .feature-card li {
+      position: relative;
+      padding-left: 18px;
+      margin-top: 8px;
+      color: #304257;
+      font-size: 13px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .feature-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.8em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .wide-band {
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 34px;
+      align-items: center;
+      padding: 34px;
+      border-radius: 8px;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .wide-band h2 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.4;
+    }
+
+    .wide-band p {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-weight: 700;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 22px;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      display: block;
+      margin-bottom: 14px;
+      color: var(--green-2);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .step h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .step p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+      font-weight: 700;
+    }
+
+    .contact {
+      padding: 72px 0;
+      background: var(--navy-2);
+      color: var(--white);
+    }
+
+    .contact-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .contact h2 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.35;
+    }
+
+    .contact p {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 700;
+    }
+
+    .footer {
+      padding: 34px 0;
+      background: #07111f;
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 960px) {
+      .nav { display: none; }
+      .hero-inner,
+      .section-head,
+      .wide-band,
+      .contact-inner { grid-template-columns: 1fr; }
+      .hero-inner { min-height: auto; }
+      .grid-3,
+      .grid-4,
+      .grid-6,
+      .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner,
+      .container,
+      .contact-inner,
+      .footer-inner,
+      .hero-inner { width: min(100% - 28px, var(--max)); }
+      .hero-inner { padding: 54px 0; }
+      .section { padding: 62px 0; }
+      .hero h1 { font-size: 34px; }
+      .lead { font-size: 16px; }
+      .button { width: 100%; }
+      .grid-3,
+      .grid-4,
+      .grid-6,
+      .flow { grid-template-columns: 1fr; }
+      .card,
+      .step,
+      .wide-band { padding: 20px; }
+      .journey-row { grid-template-columns: 42px 1fr; }
+      .metric { grid-column: 2; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/hdn-logo.png" alt="HDN">
+        <span>株式会社HDN<small>Medical Growth Design</small></span>
+      </a>
+      <nav class="nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="self-pay.html">自費導入</a>
+        <a href="#features">医療向け機能</a>
+        <a href="#usecases">活用例</a>
+        <a href="#flow">導入</a>
+        <a href="consultation.html" class="button">相談する</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">LHub / Medical CRM Platform</p>
+          <h1>患者との接点を、予約・問診・決済・継続フォローまでつなぐ。</h1>
+          <p class="lead">
+            LHubは、LINE公式アカウントを医療機関の患者CRM基盤へ進化させるサービスです。
+            来院後に途切れていた関係を残し、再診、自由診療、サプリ・ケア用品、オンライン診療へ自然につなげます。
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="consultation.html">LHub導入を相談する</a>
+            <a class="button secondary" href="#features">医療向け機能を見る</a>
+          </div>
+          <p class="hero-note">予約対応、問診回収、決済案内、購入後フォロー、リピート施策まで。現場で使う機能だけを組み合わせて始められます。</p>
+        </div>
+
+        <figure class="visual-card" aria-label="LHubの患者CRMイメージ">
+          <img src="assets/illustration-lhub-crm.jpg" alt="LHubで患者情報とコミュニケーションを管理する医療向けCRMのイメージ">
+          <figcaption class="visual-caption">
+            <strong>Medical Patient CRM</strong>
+            <span>予約、問診、決済、配信、物販をLINE上の患者導線として接続。</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Why LHub</p>
+            <h2 class="section-title">LINE公式だけでは、医療機関の導線は分断されやすい。</h2>
+          </div>
+          <p class="section-copy">
+            配信はできる。でも、問診、予約、決済、購入後フォロー、患者管理まではつながらない。LHubはその隙間を埋めます。
+          </p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <span class="tag">対応漏れ</span>
+            <h3>患者の状態がスタッフ間で共有されない</h3>
+            <p>誰が対応中か、決済待ちか、再診候補か。タグ・ラベルで患者情報を見える化します。</p>
+          </article>
+          <article class="card">
+            <span class="tag">離脱</span>
+            <h3>問診・予約・決済まで進まない</h3>
+            <p>リッチメニュー、テンプレート、個別案内を組み合わせ、患者が次に取るべき行動を明確にします。</p>
+          </article>
+          <article class="card">
+            <span class="tag">継続不足</span>
+            <h3>購入後・施術後のフォローが続かない</h3>
+            <p>シナリオ配信や予約配信で、手作業に頼らずフォローと再提案を続けられます。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Medical Features</p>
+            <h2 class="section-title">医療機関が使うべきLHub機能を、実務目線で厳選。</h2>
+          </div>
+          <p class="section-copy">
+            すべての機能を使う必要はありません。患者基盤、診療科目、自由診療メニューに合わせて、必要な導線だけを構築します。
+          </p>
+        </div>
+        <div class="grid-6">
+          <article class="card feature-card">
+            <h3>タグ・ラベル管理</h3>
+            <p>患者の状態、対応状況、興味関心、購入履歴を見える化します。</p>
+            <ul>
+              <li>初診/再診/購入者の分類</li>
+              <li>決済待ち・対応中の共有</li>
+              <li>スタッフ間の引き継ぎ</li>
+            </ul>
+          </article>
+          <article class="card feature-card">
+            <h3>リッチメニュー出し分け</h3>
+            <p>患者の属性や行動に合わせて、表示するメニューを切り替えます。</p>
+            <ul>
+              <li>新規患者向け案内</li>
+              <li>リピーター向けマイページ</li>
+              <li>購入者向けフォロー導線</li>
+            </ul>
+          </article>
+          <article class="card feature-card">
+            <h3>問診・予約導線</h3>
+            <p>説明、問診、予約、オンライン相談までをLINEから案内します。</p>
+            <ul>
+              <li>事前問診</li>
+              <li>予約カレンダー</li>
+              <li>キャンセル後案内</li>
+            </ul>
+          </article>
+          <article class="card feature-card">
+            <h3>決済・Web振替</h3>
+            <p>自費診療、物販、継続課金の決済導線を整えます。</p>
+            <ul>
+              <li>都度決済URL</li>
+              <li>クレジット決済</li>
+              <li>Web口座振替</li>
+            </ul>
+          </article>
+          <article class="card feature-card">
+            <h3>シナリオ・予約配信</h3>
+            <p>購入後、施術後、健診後、再診前のメッセージを自動化します。</p>
+            <ul>
+              <li>購入直後のお礼</li>
+              <li>数日後の使い方案内</li>
+              <li>再購入・再診リマインド</li>
+            </ul>
+          </article>
+          <article class="card feature-card">
+            <h3>ストア・カート・かご落ち</h3>
+            <p>サプリやケア用品をLINE上で見やすく販売し、離脱を追いかけます。</p>
+            <ul>
+              <li>カテゴリ別ストア表示</li>
+              <li>複数商品カート</li>
+              <li>かご落ち通知</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="usecases" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Use Case</p>
+            <h2 class="section-title">診療科目に合わせて、最初に勝ちやすい導線から始める。</h2>
+          </div>
+          <p class="section-copy">
+            LHubは、オンライン診療専用でも、物販専用でもありません。医療機関の患者接点を活かすための基盤です。
+          </p>
+        </div>
+        <div class="grid-4">
+          <article class="card">
+            <span class="tag">内科・健診</span>
+            <h3>健診後フォロー</h3>
+            <p>健診結果や生活習慣のフォローを起点に、栄養指導、再診、サプリ案内へつなげます。</p>
+          </article>
+          <article class="card">
+            <span class="tag">美容・皮膚科</span>
+            <h3>施術後ケア・再施術</h3>
+            <p>施術後の注意、スキンケア、外用薬、点滴、次回施術案内までをシナリオ化します。</p>
+          </article>
+          <article class="card">
+            <span class="tag">自由診療</span>
+            <h3>問診・決済先行導線</h3>
+            <p>説明、問診、決済、予約を順番に案内し、スタッフの個別対応を減らします。</p>
+          </article>
+          <article class="card">
+            <span class="tag">歯科・医科連携</span>
+            <h3>紹介・連携導線</h3>
+            <p>歯科から医科、医科から歯科への紹介や相談導線を、患者に分かりやすく残します。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="wide-band">
+          <div>
+            <p class="eyebrow">Operation</p>
+            <h2>PCが苦手でも、スマホから現場運用できる。</h2>
+          </div>
+          <div>
+            <p>
+              LHubはスマホのブラウザから、予約確認、LINEユーザー管理、チャット対応、商品グループ確認、クーポン管理などを行えます。
+              常にPCの前にいられない院長やスタッフでも、現場の動きに合わせて確認・対応できます。
+            </p>
+            <p>
+              ただし医療機関では、便利さだけでなく安全運用が必要です。HDNは配信文面、リッチメニュー、問診・決済導線、説明同意、広告表現まで含めて設計します。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Implementation</p>
+            <h2 class="section-title">導入は、必要な機能から小さく始める。</h2>
+          </div>
+          <p class="section-copy">
+            医療機関ごとに、最初に作るべき導線は違います。LHub単体ではなく、運用設計とセットで導入します。
+          </p>
+        </div>
+        <div class="flow">
+          <article class="step">
+            <h3>現状診断</h3>
+            <p>LINE、予約、問診、決済、患者フォロー、既存患者数を確認します。</p>
+          </article>
+          <article class="step">
+            <h3>導線選定</h3>
+            <p>サプリ販売、再診、自由診療、健診後フォローなど、最初の勝ち筋を選びます。</p>
+          </article>
+          <article class="step">
+            <h3>LHub設定</h3>
+            <p>タグ、リッチメニュー、問診、予約、決済、配信シナリオを設定します。</p>
+          </article>
+          <article class="step">
+            <h3>運用改善</h3>
+            <p>登録率、回答率、予約率、決済率、再購入率を見ながら改善します。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="contact" class="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>LHubで、患者接点を残す仕組みを作りましょう。</h2>
+        <p>まずは、今のLINE・予約・問診・決済・患者フォロー導線を一緒に確認します。</p>
+      </div>
+      <a class="button" href="consultation.html">LHub導入を相談する</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span>株式会社HDN</span>
+      <span>LHub / Medical CRM Platform</span>
+      <span>© HDN Inc.</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>自費診療導入支援 | 株式会社HDN</title>
+  <meta name="description" content="株式会社HDNの自費診療導入支援。保険診療を守りながら、既存患者基盤、LHub、患者CRM、広告表現、スタッフ運用をつなぎ、現場で回る自費診療導線を構築します。">
+  <style>
+    :root {
+      --ink: #252222;
+      --muted: #6f6464;
+      --line: #eadcdc;
+      --soft: #fff7f6;
+      --soft-2: #fdebea;
+      --red: #d7352a;
+      --red-2: #a82019;
+      --red-3: #7d1713;
+      --white: #ffffff;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--white);
+      font-family: "BIZ UDPGothic", "BIZ UDP Gothic", "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
+      line-height: 1.75;
+      letter-spacing: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      width: min(var(--max), calc(100% - 40px));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .brand-logo {
+      width: 118px;
+      height: auto;
+      display: block;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #3d3434;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 0 20px;
+      border-radius: 6px;
+      border: 1px solid var(--red);
+      background: var(--red);
+      color: var(--white);
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .button.secondary {
+      background: var(--white);
+      color: var(--red-2);
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(255, 247, 246, 0.98), rgba(255, 247, 246, 0.78)),
+        radial-gradient(circle at 84% 18%, rgba(255, 214, 209, 0.58), transparent 35%),
+        linear-gradient(135deg, #fffafa, #fff0ee);
+    }
+
+    .hero-inner {
+      width: min(var(--max), calc(100% - 40px));
+      min-height: 620px;
+      margin: 0 auto;
+      padding: 76px 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.72fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: var(--red-2);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 30px;
+      height: 2px;
+      background: var(--red);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 24px 0 0;
+      max-width: 720px;
+      color: #4b3f3f;
+      font-size: 18px;
+      line-height: 1.95;
+      font-weight: 700;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .visual-card {
+      position: relative;
+      margin: 0;
+      border: 1px solid rgba(215, 53, 42, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 26px 72px rgba(74, 31, 28, 0.13);
+      overflow: hidden;
+    }
+
+    .visual-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .visual-caption {
+      padding: 18px;
+      background: var(--white);
+      border-top: 1px solid var(--line);
+    }
+
+    .visual-caption strong {
+      display: block;
+      color: var(--red-2);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .visual-caption span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .section {
+      padding: 88px 0;
+    }
+
+    .section.alt {
+      background: var(--soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.76fr) minmax(280px, 0.58fr);
+      gap: 44px;
+      align-items: end;
+      margin-bottom: 38px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.3;
+    }
+
+    .section-copy {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      min-height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      padding: 24px;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .card p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 14px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: var(--soft-2);
+      color: var(--red-2);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .check-list {
+      padding: 0;
+      margin: 16px 0 0;
+      list-style: none;
+    }
+
+    .check-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-top: 8px;
+      color: #4f4141;
+      font-size: 13px;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    .check-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.8em;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+
+    .step::before {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+    }
+
+    .step:nth-child(1)::before { content: "01"; }
+    .step:nth-child(2)::before { content: "02"; }
+    .step:nth-child(3)::before { content: "03"; }
+    .step:nth-child(4)::before { content: "04"; }
+
+    .wide-band {
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      gap: 34px;
+      align-items: center;
+      padding: 34px;
+      border-radius: 8px;
+      background: #282525;
+      color: var(--white);
+    }
+
+    .wide-band h2 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.4;
+    }
+
+    .wide-band p {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-weight: 700;
+    }
+
+    .contact {
+      padding: 74px 0;
+      background: var(--red);
+      color: var(--white);
+    }
+
+    .contact-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .contact h2 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.3;
+    }
+
+    .contact p {
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-weight: 700;
+    }
+
+    .contact .button {
+      background: var(--white);
+      color: var(--red-2);
+      border-color: var(--white);
+    }
+
+    footer {
+      padding: 28px 0;
+      background: #1f1d1d;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 12px;
+    }
+
+    .footer-inner {
+      width: min(var(--max), calc(100% - 40px));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 960px) {
+      .nav { display: none; }
+      .hero-inner,
+      .section-head,
+      .wide-band,
+      .contact-inner { grid-template-columns: 1fr; }
+      .hero-inner { min-height: auto; }
+      .grid-3,
+      .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner,
+      .container,
+      .contact-inner,
+      .footer-inner,
+      .hero-inner { width: min(100% - 28px, var(--max)); }
+      .hero-inner { padding: 54px 0; }
+      .section { padding: 62px 0; }
+      h1 { font-size: 34px; }
+      .lead { font-size: 16px; }
+      .button { width: 100%; }
+      .grid-3,
+      .grid-4 { grid-template-columns: 1fr; }
+      .card,
+      .wide-band { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" src="assets/hdn-logo.png" alt="HDN">
+        <span>株式会社HDN<small>Medical Growth Design</small></span>
+      </a>
+      <nav class="nav" aria-label="主要ナビゲーション">
+        <a href="index.html">トップ</a>
+        <a href="lhub.html">LHub</a>
+        <a href="#support">支援内容</a>
+        <a href="#flow">導入の流れ</a>
+        <a href="consultation.html" class="button">無料相談</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow">Self-Pay Care Growth</p>
+          <h1>自費診療を、院長の気合いではなく、現場で回る導線にする。</h1>
+          <p class="lead">
+            メニューを増やすだけでは、自費診療は伸びません。HDNは、既存患者への伝え方、問診、予約、決済、説明文面、広告表現、フォロー配信までをつなぎ、
+            保険診療を守りながら収益の柱を育てる仕組みを構築します。
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="consultation.html">自費診療導入を相談する</a>
+            <a class="button secondary" href="#support">支援内容を見る</a>
+          </div>
+        </div>
+        <figure class="visual-card">
+          <img src="assets/illustration-patient-assets.jpg" alt="自費診療導入に向けて患者導線を整理するイメージ">
+          <figcaption class="visual-caption">
+            <strong>導入前に整えるべきものは、商品ではなく患者導線です。</strong>
+            <span>誰に、いつ、何を、どの順番で伝えるか。ここを設計してから運用に落とします。</span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Problem</p>
+            <h2 class="section-title">自費診療が伸びない理由は、メニュー不足とは限りません。</h2>
+          </div>
+          <p class="section-copy">
+            多くの場合、患者が興味を持つ前後の説明、予約、決済、フォローが分断されています。HDNは、患者が止まる箇所を見つけ、最初に直すべき順番を整理します。
+          </p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <span class="tag">説明不足</span>
+            <h3>スタッフが毎回説明している</h3>
+            <p>質問対応や注意事項説明が属人化し、案内品質が安定しない状態を整えます。</p>
+          </article>
+          <article class="card">
+            <span class="tag">導線不足</span>
+            <h3>興味はあるが予約まで進まない</h3>
+            <p>LINE、LP、問診、予約、決済の順番を整理し、患者が迷わない流れにします。</p>
+          </article>
+          <article class="card">
+            <span class="tag">継続不足</span>
+            <h3>一度きりで終わってしまう</h3>
+            <p>施術後、購入後、診察後のフォローを設計し、再診・再購入につなげます。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Support</p>
+            <h2 class="section-title">戦略、システム、文面、運用、集患を分断せずに整える。</h2>
+          </div>
+          <p class="section-copy">
+            自費診療は、メニュー選定だけでも、LINE設定だけでも完成しません。院内で続けられる形にするため、必要な範囲をまとめて設計します。
+          </p>
+        </div>
+        <div class="grid-4">
+          <article class="card">
+            <h3>導入戦略</h3>
+            <p>既存患者、商圏、診療科目、スタッフ体制を踏まえ、始めるべきメニューと優先順位を決めます。</p>
+            <ul class="check-list">
+              <li>患者層の整理</li>
+              <li>メニュー選定</li>
+              <li>価格・KPI設計</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>LHub導線</h3>
+            <p>LINE上で説明、問診、予約、決済、フォロー配信までを接続し、対応漏れを減らします。</p>
+            <ul class="check-list">
+              <li>リッチメニュー</li>
+              <li>問診・予約導線</li>
+              <li>タグ・CRM管理</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>コンテンツ</h3>
+            <p>患者に伝わる説明文、FAQ、LP、配信文面を整え、広告表現のリスクも確認します。</p>
+            <ul class="check-list">
+              <li>HP・LP・FAQ</li>
+              <li>配信シナリオ</li>
+              <li>薬機法・景表法確認</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>運用改善</h3>
+            <p>開始後の数字を見ながら、現場が続けられる業務フローへ改善します。</p>
+            <ul class="check-list">
+              <li>定例改善</li>
+              <li>スタッフ運用整理</li>
+              <li>再診・再購入施策</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="wide-band">
+          <div>
+            <p class="eyebrow">Start Point</p>
+            <h2>大きく始める必要はありません。まずは、勝ちやすい導線を一つ作る。</h2>
+          </div>
+          <div>
+            <p>
+              健診後フォロー、美容・点滴、サプリ、オンライン相談、医科歯科連携など、クリニックごとに最初に作るべき導線は違います。
+              HDNは、既存患者との接点から無理なく始められるテーマを選び、数字を見ながら広げていきます。
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="consultation.html">最初の導線を相談する</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow" class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Flow</p>
+            <h2 class="section-title">導入までの流れ</h2>
+          </div>
+          <p class="section-copy">
+            初回は、現在の患者導線と運用体制の確認から始めます。LHubが必要な範囲、先に整えるべき文面、広告表現の懸念も同時に見ます。
+          </p>
+        </div>
+        <div class="grid-4">
+          <article class="card step">
+            <h3>現状整理</h3>
+            <p>既存患者、自由診療メニュー、LINE、予約、決済、スタッフ対応を確認します。</p>
+          </article>
+          <article class="card step">
+            <h3>導入設計</h3>
+            <p>最初に作る導線、必要なページ、配信文面、LHub設定範囲を決めます。</p>
+          </article>
+          <article class="card step">
+            <h3>実装</h3>
+            <p>HP・LP、LINE導線、問診、予約、決済、フォロー配信、運用フローを構築します。</p>
+          </article>
+          <article class="card step">
+            <h3>改善</h3>
+            <p>登録率、問診率、予約率、決済率、継続率を見ながら改善します。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="contact" class="contact">
+    <div class="contact-inner">
+      <div>
+        <h2>自費診療を始めたいが、何から整えるべきか分からない方へ。</h2>
+        <p>まずは現在のHP、LINE、予約、決済、患者フォローの流れを見ながら、最初に直すべき箇所を整理します。</p>
+      </div>
+      <a class="button" href="consultation.html">無料相談へ進む</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <span>© HDN Inc.</span>
+      <span>Medical Growth Design / LHub</span>
+    </div>
+  </footer>
+</body>
+</html>
