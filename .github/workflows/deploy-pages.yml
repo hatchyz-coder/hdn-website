@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Build static site
-        run: ./scripts/build-pages.sh
+        run: bash ./scripts/build-pages.sh
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
