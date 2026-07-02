@@ -71,6 +71,11 @@ Before the first deployment, set the repository's Pages source to **GitHub Actio
 Settings > Pages > Build and deployment > Source > GitHub Actions
 ```
 
+For the full GitHub setup flow, see:
+
+- `docs/GITHUB_IMPLEMENTATION.md`
+- `docs/RELEASE_CHECKLIST.md`
+
 ## Editing Rule
 
 Before changing public copy, read:
