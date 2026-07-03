@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LHub | 医療機関のLINE患者CRM・予約・問診・決済基盤</title>
   <meta name="description" content="LHubは、医療機関のLINE公式アカウントを患者CRM基盤へ進化させ、予約、問診、決済、顧客管理、シナリオ配信、リッチメニュー出し分けを一気通貫で支援します。">
+  <link rel="icon" href="assets/lhub-mark-color.png">
   <style>
     :root {
       --ink: #102033;
@@ -141,6 +142,21 @@
       background: var(--green);
     }
 
+    .lhub-brand-card {
+      width: min(360px, 100%);
+      margin: 0 0 22px;
+      padding: 18px 22px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.22);
+    }
+
+    .lhub-brand-card img {
+      width: 100%;
+      height: auto;
+    }
+
     .hero h1 {
       margin: 0;
       max-width: 780px;
@@ -195,8 +211,17 @@
       width: 100%;
       aspect-ratio: 4 / 3;
       object-fit: contain;
-      padding: 18px;
-      background: #fff;
+      object-position: center;
+      padding: 0;
+      background: #f6f8f7;
+    }
+
+    .visual-card.product-visual {
+      background: #f6f8f7;
+    }
+
+    .visual-card.product-visual img {
+      aspect-ratio: 1 / 1;
     }
 
     .visual-caption {
@@ -225,6 +250,23 @@
       font-size: 12px;
       line-height: 1.55;
       font-weight: 700;
+    }
+
+    .brand-mini {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      background: var(--white);
+      box-shadow: 0 12px 28px rgba(11, 37, 69, 0.14);
+    }
+
+    .brand-mini img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
     }
 
     .dashboard-top {
@@ -636,6 +678,9 @@
     <section class="hero">
       <div class="hero-inner">
         <div>
+          <div class="lhub-brand-card" aria-label="LHubロゴ">
+            <img src="assets/lhub-logo-color.png" alt="LHub">
+          </div>
           <p class="eyebrow">LHub / Medical CRM Platform</p>
           <h1>患者との接点を、予約・問診・決済・継続フォローまでつなぐ。</h1>
           <p class="lead">
@@ -649,11 +694,11 @@
           <p class="hero-note">予約対応、問診回収、決済案内、購入後フォロー、リピート施策まで。現場で使う機能だけを組み合わせて始められます。</p>
         </div>
 
-        <figure class="visual-card" aria-label="LHubの患者CRMイメージ">
-          <img src="assets/illustration-consulting-board.png" alt="LHubで患者情報とコミュニケーションを管理する医療向けCRMのイメージ">
+        <figure class="visual-card product-visual" aria-label="LHubの販売・予約・顧客管理イメージ">
+          <img src="assets/lhub-line-commerce.png" alt="LHubで販売、予約、顧客管理を一元化するイメージ">
           <figcaption class="visual-caption">
-            <strong>Medical Patient CRM</strong>
-            <span>予約、問診、決済、配信、物販をLINE上の患者導線として接続。</span>
+            <strong>LINE上の患者導線を一元化</strong>
+            <span>販売、予約、メッセージ配信、決済案内までをひとつの導線に接続。</span>
           </figcaption>
         </figure>
       </div>
@@ -703,6 +748,7 @@
         </div>
         <div class="grid-6">
           <article class="card feature-card">
+            <span class="brand-mini"><img src="assets/lhub-mark-color.png" alt=""></span>
             <h3>タグ・ラベル管理</h3>
             <p>患者の状態、対応状況、興味関心、購入履歴を見える化します。</p>
             <ul>
