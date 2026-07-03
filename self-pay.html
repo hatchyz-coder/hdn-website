@@ -177,7 +177,9 @@
       display: block;
       width: 100%;
       aspect-ratio: 4 / 3;
-      object-fit: cover;
+      object-fit: contain;
+      padding: 18px;
+      background: #fff;
     }
 
     .visual-caption {
@@ -349,9 +351,14 @@
       color: var(--white);
     }
 
-    .contact-inner {
+    .contact-wrap {
       width: min(var(--max), calc(100% - 40px));
       margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .contact-inner {
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 28px;
@@ -374,6 +381,70 @@
       background: var(--white);
       color: var(--red-2);
       border-color: var(--white);
+    }
+
+    .contact-promise {
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 26px 28px;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .contact-promise h3 {
+      margin: 0;
+      color: #14956f;
+      font-size: 24px;
+      line-height: 1.55;
+    }
+
+    .promise-label {
+      display: inline-flex;
+      margin: 16px 0 14px;
+      padding: 6px 18px;
+      background: #2fad7f;
+      color: #fff;
+      font-weight: 900;
+    }
+
+    .promise-list {
+      display: grid;
+      gap: 12px;
+      max-width: 760px;
+      margin: 0 auto 18px;
+      padding: 0;
+      list-style: none;
+      text-align: left;
+    }
+
+    .promise-list li {
+      position: relative;
+      padding-left: 30px;
+      color: #151b18;
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.65;
+    }
+
+    .promise-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 13px;
+      height: 13px;
+      border: 3px solid #2fad7f;
+      border-radius: 50%;
+    }
+
+    .promise-foot {
+      margin: 0;
+      color: #14956f;
+      font-size: 17px;
+      font-weight: 900;
+      text-decoration: underline;
+      text-underline-offset: 5px;
     }
 
     footer {
@@ -454,7 +525,7 @@
           </div>
         </div>
         <figure class="visual-card">
-          <img src="assets/illustration-patient-assets.jpg" alt="自費診療導入に向けて患者導線を整理するイメージ">
+          <img src="assets/illustration-medical-meeting.png" alt="自費診療導入に向けて患者導線を整理するイメージ">
           <figcaption class="visual-caption">
             <strong>導入前に整えるべきものは、商品ではなく患者導線です。</strong>
             <span>誰に、いつ、何を、どの順番で伝えるか。ここを設計してから運用に落とします。</span>
@@ -600,12 +671,24 @@
   </main>
 
   <section id="contact" class="contact">
-    <div class="contact-inner">
-      <div>
-        <h2>自費診療を始めたいが、何から整えるべきか分からない方へ。</h2>
-        <p>まずは現在のHP、LINE、予約、決済、患者フォローの流れを見ながら、最初に直すべき箇所を整理します。</p>
+    <div class="contact-wrap">
+      <div class="contact-inner">
+        <div>
+          <h2>自費診療を始めたいが、何から整えるべきか分からない方へ。</h2>
+          <p>まずは現在のHP、LINE、予約、決済、患者フォローの流れを見ながら、最初に直すべき箇所を整理します。</p>
+        </div>
+        <a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">無料相談へ進む</a>
       </div>
-      <a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">無料相談へ進む</a>
+      <div class="contact-promise">
+        <h3>まずは15〜30分、「今の体制のまま何ができるか」を整理しませんか。</h3>
+        <span class="promise-label">HDNからのお約束</span>
+        <ul class="promise-list">
+          <li>高額なコンサルティング契約への誘導はいたしません。</li>
+          <li>強引な営業電話や、しつこい追客はいたしません。</li>
+          <li>現場のスタッフが疲弊するような、無理な提案はいたしません。</li>
+        </ul>
+        <p class="promise-foot">「まずは現状を整理する」ことだけを目的にした時間です。お気軽にご相談ください。</p>
+      </div>
     </div>
   </section>
 
