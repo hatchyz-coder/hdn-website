@@ -102,6 +102,39 @@
       white-space: nowrap;
     }
 
+    .mobile-nav {
+      display: none;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .mobile-nav-inner {
+      width: min(var(--max), calc(100% - 28px));
+      margin: 0 auto;
+      padding: 10px 0 12px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .mobile-nav a {
+      min-height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(215, 53, 42, 0.2);
+      border-radius: 6px;
+      background: var(--soft);
+      color: var(--red-2);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .mobile-nav a[aria-current="page"] {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+
     .button {
       display: inline-flex;
       align-items: center;
@@ -979,6 +1012,10 @@
         display: none;
       }
 
+      .mobile-nav {
+        display: block;
+      }
+
       .hero-inner,
       .section-head,
       .wide-band,
@@ -1089,6 +1126,13 @@
         <a href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener" class="button">無料相談</a>
       </nav>
     </div>
+    <nav class="mobile-nav" aria-label="スマホ用主要ナビ">
+      <div class="mobile-nav-inner">
+        <a href="index.html" aria-current="page">トップ</a>
+        <a href="self-pay.html">自費導入</a>
+        <a href="lhub.html">LHub</a>
+      </div>
+    </nav>
   </header>
 
   <main>
