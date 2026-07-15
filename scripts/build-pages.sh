@@ -9,6 +9,9 @@ cp self-pay.html _site/
 cp lhub.html _site/
 cp consultation.html _site/
 cp -R assets _site/assets
+if [ -f CNAME ]; then
+  cp CNAME _site/CNAME
+fi
 
 python3 - <<'PY'
 from pathlib import Path
@@ -30,7 +33,7 @@ for filename, body_class in pages.items():
         continue
     html = path.read_text(encoding="utf-8")
 
-    # Keep the staging site on the GitHub Pages project URL. Do not point header links to production.
+    # Use relative links so the same files work on GitHub Pages staging and the production domain.
     html = html.replace('href="https://hdnjapan.com/"', 'href="index.html"')
     html = html.replace('href="http://hdnjapan.com/"', 'href="index.html"')
     html = html.replace('<a class="brand" href="#">', '<a class="brand" href="index.html">')
