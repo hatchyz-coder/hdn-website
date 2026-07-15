@@ -36,20 +36,16 @@ for filename, body_class in pages.items():
         continue
     html = path.read_text(encoding="utf-8")
 
-    # Use relative links so the same files work on GitHub Pages staging and the production domain.
     html = html.replace('href="https://hdnjapan.com/"', 'href="index.html"')
     html = html.replace('href="http://hdnjapan.com/"', 'href="index.html"')
     html = html.replace('<a class="brand" href="#">', '<a class="brand" href="index.html">')
 
-    # Add body classes so page-specific layout fixes can be scoped safely.
     if f'<body class="{body_class}">' not in html:
         html = html.replace('<body>', f'<body class="{body_class}">', 1)
 
-    # Add HDN favicon and layout-fix stylesheet to non-LHub pages.
     if 'assets/hdn-fixes.css' not in html:
         html = html.replace('</head>', fixes + '</head>', 1)
 
-    # Add language alternates and an English entry point on the Japanese homepage.
     if filename == "index.html":
         language_meta = '''  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com/">
   <link rel="alternate" hreflang="en" href="https://hdnjapan.com/en/">
@@ -85,6 +81,28 @@ if lhub_path.exists():
     if 'lhub-cta-contrast-fix' not in html:
         html = html.replace('</head>', contrast_fix + '</head>', 1)
     lhub_path.write_text(html, encoding="utf-8")
+
+# English homepage: expose direct navigation to the English service pages.
+en_home = Path("_site/en/index.html")
+if en_home.exists():
+    html = en_home.read_text(encoding="utf-8")
+    html = html.replace('<a href="#services">Services</a>', '<a href="self-pay.html">Private Care</a><a href="lhub.html">LHub</a>')
+    html = html.replace('<article class="card"><h3>Self-pay service development</h3>', '<article class="card"><h3><a href="self-pay.html">Private medical services</a></h3>')
+    html = html.replace('<article class="card"><h3>LHub implementation</h3>', '<article class="card"><h3><a href="lhub.html">LHub implementation</a></h3>')
+    en_home.write_text(html, encoding="utf-8")
+
+# Fail the build if any required public page is missing or empty.
+required = [
+    Path("_site/index.html"),
+    Path("_site/self-pay.html"),
+    Path("_site/lhub.html"),
+    Path("_site/en/index.html"),
+    Path("_site/en/self-pay.html"),
+    Path("_site/en/lhub.html"),
+]
+for path in required:
+    if not path.exists() or path.stat().st_size < 500:
+        raise SystemExit(f"Required page is missing or unexpectedly small: {path}")
 PY
 
 touch _site/.nojekyll
