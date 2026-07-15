@@ -9,6 +9,9 @@ cp self-pay.html _site/
 cp lhub.html _site/
 cp consultation.html _site/
 cp -R assets _site/assets
+if [ -d en ]; then
+  cp -R en _site/en
+fi
 if [ -f CNAME ]; then
   cp CNAME _site/CNAME
 fi
@@ -45,6 +48,19 @@ for filename, body_class in pages.items():
     # Add HDN favicon and layout-fix stylesheet to non-LHub pages.
     if 'assets/hdn-fixes.css' not in html:
         html = html.replace('</head>', fixes + '</head>', 1)
+
+    # Add language alternates and an English entry point on the Japanese homepage.
+    if filename == "index.html":
+        language_meta = '''  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com/">
+  <link rel="alternate" hreflang="en" href="https://hdnjapan.com/en/">
+  <link rel="alternate" hreflang="x-default" href="https://hdnjapan.com/">
+'''
+        if 'hreflang="en"' not in html:
+            html = html.replace('</head>', language_meta + '</head>', 1)
+
+        language_switch = '''<a href="en/" aria-label="English version" style="position:fixed;right:14px;bottom:14px;z-index:40;padding:9px 13px;border-radius:999px;background:#252222;color:#fff;font-size:13px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.18)">EN</a>'''
+        if 'aria-label="English version"' not in html:
+            html = html.replace('</body>', language_switch + '\n</body>', 1)
 
     path.write_text(html, encoding="utf-8")
 
