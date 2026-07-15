@@ -47,6 +47,28 @@ for filename, body_class in pages.items():
         html = html.replace('</head>', fixes + '</head>', 1)
 
     path.write_text(html, encoding="utf-8")
+
+# LHub: ensure the CTA footnote remains readable against its pale green background.
+lhub_path = Path("_site/lhub.html")
+if lhub_path.exists():
+    html = lhub_path.read_text(encoding="utf-8")
+    contrast_fix = '''  <style id="lhub-cta-contrast-fix">
+    .contact .contact-promise p.promise-foot {
+      background: #dff4e9 !important;
+      color: #075d42 !important;
+      border-color: rgba(0, 166, 106, 0.34) !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
+    }
+    .contact .contact-promise p.promise-foot::selection {
+      background: #bde7d3;
+      color: #073f2e;
+    }
+  </style>
+'''
+    if 'lhub-cta-contrast-fix' not in html:
+        html = html.replace('</head>', contrast_fix + '</head>', 1)
+    lhub_path.write_text(html, encoding="utf-8")
 PY
 
 touch _site/.nojekyll
