@@ -1,0 +1,3 @@
+HDN GitHub Pages deploy check
+version: 2026-07-15-production
+expected-domain: hdnjapan.com
