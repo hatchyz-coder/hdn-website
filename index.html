@@ -405,12 +405,22 @@
     .case-grid,
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 18px;
+    }
+
+    .problem-grid,
+    .case-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .service-grid {
       grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .pricing-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px;
+      align-items: stretch;
     }
 
     .card {
@@ -564,10 +574,52 @@
       padding: 0;
     }
 
+    .pricing-head {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 880px;
+      margin-bottom: 34px;
+    }
+
+    .pricing-head .section-copy {
+      max-width: 780px;
+      padding: 14px 16px;
+      border: 1px solid rgba(215, 53, 42, 0.18);
+      border-radius: 8px;
+      background: #fffafa;
+      color: #5d4a4a;
+      font-weight: 800;
+      line-height: 1.75;
+    }
+
+    .pricing-card {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      box-shadow: 0 16px 38px rgba(88, 34, 29, 0.06);
+    }
+
+    .pricing-card .plan-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .pricing-card .plan-body h3 {
+      min-height: 3.4em;
+      margin-bottom: 14px;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
     .pricing-card .plan-head {
-      padding: 24px;
+      min-height: 104px;
+      padding: 24px 24px 22px;
       background: #fff;
       border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .pricing-card .plan-head strong {
@@ -615,22 +667,22 @@
 
     .recommend {
       position: absolute;
-      top: 15px;
+      top: 16px;
       right: 18px;
       z-index: 2;
-      padding: 6px 18px 7px;
+      padding: 5px 15px 6px;
       border-radius: 999px;
       background: var(--white);
       color: var(--red-2);
       border: 2px solid rgba(255, 255, 255, 0.92);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 900;
-      box-shadow: 0 10px 22px rgba(84, 14, 10, 0.26);
+      box-shadow: 0 10px 22px rgba(84, 14, 10, 0.22);
     }
 
     .fee-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: 96px minmax(0, 1fr);
       gap: 12px;
       align-items: baseline;
       padding: 12px 0;
@@ -645,17 +697,20 @@
 
     .fee-row strong {
       color: var(--red-2);
-      font-size: 20px;
+      font-size: clamp(18px, 1.8vw, 22px);
       white-space: nowrap;
+      text-align: right;
     }
 
     .success-fee {
-      margin-top: 18px;
-      padding: 14px;
+      margin-top: auto;
+      padding: 14px 12px;
       border-radius: 8px;
       background: var(--soft);
       color: var(--red-2);
+      font-size: 14px;
       font-weight: 900;
+      line-height: 1.65;
       text-align: center;
     }
 
@@ -677,6 +732,18 @@
       color: var(--muted);
       font-size: 12px;
       font-weight: 700;
+    }
+
+    #pricing .note {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--white);
+      color: #5d4a4a;
+      font-size: 13px;
+      line-height: 1.75;
+      font-weight: 800;
     }
 
     .comparison {
@@ -1049,9 +1116,13 @@
 
       .service-grid,
       .problem-grid,
-      .case-grid,
+      .case-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .pricing-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
       }
 
       .flow {
@@ -1388,12 +1459,12 @@
 
     <section id="pricing" class="section alt">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head pricing-head">
           <div>
             <p class="eyebrow">Price</p>
             <h2 class="section-title">3プラン体系 — 規模・段階に応じて選べる</h2>
           </div>
-          <p class="section-copy">“導入したい”から“一気に伸ばしたい”まで、最適なプランをご用意しています。成果報酬は月額自費売上500万円までを対象にします。</p>
+          <p class="section-copy">初期費用・月額顧問料・成果報酬を分けて表示しています。成果報酬の対象は、月額自費売上100,000円以上・5,000,000円までです。</p>
         </div>
         <div class="pricing-grid">
           <article class="card pricing-card">
@@ -1408,7 +1479,7 @@
               <div class="fee-row"><span>成果報酬</span><strong>10%</strong></div>
               <div class="fee-row"><span>LHub利用料</span><strong>30,000円（実費）</strong></div>
               <div class="success-fee">成果報酬 = 自費粗利 × 料率</div>
-              <div class="fee-cap">月額自費売上100,000円〜上限5,000,000円</div>
+              <div class="fee-cap">対象売上：月額100,000円〜5,000,000円</div>
             </div>
           </article>
           <article class="card pricing-card featured">
@@ -1424,7 +1495,7 @@
               <div class="fee-row"><span>成果報酬</span><strong>15%</strong></div>
               <div class="fee-row"><span>LHub利用料</span><strong>30,000円（実費）</strong></div>
               <div class="success-fee">成果報酬 = 自費粗利 × 料率</div>
-              <div class="fee-cap">月額自費売上100,000円〜上限5,000,000円</div>
+              <div class="fee-cap">対象売上：月額100,000円〜5,000,000円</div>
             </div>
           </article>
           <article class="card pricing-card dark">
@@ -1439,11 +1510,11 @@
               <div class="fee-row"><span>成果報酬</span><strong>20%</strong></div>
               <div class="fee-row"><span>LHub利用料</span><strong>30,000円（実費）</strong></div>
               <div class="success-fee">成果報酬 = 自費粗利 × 料率</div>
-              <div class="fee-cap">月額自費売上100,000円〜上限5,000,000円</div>
+              <div class="fee-cap">対象売上：月額100,000円〜5,000,000円</div>
             </div>
           </article>
         </div>
-        <p class="note">※ 税別表記。LHub利用料は別途。成果報酬は原則「自費総売上−自費総費用」を基準に算定します。成果報酬の対象売上は月額自費売上100,000円以上、5,000,000円までとし、5,000,000円を超える売上部分は成果報酬の対象外です。</p>
+        <p class="note">※ 税別表記。LHub利用料は実費です。成果報酬は原則「自費総売上−自費総費用」を基準に算定します。成果報酬の対象売上は月額自費売上100,000円以上、5,000,000円までとし、5,000,000円を超える売上部分には成果報酬はかかりません。</p>
 
         <div class="comparison" aria-label="プラン別の提供内容比較">
           <div class="comparison-header">
