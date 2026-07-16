@@ -36,20 +36,16 @@ for filename, body_class in pages.items():
     if not path.exists():
         continue
     html = path.read_text(encoding="utf-8")
-
     html = html.replace('href="https://hdnjapan.com/"', 'href="index.html"')
     html = html.replace('href="http://hdnjapan.com/"', 'href="index.html"')
     html = html.replace('<a class="brand" href="#">', '<a class="brand" href="index.html">')
-
     if f'<body class="{body_class}">' not in html:
         html = html.replace('<body>', f'<body class="{body_class}">', 1)
-
     if 'assets/hdn-fixes.css' not in html:
         html = html.replace('</head>', fixes + '</head>', 1)
-
     path.write_text(html, encoding="utf-8")
 
-# English homepage: expose direct navigation to the English service pages.
+# English homepage navigation.
 en_home = Path("_site/en/index.html")
 if en_home.exists():
     html = en_home.read_text(encoding="utf-8")
@@ -58,7 +54,6 @@ if en_home.exists():
     html = html.replace('<article class="card"><h3>LHub implementation</h3>', '<article class="card"><h3><a href="lhub.html">LHub implementation</a></h3>')
     en_home.write_text(html, encoding="utf-8")
 
-# Add a consistent JP / EN switch to each paired page.
 page_pairs = {
     "index.html": ("/", "/en/", "ja"),
     "self-pay.html": ("/self-pay.html", "/en/self-pay.html", "ja"),
@@ -68,69 +63,26 @@ page_pairs = {
     "en/lhub.html": ("/lhub.html", "/en/lhub.html", "en"),
 }
 
-switch_css = '''  <style id="language-switch-style">
-    .language-switch {
-      position: fixed;
-      top: 12px;
-      right: 14px;
-      z-index: 99999;
-      display: inline-flex;
-      padding: 4px;
-      border: 1px solid rgba(37,34,34,.20);
-      border-radius: 999px;
-      background: rgba(255,255,255,.98);
-      box-shadow: 0 8px 24px rgba(0,0,0,.16);
-      backdrop-filter: blur(10px);
-    }
-    .language-switch a,
-    .language-switch span {
-      min-width: 42px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      color: #4f4747;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: .04em;
-      text-decoration: none;
-    }
-    .language-switch a:hover {
-      background: #f3eeee;
-      color: #252222;
-    }
-    .language-switch .is-current {
-      background: #252222;
-      color: #fff;
-    }
-    @media (max-width: 640px) {
-      .language-switch {
-        top: 8px;
-        right: 8px;
-        padding: 3px;
-      }
-      .language-switch a,
-      .language-switch span {
-        min-width: 36px;
-        height: 30px;
-        font-size: 11px;
-      }
-    }
-  </style>
-'''
-
-old_switch = '<a href="en/" aria-label="English version" style="position:fixed;right:14px;bottom:14px;z-index:40;padding:9px 13px;border-radius:999px;background:#252222;color:#fff;font-size:13px;font-weight:800;box-shadow:0 8px 24px rgba(0,0,0,.18)">EN</a>'
-
 for filename, (ja_url, en_url, current_lang) in page_pairs.items():
     path = Path("_site") / filename
     if not path.exists():
         continue
     html = path.read_text(encoding="utf-8")
 
-    html = html.replace(old_switch, '')
+    # Remove legacy injected styles/switches before regenerating.
     html = re.sub(r'<nav class="language-switch"[^>]*>.*?</nav>\s*', '', html, flags=re.DOTALL)
     html = re.sub(r'<style id="language-switch-style">.*?</style>\s*', '', html, flags=re.DOTALL)
-    html = html.replace('</head>', switch_css + '</head>', 1)
+    html = re.sub(r'<style id="lhub-cta-contrast-fix">.*?</style>\s*', '', html, flags=re.DOTALL)
+    html = html.replace('<link rel="stylesheet" href="assets/site-shell.css">', '')
+    html = html.replace('<link rel="stylesheet" href="../assets/site-shell.css">', '')
+    html = html.replace('<script src="assets/site-shell.js" defer></script>', '')
+    html = html.replace('<script src="../assets/site-shell.js" defer></script>', '')
+
+    prefix = '../' if filename.startswith('en/') else ''
+    shell_assets = f'''  <link rel="stylesheet" href="{prefix}assets/site-shell.css">
+  <script src="{prefix}assets/site-shell.js" defer></script>
+'''
+    html = html.replace('</head>', shell_assets + '</head>', 1)
 
     alternates = f'''  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com{ja_url}">
   <link rel="alternate" hreflang="en" href="https://hdnjapan.com{en_url}">
@@ -147,32 +99,6 @@ for filename, (ja_url, en_url, current_lang) in page_pairs.items():
     html = html.replace('</body>', switch + '\n</body>', 1)
     path.write_text(html, encoding="utf-8")
 
-# LHub CTA: force readable footnote styling on both language versions.
-for filename in ("lhub.html", "en/lhub.html"):
-    path = Path("_site") / filename
-    if not path.exists():
-        continue
-    html = path.read_text(encoding="utf-8")
-    html = re.sub(r'<style id="lhub-cta-contrast-fix">.*?</style>\s*', '', html, flags=re.DOTALL)
-    contrast_fix = '''  <style id="lhub-cta-contrast-fix">
-    .contact .contact-promise .promise-foot,
-    .contact .promise-foot,
-    p.promise-foot {
-      display: block !important;
-      background: #ffffff !important;
-      color: #075d42 !important;
-      border: 1px solid #20a56f !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-      font-weight: 800 !important;
-      box-shadow: none !important;
-    }
-  </style>
-'''
-    html = html.replace('</head>', contrast_fix + '</head>', 1)
-    path.write_text(html, encoding="utf-8")
-
-# Fail the build if any required public page is missing or empty.
 required = [
     Path("_site/index.html"),
     Path("_site/self-pay.html"),
