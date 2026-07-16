@@ -18,6 +18,7 @@ fi
 
 python3 - <<'PY'
 from pathlib import Path
+import re
 
 fixes = '''  <link rel="icon" type="image/svg+xml" href="assets/favicon-hdn.svg">
   <link rel="stylesheet" href="assets/hdn-fixes.css">
@@ -94,13 +95,13 @@ switch_css = '''  <style id="language-switch-style">
       position: fixed;
       right: 16px;
       bottom: 16px;
-      z-index: 60;
+      z-index: 9999;
       display: inline-flex;
       padding: 4px;
       border: 1px solid rgba(37,34,34,.18);
       border-radius: 999px;
-      background: rgba(255,255,255,.96);
-      box-shadow: 0 10px 30px rgba(0,0,0,.16);
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
       backdrop-filter: blur(10px);
     }
     .language-switch a,
@@ -114,10 +115,17 @@ switch_css = '''  <style id="language-switch-style">
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .04em;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .language-switch a:hover {
+      background: #f3eeee;
+      color: #252222;
     }
     .language-switch .is-current {
       background: #252222;
       color: #fff;
+      cursor: default;
     }
     @media (max-width: 640px) {
       .language-switch { right: 10px; bottom: 10px; }
@@ -136,9 +144,9 @@ for filename, (ja_url, en_url, current_lang) in page_pairs.items():
     html = path.read_text(encoding="utf-8")
 
     html = html.replace(old_switch, '')
-
-    if 'id="language-switch-style"' not in html:
-        html = html.replace('</head>', switch_css + '</head>', 1)
+    html = re.sub(r'<nav class="language-switch"[^>]*>.*?</nav>\s*', '', html, flags=re.DOTALL)
+    html = re.sub(r'<style id="language-switch-style">.*?</style>\s*', '', html, flags=re.DOTALL)
+    html = html.replace('</head>', switch_css + '</head>', 1)
 
     alternates = f'''  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com{ja_url}">
   <link rel="alternate" hreflang="en" href="https://hdnjapan.com{en_url}">
@@ -148,13 +156,11 @@ for filename, (ja_url, en_url, current_lang) in page_pairs.items():
         html = html.replace('</head>', alternates + '</head>', 1)
 
     if current_lang == "ja":
-        switch = f'<nav class="language-switch" aria-label="Language switch"><span class="is-current" aria-current="page">JP</span><a href="{en_url}" lang="en" hreflang="en" aria-label="View this page in English">EN</a></nav>'
+        switch = f'<nav class="language-switch" aria-label="言語切替"><span class="is-current" aria-current="page">JP</span><a href="{en_url}" lang="en" hreflang="en" aria-label="英語版を表示">EN</a></nav>'
     else:
-        switch = f'<nav class="language-switch" aria-label="Language switch"><a href="{ja_url}" lang="ja" hreflang="ja" aria-label="このページを日本語で見る">JP</a><span class="is-current" aria-current="page">EN</span></nav>'
+        switch = f'<nav class="language-switch" aria-label="Language switch"><a href="{ja_url}" lang="ja" hreflang="ja" aria-label="View this page in Japanese">JP</a><span class="is-current" aria-current="page">EN</span></nav>'
 
-    if 'class="language-switch"' not in html:
-        html = html.replace('</body>', switch + '\n</body>', 1)
-
+    html = html.replace('</body>', switch + '\n</body>', 1)
     path.write_text(html, encoding="utf-8")
 
 # Fail the build if any required public page is missing or empty.
