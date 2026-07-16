@@ -1,0 +1,59 @@
+name: Apply generated site fixes
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - scripts/build-pages.sh
+      - .github/workflows/apply-build-fixes.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build generated site
+        run: bash scripts/build-pages.sh
+
+      - name: Write generated pages back to published branch root
+        run: |
+          cp _site/index.html index.html
+          cp _site/self-pay.html self-pay.html
+          cp _site/lhub.html lhub.html
+          cp _site/consultation.html consultation.html
+          mkdir -p en
+          cp _site/en/index.html en/index.html
+          cp _site/en/self-pay.html en/self-pay.html
+          cp _site/en/lhub.html en/lhub.html
+
+      - name: Verify required fixes
+        run: |
+          grep -q 'class="language-switch"' index.html
+          grep -q 'class="language-switch"' self-pay.html
+          grep -q 'class="language-switch"' lhub.html
+          grep -q 'class="language-switch"' en/index.html
+          grep -q 'class="language-switch"' en/self-pay.html
+          grep -q 'class="language-switch"' en/lhub.html
+          grep -q 'background: #ffffff !important' lhub.html
+          grep -q 'color: #075d42 !important' lhub.html
+
+      - name: Commit generated pages
+        run: |
+          if git diff --quiet; then
+            echo "No generated changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html self-pay.html lhub.html consultation.html en/index.html en/self-pay.html en/lhub.html
+          git commit -m "Apply language switch and CTA contrast fixes [skip ci]"
+          git push
