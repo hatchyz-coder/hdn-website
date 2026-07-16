@@ -542,6 +542,58 @@
   <link rel="shortcut icon" type="image/svg+xml" href="assets/favicon-hdn.svg?v=20260715">
   <link rel="stylesheet" href="assets/hdn-fixes.css?v=20260715">
   <meta name="theme-color" content="#d7352a">
+  <style id="language-switch-style">
+    .language-switch {
+      position: fixed;
+      top: 12px;
+      right: 14px;
+      z-index: 99999;
+      display: inline-flex;
+      padding: 4px;
+      border: 1px solid rgba(37,34,34,.20);
+      border-radius: 999px;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 8px 24px rgba(0,0,0,.16);
+      backdrop-filter: blur(10px);
+    }
+    .language-switch a,
+    .language-switch span {
+      min-width: 42px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #4f4747;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-decoration: none;
+    }
+    .language-switch a:hover {
+      background: #f3eeee;
+      color: #252222;
+    }
+    .language-switch .is-current {
+      background: #252222;
+      color: #fff;
+    }
+    @media (max-width: 640px) {
+      .language-switch {
+        top: 8px;
+        right: 8px;
+        padding: 3px;
+      }
+      .language-switch a,
+      .language-switch span {
+        min-width: 36px;
+        height: 30px;
+        font-size: 11px;
+      }
+    }
+  </style>
+  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com/self-pay.html">
+  <link rel="alternate" hreflang="en" href="https://hdnjapan.com/en/self-pay.html">
+  <link rel="alternate" hreflang="x-default" href="https://hdnjapan.com/self-pay.html">
 </head>
 <body class="page-self-pay">
   <header class="site-header">
@@ -758,5 +810,6 @@
       <span>医療機関の導線設計・LHub運用支援</span>
     </div>
   </footer>
+<nav class="language-switch" aria-label="言語切替"><span class="is-current" aria-current="page">JP</span><a href="/en/self-pay.html" lang="en" hreflang="en" aria-label="英語版を表示">EN</a></nav>
 </body>
 </html>

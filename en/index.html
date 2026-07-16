@@ -31,6 +31,55 @@
     @media(max-width:900px){.nav a:not(.lang){display:none}.hero-inner,.section-head,.band,.company,.contact-inner{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.hero-inner{min-height:auto}.contact-inner .button{width:100%}}
     @media(max-width:640px){.header-inner,.hero-inner,.container,.contact-inner,.footer-inner{width:min(100% - 28px,var(--max))}.brand span{font-size:14px}.brand img{width:96px}.hero-inner{padding:54px 0}.hero h1{font-size:39px}.lead{font-size:17px}.button{width:100%}.grid{grid-template-columns:1fr}.section{padding:62px 0}.company dl{grid-template-columns:1fr}.company dt{padding-bottom:0}.company dd{padding-top:6px}.contact h2{font-size:31px}}
   </style>
+  <style id="language-switch-style">
+    .language-switch {
+      position: fixed;
+      top: 12px;
+      right: 14px;
+      z-index: 99999;
+      display: inline-flex;
+      padding: 4px;
+      border: 1px solid rgba(37,34,34,.20);
+      border-radius: 999px;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 8px 24px rgba(0,0,0,.16);
+      backdrop-filter: blur(10px);
+    }
+    .language-switch a,
+    .language-switch span {
+      min-width: 42px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #4f4747;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-decoration: none;
+    }
+    .language-switch a:hover {
+      background: #f3eeee;
+      color: #252222;
+    }
+    .language-switch .is-current {
+      background: #252222;
+      color: #fff;
+    }
+    @media (max-width: 640px) {
+      .language-switch {
+        top: 8px;
+        right: 8px;
+        padding: 3px;
+      }
+      .language-switch a,
+      .language-switch span {
+        min-width: 36px;
+        height: 30px;
+        font-size: 11px;
+      }
+    }
+  </style>
 </head>
 <body>
 <header class="header">
@@ -40,7 +89,7 @@
       <span>HDN Inc.<small>Healthcare journey and operations design</small></span>
     </a>
     <nav class="nav" aria-label="Primary navigation">
-      <a href="#services">Services</a>
+      <a href="self-pay.html">Private Care</a><a href="lhub.html">LHub</a>
       <a href="#approach">Approach</a>
       <a href="#company">Company</a>
       <a href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">Contact</a>
@@ -71,8 +120,8 @@
     <div class="container">
       <div class="section-head"><h2>Support built around operations, not theory.</h2><p class="section-copy">We work with clinics, dental practices, healthcare businesses, investors, and companies entering the medical sector.</p></div>
       <div class="grid">
-        <article class="card"><h3>Self-pay service development</h3><p>Service design, pricing, patient communication, operational workflow, promotion, and compliance review.</p></article>
-        <article class="card"><h3>LHub implementation</h3><p>LINE-based booking, questionnaires, payment guidance, customer management, segmentation, and follow-up.</p></article>
+        <article class="card"><h3><a href="self-pay.html">Private medical services</a></h3><p>Service design, pricing, patient communication, operational workflow, promotion, and compliance review.</p></article>
+        <article class="card"><h3><a href="lhub.html">LHub implementation</a></h3><p>LINE-based booking, questionnaires, payment guidance, customer management, segmentation, and follow-up.</p></article>
         <article class="card"><h3>Patient journey redesign</h3><p>We identify where patients and staff become stuck and simplify the sequence from first contact to repeat visits.</p></article>
         <article class="card"><h3>Medical marketing</h3><p>Website, landing page, social media, LINE messaging, and campaign planning aligned with actual operations.</p></article>
         <article class="card"><h3>Healthcare market entry</h3><p>Support for companies and investors evaluating new healthcare services, partnerships, and commercial models.</p></article>
@@ -114,5 +163,6 @@
   <div class="contact-inner"><div><h2>Let us review your current patient journey.</h2><p>We can begin with a short online discussion about your existing website, LINE, appointments, payments, and follow-up process.</p></div><a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">Contact HDN</a></div>
 </section>
 <footer class="footer"><div class="footer-inner"><span>HDN Inc.</span><a href="/">日本語</a><span>© HDN Inc.</span></div></footer>
+<nav class="language-switch" aria-label="Language switch"><a href="/" lang="ja" hreflang="ja" aria-label="View this page in Japanese">JP</a><span class="is-current" aria-current="page">EN</span></nav>
 </body>
 </html>

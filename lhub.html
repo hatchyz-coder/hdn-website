@@ -598,6 +598,72 @@
       .wide-band { padding: 20px; }
     }
   </style>
+  <style id="language-switch-style">
+    .language-switch {
+      position: fixed;
+      top: 12px;
+      right: 14px;
+      z-index: 99999;
+      display: inline-flex;
+      padding: 4px;
+      border: 1px solid rgba(37,34,34,.20);
+      border-radius: 999px;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 8px 24px rgba(0,0,0,.16);
+      backdrop-filter: blur(10px);
+    }
+    .language-switch a,
+    .language-switch span {
+      min-width: 42px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      color: #4f4747;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      text-decoration: none;
+    }
+    .language-switch a:hover {
+      background: #f3eeee;
+      color: #252222;
+    }
+    .language-switch .is-current {
+      background: #252222;
+      color: #fff;
+    }
+    @media (max-width: 640px) {
+      .language-switch {
+        top: 8px;
+        right: 8px;
+        padding: 3px;
+      }
+      .language-switch a,
+      .language-switch span {
+        min-width: 36px;
+        height: 30px;
+        font-size: 11px;
+      }
+    }
+  </style>
+  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com/lhub.html">
+  <link rel="alternate" hreflang="en" href="https://hdnjapan.com/en/lhub.html">
+  <link rel="alternate" hreflang="x-default" href="https://hdnjapan.com/lhub.html">
+  <style id="lhub-cta-contrast-fix">
+    .contact .contact-promise .promise-foot,
+    .contact .promise-foot,
+    p.promise-foot {
+      display: block !important;
+      background: #ffffff !important;
+      color: #075d42 !important;
+      border: 1px solid #20a56f !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
+      font-weight: 800 !important;
+      box-shadow: none !important;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -709,5 +775,6 @@
   <section class="contact"><div class="contact-wrap"><div class="contact-inner"><div><h2>LHubで、患者への案内を残せる形にしましょう。</h2><p>まずは、今のLINE・予約・問診・決済・患者フォロー導線を一緒に確認します。</p></div><a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">LHub導入を相談する</a></div><div class="contact-promise"><h3>まずは、今のLINE・予約・問診・決済の流れを一緒に棚卸しします。</h3><div class="promise-label">HDNの初回相談で見ること</div><ul class="promise-list"><li>契約の話より先に、患者がどこで止まっているかを確認します。</li><li>LINE文面、リッチメニュー、予約・決済、スタッフ対応の負荷まで見ます。</li><li>現場で続かない設定や、無理な売り込み前提の提案はしません。</li></ul><p class="promise-foot">まずは現状確認だけで構いません。必要な場合だけ、次の進め方をご提案します。</p></div></div></section>
 
   <footer class="footer"><div class="footer-inner"><span>株式会社HDN</span><span>LHub / LINE運用支援</span><span>© HDN Inc.</span></div></footer>
+<nav class="language-switch" aria-label="言語切替"><span class="is-current" aria-current="page">JP</span><a href="/en/lhub.html" lang="en" hreflang="en" aria-label="英語版を表示">EN</a></nav>
 </body>
 </html>
