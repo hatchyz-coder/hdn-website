@@ -49,28 +49,6 @@ for filename, body_class in pages.items():
 
     path.write_text(html, encoding="utf-8")
 
-# LHub: ensure the CTA footnote remains readable against its pale green background.
-lhub_path = Path("_site/lhub.html")
-if lhub_path.exists():
-    html = lhub_path.read_text(encoding="utf-8")
-    contrast_fix = '''  <style id="lhub-cta-contrast-fix">
-    .contact .contact-promise p.promise-foot {
-      background: #dff4e9 !important;
-      color: #075d42 !important;
-      border-color: rgba(0, 166, 106, 0.34) !important;
-      text-shadow: none !important;
-      opacity: 1 !important;
-    }
-    .contact .contact-promise p.promise-foot::selection {
-      background: #bde7d3;
-      color: #073f2e;
-    }
-  </style>
-'''
-    if 'lhub-cta-contrast-fix' not in html:
-        html = html.replace('</head>', contrast_fix + '</head>', 1)
-    lhub_path.write_text(html, encoding="utf-8")
-
 # English homepage: expose direct navigation to the English service pages.
 en_home = Path("_site/en/index.html")
 if en_home.exists():
@@ -93,15 +71,15 @@ page_pairs = {
 switch_css = '''  <style id="language-switch-style">
     .language-switch {
       position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 9999;
+      top: 12px;
+      right: 14px;
+      z-index: 99999;
       display: inline-flex;
       padding: 4px;
-      border: 1px solid rgba(37,34,34,.18);
+      border: 1px solid rgba(37,34,34,.20);
       border-radius: 999px;
       background: rgba(255,255,255,.98);
-      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      box-shadow: 0 8px 24px rgba(0,0,0,.16);
       backdrop-filter: blur(10px);
     }
     .language-switch a,
@@ -111,12 +89,11 @@ switch_css = '''  <style id="language-switch-style">
       display: grid;
       place-items: center;
       border-radius: 999px;
-      color: #5f5555;
+      color: #4f4747;
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .04em;
       text-decoration: none;
-      cursor: pointer;
     }
     .language-switch a:hover {
       background: #f3eeee;
@@ -125,12 +102,19 @@ switch_css = '''  <style id="language-switch-style">
     .language-switch .is-current {
       background: #252222;
       color: #fff;
-      cursor: default;
     }
     @media (max-width: 640px) {
-      .language-switch { right: 10px; bottom: 10px; }
+      .language-switch {
+        top: 8px;
+        right: 8px;
+        padding: 3px;
+      }
       .language-switch a,
-      .language-switch span { min-width: 39px; height: 32px; }
+      .language-switch span {
+        min-width: 36px;
+        height: 30px;
+        font-size: 11px;
+      }
     }
   </style>
 '''
@@ -161,6 +145,31 @@ for filename, (ja_url, en_url, current_lang) in page_pairs.items():
         switch = f'<nav class="language-switch" aria-label="Language switch"><a href="{ja_url}" lang="ja" hreflang="ja" aria-label="View this page in Japanese">JP</a><span class="is-current" aria-current="page">EN</span></nav>'
 
     html = html.replace('</body>', switch + '\n</body>', 1)
+    path.write_text(html, encoding="utf-8")
+
+# LHub CTA: force readable footnote styling on both language versions.
+for filename in ("lhub.html", "en/lhub.html"):
+    path = Path("_site") / filename
+    if not path.exists():
+        continue
+    html = path.read_text(encoding="utf-8")
+    html = re.sub(r'<style id="lhub-cta-contrast-fix">.*?</style>\s*', '', html, flags=re.DOTALL)
+    contrast_fix = '''  <style id="lhub-cta-contrast-fix">
+    .contact .contact-promise .promise-foot,
+    .contact .promise-foot,
+    p.promise-foot {
+      display: block !important;
+      background: #ffffff !important;
+      color: #075d42 !important;
+      border: 1px solid #20a56f !important;
+      text-shadow: none !important;
+      opacity: 1 !important;
+      font-weight: 800 !important;
+      box-shadow: none !important;
+    }
+  </style>
+'''
+    html = html.replace('</head>', contrast_fix + '</head>', 1)
     path.write_text(html, encoding="utf-8")
 
 # Fail the build if any required public page is missing or empty.
