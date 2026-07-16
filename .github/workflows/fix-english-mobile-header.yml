@@ -60,3 +60,5 @@ jobs:
           git add en/index.html en/self-pay.html en/lhub.html
           git commit -m "Restore English mobile navigation [skip ci]"
           git push
+
+# Triggered again after confirming the legacy mobile rule remained in production.
