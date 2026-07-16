@@ -54,6 +54,17 @@ if en_home.exists():
     html = html.replace('<article class="card"><h3>LHub implementation</h3>', '<article class="card"><h3><a href="lhub.html">LHub implementation</a></h3>')
     en_home.write_text(html, encoding="utf-8")
 
+# Restore English mobile navigation on all English pages.
+old_mobile_rule = '.nav a:not(.lang){display:none}'
+new_mobile_rule = '.header-inner{align-items:flex-start;flex-direction:column;padding:12px 0;gap:10px}.nav{display:grid;width:100%;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.nav a{display:grid!important;place-items:center;min-height:40px;padding:0 8px;border:1px solid var(--line);border-radius:7px;background:#fff;text-align:center}.nav a[href*="forms.gle"]{display:none!important}.nav .lang{display:none!important}'
+for filename in ('en/index.html', 'en/self-pay.html', 'en/lhub.html'):
+    path = Path('_site') / filename
+    if not path.exists():
+        continue
+    html = path.read_text(encoding='utf-8')
+    html = html.replace(old_mobile_rule, new_mobile_rule, 1)
+    path.write_text(html, encoding='utf-8')
+
 page_pairs = {
     "index.html": ("/", "/en/", "ja"),
     "self-pay.html": ("/self-pay.html", "/en/self-pay.html", "ja"),
@@ -109,9 +120,16 @@ required = [
 for path in required:
     if not path.exists() or path.stat().st_size < 500:
         raise SystemExit(f"Required page is missing or unexpectedly small: {path}")
+
+for path in (Path('_site/en/index.html'), Path('_site/en/self-pay.html'), Path('_site/en/lhub.html')):
+    html = path.read_text(encoding='utf-8')
+    if old_mobile_rule in html:
+        raise SystemExit(f'Legacy hidden mobile navigation remains: {path}')
+    for label in ('Home', 'Private Care', 'LHub'):
+        if f'>{label}<' not in html:
+            raise SystemExit(f'Missing English navigation label {label}: {path}')
 PY
 
 touch _site/.nojekyll
 
 echo "Built _site for GitHub Pages."
-# shared shell rebuild trigger v2
