@@ -69,7 +69,6 @@ for filename, (ja_url, en_url, current_lang) in page_pairs.items():
         continue
     html = path.read_text(encoding="utf-8")
 
-    # Remove legacy injected styles/switches before regenerating.
     html = re.sub(r'<nav class="language-switch"[^>]*>.*?</nav>\s*', '', html, flags=re.DOTALL)
     html = re.sub(r'<style id="language-switch-style">.*?</style>\s*', '', html, flags=re.DOTALL)
     html = re.sub(r'<style id="lhub-cta-contrast-fix">.*?</style>\s*', '', html, flags=re.DOTALL)
@@ -115,3 +114,4 @@ PY
 touch _site/.nojekyll
 
 echo "Built _site for GitHub Pages."
+# shared shell rebuild trigger v2
