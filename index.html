@@ -5,6 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>株式会社HDN | クリニックの患者接点・自由診療・LINE運用支援</title>
   <meta name="description" content="株式会社HDNは、医療機関の患者基盤を活用し、自由診療導入、患者CRM、LHub活用、再診・物販・医科歯科連携、広告表現レビューを支援します。">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://hdnjapan.com/#organization",
+        "name": "株式会社HDN",
+        "url": "https://hdnjapan.com/",
+        "founder": {
+          "@id": "https://hdnjapan.com/#person"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://hdnjapan.com/#person",
+        "name": "羽田野 剛士",
+        "alternateName": [
+          "羽田野剛士",
+          "Tsuyoshi Hadano",
+          "ハッチ"
+        ],
+        "jobTitle": "株式会社HDN 代表取締役",
+        "worksFor": {
+          "@id": "https://hdnjapan.com/#organization"
+        },
+        "sameAs": [
+          "https://www.facebook.com/hadano.tsuyoshi",
+          "https://www.linkedin.com/in/tsuyoshi-hadano/"
+        ],
+        "knowsAbout": [
+          "クリニック経営支援",
+          "自由診療導入支援",
+          "医療マーケティング",
+          "LHub",
+          "LINE公式アカウント活用",
+          "AIソリューション開発"
+        ]
+      }
+    ]
+  }
+  </script>
   <style>
     :root {
       --ink: #252222;
@@ -876,9 +918,87 @@
       line-height: 1.25;
     }
 
+    .profile-name em {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 13px;
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .profile-social {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .profile-social a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--red-2);
+      background: #fffafa;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .expertise-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 22px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .expertise-tags li {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--soft-2);
+      color: var(--red-2);
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.45;
+    }
+
     .profile p {
       color: #435147;
       font-weight: 600;
+    }
+
+    .profile-note {
+      margin-top: 30px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fffafa;
+    }
+
+    .profile-note h3 {
+      margin: 0 0 14px;
+      color: var(--ink);
+      font-size: 24px;
+      line-height: 1.45;
+    }
+
+    .profile-note p {
+      margin: 0;
+    }
+
+    .profile-note p + p {
+      margin-top: 14px;
+    }
+
+    .profile-note.local-activity {
+      background: var(--white);
     }
 
     .company-overview {
@@ -1654,26 +1774,41 @@
             <div class="profile-name">
               <span>代表取締役</span>
               <strong>羽田野 剛士</strong>
+              <em>Tsuyoshi Hadano</em>
+              <div class="profile-social" aria-label="羽田野剛士のSNSリンク">
+                <a href="https://www.facebook.com/hadano.tsuyoshi" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a href="https://www.linkedin.com/in/tsuyoshi-hadano/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </div>
             </div>
             <h2>医療マーケティングとIT実装をつなぎ、現場で動く流れをつくります。</h2>
-            <p>
-              1980年、大分県出身。徳島大学工学部電気電子工学科卒業、同大学院先端技術科学教育部修了。
-              工学領域で培った構造化・実装の視点を土台に、医療領域のマーケティング支援、事業開発、オンライン診療・自由診療導入支援に携わってきました。
-            </p>
-            <p>
-              特にオンライン診療や自由診療の領域では、診療メニューの企画、患者導線の設計、プロモーション、広告表現・リーガル面の確認まで一気通貫で支援。
-              単なる集患施策ではなく、問い合わせ後の問診、予約、決済、継続フォローまでを含めて、現場で回る仕組みに落とし込むことを重視しています。
-            </p>
-            <p>
-              さらに、LINEを活用した決済・予約・問診・顧客管理サービスやオンライン診療関連システムを開発・運用し、クリニックをはじめ、EC事業者、エンターテインメント事業者、各種団体など多様な業態への導入を推進。
-              HDNでは、マーケティングとITを融合させ、医療機関の患者接点を継続的な収益と信頼関係に変えるサービス創出に取り組んでいます。
-            </p>
-            <ul class="check-list">
-              <li>オンライン診療・自由診療領域の事業開発、導線設計、運用支援</li>
-              <li>LHubを活用した予約・問診・決済・患者CRMの実装</li>
-              <li>薬機法・景表法・医療広告ガイドラインに配慮した訴求設計</li>
-              <li>医療機関、EC、エンタメ、団体向けのLINE活用・決済導線構築</li>
+            <ul class="expertise-tags" aria-label="専門領域">
+              <li>クリニック経営支援</li>
+              <li>自由診療導入支援</li>
+              <li>LHub開発・運営</li>
+              <li>医療・ヘルスケア領域のAI活用</li>
             </ul>
+            <p>
+              1980年、大分県出身。徳島大学工学部電気電子工学科を卒業後、同大学院先端技術科学教育部を修了。
+            </p>
+            <p>
+              医療領域におけるマーケティング支援、事業開発、ITを活用した業務設計に携わり、オンライン診療や自由診療の分野では、診療メニューの設計、患者導線の構築、プロモーション、広告表現の確認まで一貫して支援してきました。
+            </p>
+            <p>
+              現在は株式会社HDN代表取締役として、クリニックの経営支援に加え、LINE公式アカウントを活用した予約・問診・決済・顧客管理システム「LHub」の開発・運営、医療・ヘルスケア分野におけるAIソリューションの企画開発に取り組んでいます。
+            </p>
+            <p>
+              テクノロジーを人の代替ではなく、人と人との信頼関係を深めるために活用することを重視しています。
+            </p>
+            <div class="profile-note mission-note">
+              <h3>テクノロジーで、<br>「信頼」を増やす。</h3>
+              <p>AIやデジタルツールは、人を置き換えるためだけのものではありません。</p>
+              <p>患者と医療機関、企業と顧客、人と人との間にある情報の行き違いや不安を減らし、より良い関係を築くために活用する。</p>
+              <p>それがHDNの考え方です。</p>
+            </div>
+            <div class="profile-note local-activity">
+              <h3>地域活動</h3>
+              <p>板橋区高島平地区における阿波踊りイベントの実行委員会に所属し、地域文化の継承と地域交流の活性化にも取り組んでいます。</p>
+            </div>
             <div class="company-overview">
               <h3>会社概要</h3>
               <dl class="company-list">
