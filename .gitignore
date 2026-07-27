@@ -7,3 +7,6 @@ node_modules/
 .env
 .env.*
 !.env.example
+
+# Generated versioned site archives are release artifacts, not source files.
+hdn-website-*.zip
