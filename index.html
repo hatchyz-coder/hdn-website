@@ -500,6 +500,41 @@
       border-top: 4px solid var(--red);
     }
 
+    .self-pay-intro {
+      margin-bottom: 20px;
+      padding: 28px 30px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 32px;
+      align-items: center;
+      border: 1px solid rgba(215, 53, 42, 0.22);
+      border-left: 5px solid var(--red);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 16px 38px rgba(88, 34, 29, 0.06);
+    }
+
+    .self-pay-intro h3 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.4;
+    }
+
+    .self-pay-intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .self-pay-intro p + p {
+      margin-top: 10px;
+    }
+
+    .self-pay-intro .hero-actions {
+      margin-top: 18px;
+    }
+
     .service-card ul,
     .check-list {
       padding: 0;
@@ -1225,6 +1260,7 @@
       .hero-inner,
       .section-head,
       .wide-band,
+      .self-pay-intro,
       .profile,
       .contact-inner {
         grid-template-columns: 1fr;
@@ -1301,6 +1337,7 @@
 
       .card,
       .step,
+      .self-pay-intro,
       .wide-band {
         padding: 20px;
       }
@@ -1490,10 +1527,20 @@
             HDNは、既存患者との関係性を起点に、LHub、自由診療、再診、物販、紹介の流れを整理し、スタッフが無理なく回せる運用まで整えます。
           </p>
         </div>
+        <article class="self-pay-intro">
+          <h3>オンライン診療だけではない、<br>自院に合った自費診療を設計します。</h3>
+          <div>
+            <p>HDNは、オンライン診療、来院型施術、検査・検査キット、物販・EC、継続支援プログラム、独自事業開発まで対応します。</p>
+            <p>診療科、患者層、設備、人員、予算に合わせて、企画、予約、問診、決済、LINE、集客、運用改善まで一貫して支援します。</p>
+            <div class="hero-actions">
+              <a class="button secondary" href="self-pay.html#models">6つの自費診療モデルを見る</a>
+            </div>
+          </div>
+        </article>
         <div class="service-grid">
           <article class="card service-card">
-            <h3>戦略設計</h3>
-            <p>保険診療を守りながら、無理なく始められる自費メニューを整理します。</p>
+            <h3>自費診療の事業設計</h3>
+            <p>院長の方針と診療体制を踏まえ、導入可能性と収益モデルを整理します。</p>
             <ul>
               <li>商圏・競合分析</li>
               <li>既存患者の傾向整理</li>
@@ -1501,7 +1548,7 @@
               <li>収益計画</li>
             </ul>
             <div class="hero-actions">
-              <a class="button secondary" href="self-pay.html">自費導入支援を見る</a>
+              <a class="button secondary" href="self-pay.html">自費診療導入支援を見る</a>
             </div>
           </article>
           <article class="card service-card">

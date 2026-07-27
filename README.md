@@ -89,3 +89,29 @@ Important rules:
 - Do not expose production notes or internal draft logic.
 - ROOTS may be used as a reference, but do not make ROOTS the public subject.
 - HDN's value is patient journey design, LHub, self-pay care, CRM, operations, and continuous website improvement.
+
+## Googleフォームへの追加推奨項目
+
+サイトの相談CTAは、既存のGoogleフォームへ接続しています。フォームを更新する際は、相談内容を把握しやすくするため、次の設問追加を推奨します。
+
+### 相談したい内容（複数選択）
+
+- 何を導入すべきか相談したい
+- オンライン診療を始めたい
+- 来院型の自費診療を始めたい
+- 検査・検査キットを販売したい
+- サプリメントや商品を販売したい
+- 継続支援プログラムを作りたい
+- 自院独自の商品・サービスを作りたい
+- LINE・予約・決済を整備したい
+- 集客を相談したい
+- 既存の自費診療を改善したい
+- その他
+
+### 現在の検討状況
+
+- 情報収集中
+- 導入内容を検討中
+- 導入したい内容は決まっている
+- すでに導入しているが改善したい
+- できるだけ早く開始したい
