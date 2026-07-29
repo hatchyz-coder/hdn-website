@@ -1,3 +1,4 @@
+# One-time site audit repair
 name: Site audit fixes
 
 on:
@@ -46,6 +47,7 @@ jobs:
               structured = {'@context':'https://schema.org','@type':'Service','@id':'https://hdnjapan.com/lhub.html#service','name':'LHub','url':'https://hdnjapan.com/lhub.html','description':'医療機関のLINE公式アカウントで予約、問診、決済案内、顧客管理、配信、リッチメニューをつなぐ患者CRM・運用支援サービスです。','serviceType':'医療機関向けLINE患者CRM・予約・問診・決済支援','areaServed':{'@type':'Country','name':'日本'},'provider':{'@type':'Organization','@id':'https://hdnjapan.com/#organization','name':'株式会社HDN','url':'https://hdnjapan.com/'}}
               block = marker + '''  <link rel="canonical" href="https://hdnjapan.com/lhub.html">\n  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com/lhub.html">\n  <link rel="alternate" hreflang="en" href="https://hdnjapan.com/en/lhub.html">\n  <link rel="alternate" hreflang="x-default" href="https://hdnjapan.com/lhub.html">\n  <meta property="og:type" content="website">\n  <meta property="og:locale" content="ja_JP">\n  <meta property="og:site_name" content="株式会社HDN">\n  <meta property="og:title" content="LHub | 医療機関のLINE患者CRM・予約・問診・決済基盤">\n  <meta property="og:description" content="LINE公式アカウント上で予約、問診、決済、顧客管理、配信をつなぎ、患者との継続的な接点を整えます。">\n  <meta property="og:url" content="https://hdnjapan.com/lhub.html">\n  <meta property="og:image" content="https://hdnjapan.com/assets/lhub-og.jpg">\n  <meta property="og:image:alt" content="医療機関向けLINE患者CRM LHub">\n  <meta name="twitter:card" content="summary_large_image">\n  <meta name="twitter:title" content="LHub | 医療機関のLINE患者CRM・予約・問診・決済基盤">\n  <meta name="twitter:description" content="LINEで予約、問診、決済、顧客管理、配信をつなぐ医療機関向け運用基盤です。">\n  <meta name="twitter:image" content="https://hdnjapan.com/assets/lhub-og.jpg">\n  <script type="application/ld+json">\n''' + json.dumps(structured, ensure_ascii=False, indent=2) + '''\n  </script>\n'''
               text = replace_once(text, marker, block, 'LHub metadata')
+          text = text.replace('rel="noopener"', 'rel="noopener noreferrer"')
           p.write_text(text, encoding='utf-8')
 
           p = Path('en/self-pay.html')
