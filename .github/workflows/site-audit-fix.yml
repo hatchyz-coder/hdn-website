@@ -1,0 +1,99 @@
+name: Site audit fixes
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/site-audit-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix-site:
+    if: ${{ !contains(github.event.head_commit.message, '[site-fix]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Apply site-wide fixes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          def replace_once(text, old, new, label):
+              if old not in text:
+                  raise SystemExit(f"Missing expected text for {label}")
+              return text.replace(old, new, 1)
+
+          p = Path('index.html')
+          text = p.read_text(encoding='utf-8')
+          if '<link rel="canonical" href="https://hdnjapan.com/">' not in text:
+              marker = '  <meta name="description" content="株式会社HDNは、医療機関の自費診療導入、患者CRM、LHub活用を支援します。院外処方を含む患者導線と、院内で無理なく続けられる運用を設計します。">\n'
+              block = marker + '''  <link rel="canonical" href="https://hdnjapan.com/">\n  <meta property="og:type" content="website">\n  <meta property="og:locale" content="ja_JP">\n  <meta property="og:site_name" content="株式会社HDN">\n  <meta property="og:title" content="株式会社HDN | クリニックの患者接点・自費診療・患者CRM支援">\n  <meta property="og:description" content="医療機関の自費診療導入、患者CRM、LHub活用を、企画から運用改善まで一貫して支援します。">\n  <meta property="og:url" content="https://hdnjapan.com/">\n  <meta property="og:image" content="https://hdnjapan.com/assets/hdn-og.jpg">\n  <meta property="og:image:alt" content="株式会社HDNの医療機関向け支援">\n  <meta name="twitter:card" content="summary_large_image">\n  <meta name="twitter:title" content="株式会社HDN | クリニックの患者接点・自費診療・患者CRM支援">\n  <meta name="twitter:description" content="自費診療導入、患者CRM、LHub活用を、企画から運用改善まで支援します。">\n  <meta name="twitter:image" content="https://hdnjapan.com/assets/hdn-og.jpg">\n'''
+              text = replace_once(text, marker, block, 'index metadata')
+          text = text.replace('href="https://hatchyz-coder.github.io/hdn-website/"', 'href="/"')
+          p.write_text(text, encoding='utf-8')
+
+          p = Path('lhub.html')
+          text = p.read_text(encoding='utf-8')
+          if '<link rel="canonical" href="https://hdnjapan.com/lhub.html">' not in text:
+              marker = '  <meta name="description" content="LHubは、医療機関のLINE公式アカウントで予約、問診、決済案内、顧客管理、配信、リッチメニューを扱いやすくする運用支援サービスです。">\n'
+              structured = {'@context':'https://schema.org','@type':'Service','@id':'https://hdnjapan.com/lhub.html#service','name':'LHub','url':'https://hdnjapan.com/lhub.html','description':'医療機関のLINE公式アカウントで予約、問診、決済案内、顧客管理、配信、リッチメニューをつなぐ患者CRM・運用支援サービスです。','serviceType':'医療機関向けLINE患者CRM・予約・問診・決済支援','areaServed':{'@type':'Country','name':'日本'},'provider':{'@type':'Organization','@id':'https://hdnjapan.com/#organization','name':'株式会社HDN','url':'https://hdnjapan.com/'}}
+              block = marker + '''  <link rel="canonical" href="https://hdnjapan.com/lhub.html">\n  <link rel="alternate" hreflang="ja" href="https://hdnjapan.com/lhub.html">\n  <link rel="alternate" hreflang="en" href="https://hdnjapan.com/en/lhub.html">\n  <link rel="alternate" hreflang="x-default" href="https://hdnjapan.com/lhub.html">\n  <meta property="og:type" content="website">\n  <meta property="og:locale" content="ja_JP">\n  <meta property="og:site_name" content="株式会社HDN">\n  <meta property="og:title" content="LHub | 医療機関のLINE患者CRM・予約・問診・決済基盤">\n  <meta property="og:description" content="LINE公式アカウント上で予約、問診、決済、顧客管理、配信をつなぎ、患者との継続的な接点を整えます。">\n  <meta property="og:url" content="https://hdnjapan.com/lhub.html">\n  <meta property="og:image" content="https://hdnjapan.com/assets/lhub-og.jpg">\n  <meta property="og:image:alt" content="医療機関向けLINE患者CRM LHub">\n  <meta name="twitter:card" content="summary_large_image">\n  <meta name="twitter:title" content="LHub | 医療機関のLINE患者CRM・予約・問診・決済基盤">\n  <meta name="twitter:description" content="LINEで予約、問診、決済、顧客管理、配信をつなぐ医療機関向け運用基盤です。">\n  <meta name="twitter:image" content="https://hdnjapan.com/assets/lhub-og.jpg">\n  <script type="application/ld+json">\n''' + json.dumps(structured, ensure_ascii=False, indent=2) + '''\n  </script>\n'''
+              text = replace_once(text, marker, block, 'LHub metadata')
+          p.write_text(text, encoding='utf-8')
+
+          p = Path('en/self-pay.html')
+          text = p.read_text(encoding='utf-8')
+          text = text.replace('Success fee: 10% of private-care gross profit</div></div></article><article class="plan"><div class="plan-head"><strong>FULL</strong>', 'Success fee: 15% of private-care gross profit</div></div></article><article class="plan"><div class="plan-head"><strong>FULL</strong>')
+          text = text.replace('Success fee: 5% of private-care gross profit', 'Success fee: 20% of private-care gross profit')
+          p.write_text(text, encoding='utf-8')
+
+          english_pages = [
+              ('en/index.html','HDN Inc. | Patient Journey Design and Healthcare Operations','HDN helps clinics and healthcare businesses design practical patient journeys across websites, LINE, appointments, questionnaires, payments, follow-up, and private care.','https://hdnjapan.com/en/','https://hdnjapan.com/assets/hdn-og.jpg'),
+              ('en/self-pay.html','Private Medical Services | HDN Inc.','HDN supports clinics in developing private medical services, from service design and pricing to patient communication, operations, promotion, and compliance review.','https://hdnjapan.com/en/self-pay.html','https://hdnjapan.com/assets/self-pay-og.jpg'),
+              ('en/lhub.html','LHub | LINE-Based Patient Engagement for Clinics','LHub helps clinics manage booking, questionnaires, payment guidance, patient segmentation, messaging, product sales, and follow-up through LINE.','https://hdnjapan.com/en/lhub.html','https://hdnjapan.com/assets/lhub-og.jpg')]
+          for filename, title, desc, url, image in english_pages:
+              p = Path(filename)
+              text = p.read_text(encoding='utf-8').replace('rel="noopener"','rel="noopener noreferrer"')
+              if 'property="og:title"' not in text:
+                  marker = f'  <link rel="canonical" href="{url}">\n'
+                  block = marker + f'''  <meta property="og:type" content="website">\n  <meta property="og:locale" content="en_US">\n  <meta property="og:site_name" content="HDN Inc.">\n  <meta property="og:title" content="{title}">\n  <meta property="og:description" content="{desc}">\n  <meta property="og:url" content="{url}">\n  <meta property="og:image" content="{image}">\n  <meta name="twitter:card" content="summary_large_image">\n  <meta name="twitter:title" content="{title}">\n  <meta name="twitter:description" content="{desc}">\n  <meta name="twitter:image" content="{image}">\n'''
+                  text = replace_once(text, marker, block, f'{filename} social metadata')
+              p.write_text(text, encoding='utf-8')
+
+          html_files = sorted(Path('.').glob('*.html')) + sorted(Path('en').glob('*.html'))
+          errors = []
+          for p in html_files:
+              text = p.read_text(encoding='utf-8')
+              for marker in ('<<<<<<<','=======','>>>>>>>'):
+                  if marker in text: errors.append(f'{p}: conflict marker {marker}')
+              if '<title>' not in text or 'name="description"' not in text: errors.append(f'{p}: missing title or description')
+              if 'href="https://hatchyz-coder.github.io/hdn-website/' in text: errors.append(f'{p}: GitHub Pages URL remains')
+          en_text = Path('en/self-pay.html').read_text(encoding='utf-8')
+          for expected in ('Success fee: 10%','Success fee: 15%','Success fee: 20%'):
+              if expected not in en_text: errors.append(f'en/self-pay.html: missing {expected}')
+          if errors: raise SystemExit('\n'.join(errors))
+          print(f'Validated {len(html_files)} HTML files successfully')
+          PY
+
+      - name: Run repository checks
+        run: |
+          bash scripts/build-pages.sh
+          bash scripts/verify-site.sh
+          git diff --check
+          ! grep -R --exclude-dir=.git --exclude-dir=_site '<<<<<<<' .
+          ! grep -R --exclude-dir=.git --exclude-dir=_site '>>>>>>>' .
+
+      - name: Commit fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html lhub.html en/index.html en/self-pay.html en/lhub.html
+          git commit -m "[site-fix] Fix site-wide links, metadata, and pricing"
+          git push origin HEAD:main
