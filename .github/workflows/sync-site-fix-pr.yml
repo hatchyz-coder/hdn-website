@@ -1,0 +1,25 @@
+name: Sync site fix PR
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.event.issue.pull_request && github.event.comment.body == '/sync-site-fixes'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/site-audit-20260729
+          fetch-depth: 0
+      - name: Merge main and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git merge --no-edit origin/main
+          git push origin HEAD:fix/site-audit-20260729
