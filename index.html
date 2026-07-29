@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>株式会社HDN | クリニックの患者接点・自由診療・LINE運用支援</title>
-  <meta name="description" content="株式会社HDNは、医療機関の患者基盤を活用し、自由診療導入、患者CRM、LHub活用、再診・物販・医科歯科連携、広告表現レビューを支援します。">
+  <title>株式会社HDN | クリニックの患者接点・自費診療・患者CRM支援</title>
+  <meta name="description" content="株式会社HDNは、医療機関の自費診療導入、患者CRM、LHub活用を支援します。院外処方を含む患者導線と、院内で無理なく続けられる運用を設計します。">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -562,6 +562,137 @@
       height: 7px;
       border-radius: 50%;
       background: var(--red);
+    }
+
+    .philosophy-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+      gap: 54px;
+      align-items: center;
+      padding: 46px;
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--red);
+      border-radius: 10px;
+      background: var(--white);
+      box-shadow: 0 18px 44px rgba(88, 34, 29, 0.07);
+    }
+
+    .philosophy-panel .section-title {
+      font-size: clamp(28px, 3.5vw, 40px);
+    }
+
+    .philosophy-copy p {
+      margin: 0;
+      color: #534747;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .philosophy-copy p + p {
+      margin-top: 12px;
+    }
+
+    .philosophy-close {
+      margin-top: 24px !important;
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+      color: var(--red-3) !important;
+      font-size: 18px !important;
+      font-weight: 900 !important;
+      line-height: 1.75;
+    }
+
+    .prescription-intro {
+      max-width: 810px;
+      margin: 0 0 30px;
+      color: #534747;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .prescription-intro p {
+      margin: 0;
+    }
+
+    .prescription-intro p + p {
+      margin-top: 10px;
+    }
+
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .benefit-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-height: 112px;
+      padding: 22px;
+      border: 1px solid rgba(215, 53, 42, 0.22);
+      border-radius: 8px;
+      background: var(--white);
+    }
+
+    .benefit-icon {
+      flex: 0 0 46px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--soft-2);
+      color: var(--red-2);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .benefit-card h3 {
+      margin: 0;
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .prescription-support {
+      margin: 28px 0 0;
+      padding: 20px 24px;
+      border-left: 4px solid var(--red);
+      background: var(--white);
+      color: var(--red-3);
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.75;
+    }
+
+    .prescription-note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .founder-message {
+      margin-top: 28px;
+      padding: 26px 28px;
+      border: 1px solid rgba(215, 53, 42, 0.2);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .founder-message h3 {
+      margin: 0 0 14px;
+      color: var(--red-3);
+      font-size: 21px;
+    }
+
+    .founder-message p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .founder-message p + p {
+      margin-top: 10px;
     }
 
     .wide-band {
@@ -1261,6 +1392,7 @@
       .section-head,
       .wide-band,
       .self-pay-intro,
+      .philosophy-panel,
       .profile,
       .contact-inner {
         grid-template-columns: 1fr;
@@ -1283,6 +1415,10 @@
 
       .flow {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .benefit-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1338,8 +1474,18 @@
       .card,
       .step,
       .self-pay-intro,
+      .philosophy-panel,
       .wide-band {
         padding: 20px;
+      }
+
+      .benefit-card {
+        min-height: 0;
+      }
+
+      .prescription-support {
+        padding: 18px;
+        font-size: 16px;
       }
 
       .profile {
@@ -1424,11 +1570,11 @@
         <a href="#services">サービス</a>
         <a href="self-pay.html">自費導入</a>
         <a href="lhub.html">LHub</a>
-        <a href="https://article.hdnjapan.com/" target="_blank" rel="noopener">記事・コラム</a>
+        <a href="https://article.hdnjapan.com/" target="_blank" rel="noopener noreferrer">記事・コラム</a>
         <a href="#cases">支援例</a>
         <a href="#pricing">料金目安</a>
         <a href="#profile">代表</a>
-        <a href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener" class="button">無料相談</a>
+        <a href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener noreferrer" class="button">無料相談</a>
       </nav>
     </div>
     <nav class="mobile-nav" aria-label="スマホ用主要ナビ">
@@ -1436,7 +1582,7 @@
         <a href="https://hatchyz-coder.github.io/hdn-website/" aria-current="page">トップ</a>
         <a href="self-pay.html">自費導入</a>
         <a href="lhub.html">LHub</a>
-        <a href="https://article.hdnjapan.com/" target="_blank" rel="noopener">記事</a>
+        <a href="https://article.hdnjapan.com/" target="_blank" rel="noopener noreferrer">記事</a>
       </div>
     </nav>
   </header>
@@ -1453,7 +1599,7 @@
             スタッフが無理なく運用できる流れとして設計します。
           </p>
           <div class="hero-actions">
-            <a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">患者基盤の活用を相談する</a>
+            <a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener noreferrer">患者基盤の活用を相談する</a>
             <a class="button secondary" href="#services">支援内容を見る</a>
           </div>
           <p class="hero-note">全国対応。オンライン相談可。保険診療クリニック、美容医療、歯科、医療業界へ参入する企業・投資会社まで相談可能です。</p>
@@ -1615,6 +1761,54 @@
             </ul>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="philosophy-panel">
+          <div>
+            <p class="eyebrow">HDN's Approach</p>
+            <h2 class="section-title">院長が診療に集中できる仕組みをつくりたい。</h2>
+          </div>
+          <div class="philosophy-copy">
+            <p>自費診療を始めたいと考えても、薬剤在庫、発送、患者対応、LINE、予約、決済、スタッフ教育まで、院長が一つずつ整えるのは簡単ではありません。</p>
+            <p>HDNが目指しているのは、単に新しい商品やシステムを導入することではありません。院長が本来の診療に集中しながら、患者に新しい選択肢を届けられる体制をつくることです。</p>
+            <p>そのために、自費診療の企画から、患者導線、LHub、問診、予約、決済、提携薬局との連携、導入後の改善まで伴走します。</p>
+            <p class="philosophy-close">「何を始めるか」だけでなく、<br>「どうすれば無理なく続けられるか」まで考える。<br>これがHDNの自費診療支援です。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" aria-labelledby="prescription-title">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Off-site Prescription</p>
+            <h2 id="prescription-title" class="section-title">在庫を抱えにくい<br>院外処方モデルにも対応</h2>
+          </div>
+          <div class="prescription-intro">
+            <p>処方箋に基づき、提携薬局が調剤・服薬指導・患者への配送を行う運用にも対応しています。</p>
+            <p>クリニックが院内に薬剤在庫を常時抱えずに、自費診療を始めやすい体制を設計できます。</p>
+          </div>
+        </div>
+        <div class="benefit-grid" aria-label="院外処方モデルの3つのメリット">
+          <article class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">1</span>
+            <h3>薬剤在庫を<br>抱えにくい</h3>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">2</span>
+            <h3>発送業務を院内で<br>行わなくてよい</h3>
+          </article>
+          <article class="benefit-card">
+            <span class="benefit-icon" aria-hidden="true">3</span>
+            <h3>スタッフの運用負担を<br>抑えやすい</h3>
+          </article>
+        </div>
+        <p class="prescription-support">薬剤を仕入れることではなく、<br>患者へ価値を届けることに集中できる体制づくりを支援します。</p>
+        <p class="prescription-note">※導入する薬剤や診療内容、提携薬局の対応体制に応じて運用を設計します。</p>
       </div>
     </section>
 
@@ -1869,6 +2063,11 @@
             <p>
               テクノロジーを人の代替ではなく、人と人との信頼関係を深めるために活用することを重視しています。
             </p>
+            <div class="founder-message">
+              <h3>羽田野剛士からのメッセージ</h3>
+              <p>自費診療は、保険診療を否定するものではありません。既存の診療を大切にしながら、患者に新しい選択肢を届け、クリニック経営を持続可能にするための手段だと考えています。</p>
+              <p>ただし、院長やスタッフへ過剰な負担をかけては続きません。HDNは、売るためだけの仕組みではなく、患者にとって意味があり、院内で無理なく続けられる仕組みをつくります。</p>
+            </div>
             <div class="profile-note mission-note">
               <h3>テクノロジーで、<br>「信頼」を増やす。</h3>
               <p>AIやデジタルツールは、人を置き換えるためだけのものではありません。</p>
@@ -1937,7 +2136,7 @@
           <h2>まずは、今の導線を一緒に確認しましょう。</h2>
           <p>LP、患者接点、問診、予約、決済、広告表現のどこで患者が止まっているかを整理します。</p>
         </div>
-        <a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener">無料相談・導線診断を申し込む</a>
+        <a class="button" href="https://forms.gle/148jgfSnDgDZ2HsEA" target="_blank" rel="noopener noreferrer">無料相談・導線診断を申し込む</a>
       </div>
       <div class="contact-promise">
         <h3>まずは、今のHP・LINE・予約・決済の流れを一緒に棚卸しします。</h3>
