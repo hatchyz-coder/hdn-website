@@ -5,6 +5,9 @@ required_files="
 index.html
 self-pay.html
 lhub.html
+lhub-lp.html
+medical-sns.html
+tsuyoshi-hadano.html
 consultation.html
 assets/hdn-logo.png
 assets/hadano-profile.jpg
@@ -13,6 +16,9 @@ assets/illustration-lhub-crm.jpg
 assets/illustration-consultation.jpg
 assets/self-pay.css
 assets/self-pay-og.jpg
+assets/medical-sns.css
+assets/site-shell.css
+assets/site-shell.js
 "
 
 for file in $required_files; do
@@ -54,5 +60,12 @@ grep -q 'LIGHT' index.html
 grep -q 'STANDARD' index.html
 grep -q 'FULL' index.html
 grep -q 'id="profile"' index.html
+
+grep -q '<link rel="canonical" href="https://hdnjapan.com/medical-sns.html">' medical-sns.html
+grep -q 'SNS・動画戦略' medical-sns.html
+grep -q '医療SNS・YouTube戦略' tsuyoshi-hadano.html
+grep -q 'medical-sns.html' tsuyoshi-hadano.html
+grep -q "medical-sns.html" assets/site-shell.js
+grep -q "SNS・動画戦略" assets/site-shell.js
 
 echo "Site verification passed."
