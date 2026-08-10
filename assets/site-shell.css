@@ -64,6 +64,19 @@
     display: none !important;
   }
 
+  /* Shared mobile navigation: tolerate the SNS link plus language switch without overflow. */
+  .mobile-nav-inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .mobile-nav a {
+    min-width: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+
   .mobile-language-switch {
     display: inline-flex;
     align-items: center;
@@ -88,6 +101,12 @@
 
   .mobile-language-switch .is-current {
     color: #c92d24;
+  }
+}
+
+@media (max-width: 520px) {
+  .mobile-nav-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
