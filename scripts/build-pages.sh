@@ -7,6 +7,9 @@ mkdir -p _site
 cp index.html _site/
 cp self-pay.html _site/
 cp lhub.html _site/
+cp lhub-lp.html _site/
+cp medical-sns.html _site/
+cp tsuyoshi-hadano.html _site/
 cp consultation.html _site/
 cp -R assets _site/assets
 if [ -d en ]; then
@@ -113,6 +116,9 @@ required = [
     Path("_site/index.html"),
     Path("_site/self-pay.html"),
     Path("_site/lhub.html"),
+    Path("_site/lhub-lp.html"),
+    Path("_site/medical-sns.html"),
+    Path("_site/tsuyoshi-hadano.html"),
     Path("_site/en/index.html"),
     Path("_site/en/self-pay.html"),
     Path("_site/en/lhub.html"),
@@ -128,6 +134,17 @@ for path in (Path('_site/en/index.html'), Path('_site/en/self-pay.html'), Path('
     for label in ('Home', 'Private Care', 'LHub'):
         if f'>{label}<' not in html:
             raise SystemExit(f'Missing English navigation label {label}: {path}')
+
+# Validate that the shared Japanese shell can expose the SNS strategy service on the main routed pages.
+for path in (Path('_site/index.html'), Path('_site/self-pay.html'), Path('_site/lhub.html')):
+    html = path.read_text(encoding='utf-8')
+    if 'assets/site-shell.js' not in html or 'assets/site-shell.css' not in html:
+        raise SystemExit(f'Shared site shell is missing: {path}')
+
+for path in (Path('_site/medical-sns.html'), Path('_site/tsuyoshi-hadano.html')):
+    html = path.read_text(encoding='utf-8')
+    if 'medical-sns.html' not in html:
+        raise SystemExit(f'Medical SNS navigation is missing: {path}')
 PY
 
 touch _site/.nojekyll
