@@ -112,6 +112,45 @@ for filename, (ja_url, en_url, current_lang) in page_pairs.items():
     html = html.replace('</body>', switch + '\n</body>', 1)
     path.write_text(html, encoding="utf-8")
 
+# Apply one shared editorial visual language to every production HTML page.
+# Existing page CSS remains the structural base; this stylesheet is loaded last
+# to remove generic SaaS/AI patterns without rewriting page content or metadata.
+editorial_classes = {
+    "index.html": "page-home",
+    "self-pay.html": "page-self-pay",
+    "lhub.html": "page-lhub",
+    "lhub-lp.html": "page-lhub-lp",
+    "medical-sns.html": "page-medical-sns",
+    "tsuyoshi-hadano.html": "page-profile",
+    "consultation.html": "page-consultation",
+    "en/index.html": "page-en-home",
+    "en/self-pay.html": "page-en-self-pay",
+    "en/lhub.html": "page-en-lhub",
+}
+
+for filename, body_class in editorial_classes.items():
+    path = Path("_site") / filename
+    if not path.exists():
+        continue
+    html = path.read_text(encoding="utf-8")
+
+    body_match = re.search(r'<body(?:\s+class="([^"]*)")?([^>]*)>', html)
+    if not body_match:
+        raise SystemExit(f"Missing body element: {path}")
+    existing = (body_match.group(1) or '').split()
+    if body_class not in existing:
+        existing.append(body_class)
+    classes = ' '.join(filter(None, existing))
+    replacement = f'<body class="{classes}"{body_match.group(2)}>'
+    html = html[:body_match.start()] + replacement + html[body_match.end():]
+
+    prefix = '../' if filename.startswith('en/') else ''
+    editorial_link = f'<link rel="stylesheet" href="{prefix}assets/editorial.css">'
+    if editorial_link not in html:
+        html = html.replace('</head>', f'  {editorial_link}\n</head>', 1)
+
+    path.write_text(html, encoding="utf-8")
+
 required = [
     Path("_site/index.html"),
     Path("_site/self-pay.html"),
@@ -145,6 +184,14 @@ for path in (Path('_site/medical-sns.html'), Path('_site/tsuyoshi-hadano.html'))
     html = path.read_text(encoding='utf-8')
     if 'medical-sns.html' not in html:
         raise SystemExit(f'Medical SNS navigation is missing: {path}')
+
+# Every production page must carry the editorial layer. This keeps the design
+# system from silently regressing when a page is rebuilt later.
+for filename in editorial_classes:
+    path = Path('_site') / filename
+    html = path.read_text(encoding='utf-8')
+    if 'assets/editorial.css' not in html:
+        raise SystemExit(f'Editorial design layer is missing: {path}')
 PY
 
 touch _site/.nojekyll
