@@ -79,6 +79,18 @@ def replace_lhub_placeholders() -> None:
     if placeholder in html:
         html = html.replace(placeholder, demo_evidence, 1)
 
+    style = '''<style id="product-evidence-style">
+    .product-evidence{margin:0;border:1px solid #d9d3cb;background:#fff;overflow:hidden;box-shadow:none}
+    .product-evidence img{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#f7f5f1}
+    .product-evidence figcaption{display:grid;gap:3px;margin:0;padding:12px 14px;border-top:1px solid #d9d3cb;background:#fff;color:#6d6660;font-size:12px;line-height:1.6}
+    .product-evidence figcaption strong{color:#24211f;font-size:13px}
+    .lhub-evidence{align-self:center}
+    .demo-evidence img{max-height:390px}
+    @media(max-width:640px){.product-evidence img{max-height:360px}.demo-evidence img{max-height:300px}}
+  </style>'''
+    if 'id="product-evidence-style"' not in html:
+        html = html.replace('</head>', style + '\n</head>', 1)
+
     path.write_text(html, encoding='utf-8')
 
 
@@ -101,6 +113,8 @@ def verify_no_fake_product_visuals() -> None:
         raise SystemExit('LHub product evidence blocks are missing')
     if html.count('assets/lhub-line-commerce.png') < 2:
         raise SystemExit('Real LHub screen evidence is not present in both key locations')
+    if 'デモ動画掲載予定' in html:
+        raise SystemExit('Unfinished demo placeholder copy remains')
 
 
 if __name__ == '__main__':
