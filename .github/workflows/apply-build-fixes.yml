@@ -36,6 +36,33 @@ jobs:
       - name: Build generated site
         run: bash scripts/build-pages.sh
 
+      - name: Replace synthetic visuals with real HDN assets
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path('_site/index.html'): [
+                  ('assets/illustration-medical-meeting.png', 'assets/hadano-profile.jpg'),
+                  ('alt="医療機関の患者接点を整理するイメージ"', 'alt="株式会社HDN代表 羽田野剛士"'),
+                  ('assets/illustration-consulting-board.png', 'assets/lhub-line-commerce.png'),
+                  ('alt="LHubで患者CRMを運用する画面イメージ"', 'alt="LHubのLINE患者導線・運用画面"'),
+              ],
+              Path('_site/consultation.html'): [
+                  ('assets/illustration-consulting-board.png', 'assets/hadano-profile.jpg'),
+                  ('alt="医療機関の患者導線を診断する相談イメージ"', 'alt="株式会社HDN代表 羽田野剛士"'),
+              ],
+          }
+
+          for path, pairs in replacements.items():
+              html = path.read_text(encoding='utf-8')
+              for old, new in pairs:
+                  if old not in html:
+                      raise SystemExit(f'Missing expected visual reference in {path}: {old}')
+                  html = html.replace(old, new, 1)
+              path.write_text(html, encoding='utf-8')
+          PY
+
       - name: Write generated pages back to published branch root
         run: |
           cp _site/index.html index.html
@@ -69,6 +96,12 @@ jobs:
           grep -q 'href="/self-pay.html"' en/self-pay.html
           grep -q 'href="/lhub.html"' en/lhub.html
           grep -q 'HDN editorial design layer' assets/editorial.css
+          grep -q 'assets/hadano-profile.jpg' index.html
+          grep -q 'assets/lhub-line-commerce.png' index.html
+          grep -q 'assets/hadano-profile.jpg' consultation.html
+          ! grep -q 'assets/illustration-medical-meeting.png' index.html
+          ! grep -q 'assets/illustration-consulting-board.png' index.html
+          ! grep -q 'assets/illustration-consulting-board.png' consultation.html
 
       - name: Verify public site source
         run: bash scripts/verify-site.sh
@@ -82,5 +115,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html
-          git commit -m "Apply editorial site design [generated-site]"
+          git commit -m "Replace synthetic visuals with real assets [generated-site]"
           git push
