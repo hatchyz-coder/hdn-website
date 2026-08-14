@@ -9,9 +9,13 @@ on:
       - scripts/build-pages.sh
       - assets/site-shell.css
       - assets/site-shell.js
+      - assets/editorial.css
       - index.html
       - self-pay.html
       - lhub.html
+      - lhub-lp.html
+      - medical-sns.html
+      - tsuyoshi-hadano.html
       - consultation.html
       - en/**
       - .github/workflows/apply-build-fixes.yml
@@ -21,6 +25,7 @@ permissions:
 
 jobs:
   apply:
+    if: ${{ !contains(github.event.head_commit.message, '[generated-site]') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,27 +41,37 @@ jobs:
           cp _site/index.html index.html
           cp _site/self-pay.html self-pay.html
           cp _site/lhub.html lhub.html
+          cp _site/lhub-lp.html lhub-lp.html
+          cp _site/medical-sns.html medical-sns.html
+          cp _site/tsuyoshi-hadano.html tsuyoshi-hadano.html
           cp _site/consultation.html consultation.html
           mkdir -p en
           cp _site/en/index.html en/index.html
           cp _site/en/self-pay.html en/self-pay.html
           cp _site/en/lhub.html en/lhub.html
 
-      - name: Verify shared shell and language links
+      - name: Verify shared shell, editorial layer and language links
         run: |
+          for page in index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html; do
+            grep -q 'editorial.css' "$page"
+          done
+
           for page in index.html self-pay.html lhub.html en/index.html en/self-pay.html en/lhub.html; do
             grep -q 'site-shell.css' "$page"
             grep -q 'site-shell.js' "$page"
             grep -q 'class="language-switch"' "$page"
           done
+
           grep -q 'href="/en/"' index.html
           grep -q 'href="/en/self-pay.html"' self-pay.html
           grep -q 'href="/en/lhub.html"' lhub.html
           grep -q 'href="/"' en/index.html
           grep -q 'href="/self-pay.html"' en/self-pay.html
           grep -q 'href="/lhub.html"' en/lhub.html
-          grep -q 'background: #ffffff !important' lhub.html
-          grep -q 'color: #075d42 !important' lhub.html
+          grep -q 'HDN editorial design layer' assets/editorial.css
+
+      - name: Verify public site source
+        run: bash scripts/verify-site.sh
 
       - name: Commit generated pages
         run: |
@@ -66,6 +81,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html self-pay.html lhub.html consultation.html en/index.html en/self-pay.html en/lhub.html
-          git commit -m "Apply shared header and CTA fixes [skip ci]"
+          git add index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html
+          git commit -m "Apply editorial site design [generated-site]"
           git push

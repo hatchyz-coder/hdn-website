@@ -1,0 +1,461 @@
+/* HDN editorial design layer
+   Purpose: remove generic AI/SaaS visual patterns while preserving existing structure, SEO and content.
+   Loaded last by scripts/build-pages.sh so page-specific layout can remain intact underneath. */
+
+:root {
+  --hdn-paper: #f7f5f1;
+  --hdn-paper-2: #f1eee8;
+  --hdn-ink: #24211f;
+  --hdn-muted: #6d6660;
+  --hdn-rule: #d9d3cb;
+  --hdn-red: #cf3028;
+  --hdn-red-dark: #8f201b;
+  --hdn-navy: #10253f;
+  --hdn-green: #0d815b;
+}
+
+html { background: var(--hdn-paper); }
+
+body {
+  background: var(--hdn-paper) !important;
+  color: var(--hdn-ink);
+  text-rendering: optimizeLegibility;
+}
+
+/* A real company site should feel edited, not assembled from floating UI cards. */
+.site-header,
+.header {
+  background: rgba(247,245,241,.97) !important;
+  border-bottom: 1px solid var(--hdn-rule) !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.header-inner,
+.site-header .header-inner {
+  min-height: 68px !important;
+}
+
+.nav,
+.site-header .nav,
+.header .nav {
+  gap: 18px !important;
+  font-weight: 700 !important;
+}
+
+.nav a:not(.button),
+.site-header .nav a:not(.button),
+.header .nav a:not(.button) {
+  position: relative;
+}
+
+.nav a:not(.button)::after,
+.site-header .nav a:not(.button)::after,
+.header .nav a:not(.button)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -7px;
+  height: 1px;
+  background: currentColor;
+  transition: right .16s ease;
+}
+
+.nav a:not(.button):hover::after,
+.site-header .nav a:not(.button):hover::after,
+.header .nav a:not(.button):hover::after {
+  right: 0;
+}
+
+.button,
+a.button,
+.btn,
+a.btn,
+.cta-button,
+a.cta-button {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  transform: none !important;
+  font-weight: 800 !important;
+  letter-spacing: .01em;
+}
+
+.button:hover,
+a.button:hover,
+.btn:hover,
+a.btn:hover,
+.cta-button:hover,
+a.cta-button:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  filter: brightness(.94);
+}
+
+.button.secondary,
+.btn.secondary,
+.secondary.button {
+  background: transparent !important;
+}
+
+/* Remove the default AI-landing-page hero treatment. */
+.hero {
+  border-bottom: 1px solid var(--hdn-rule) !important;
+  box-shadow: none !important;
+}
+
+body.page-home .hero,
+body.page-self-pay .hero,
+body.page-consultation .hero,
+body.page-medical-sns .hero,
+body.page-profile .hero,
+body.page-lhub-lp .hero {
+  background: var(--hdn-paper) !important;
+  color: var(--hdn-ink) !important;
+}
+
+body.page-lhub .hero,
+body.page-en-lhub .hero {
+  background: var(--hdn-navy) !important;
+  color: #fff !important;
+}
+
+.hero-inner {
+  min-height: auto !important;
+  padding-top: clamp(64px, 8vw, 108px) !important;
+  padding-bottom: clamp(60px, 8vw, 100px) !important;
+  gap: clamp(34px, 6vw, 74px) !important;
+}
+
+.hero h1,
+.hero-title,
+.page-hero h1 {
+  max-width: 860px !important;
+  font-size: clamp(36px, 5.2vw, 64px) !important;
+  line-height: 1.14 !important;
+  letter-spacing: -.025em !important;
+  font-weight: 800 !important;
+}
+
+.hero .lead,
+.hero p.lead,
+.hero-copy,
+.page-hero p {
+  max-width: 700px !important;
+  font-size: clamp(16px, 1.8vw, 19px) !important;
+  line-height: 1.9 !important;
+  font-weight: 500 !important;
+}
+
+.eyebrow,
+.kicker,
+.overline,
+.section-label,
+.en-label {
+  letter-spacing: .02em !important;
+  text-transform: none !important;
+}
+
+.eyebrow::before,
+.kicker::before,
+.overline::before {
+  width: 18px !important;
+  height: 1px !important;
+}
+
+/* Prefer editorial rules and whitespace over bubbles. */
+section,
+.section {
+  box-shadow: none !important;
+}
+
+section + section {
+  border-top-color: var(--hdn-rule);
+}
+
+.section-head,
+.section-header {
+  align-items: start !important;
+}
+
+.section-head h2,
+.section-header h2,
+section > .container > h2,
+h2.section-title {
+  letter-spacing: -.015em !important;
+}
+
+.card,
+.feature-card,
+.service-card,
+.support-card,
+.problem-card,
+.case-card,
+.price-card,
+.pricing-card,
+.plan,
+.metric-card,
+.flow-card,
+.step-card,
+.info-card,
+.summary-card,
+.hero-card,
+.hero-panel,
+.lhub-brand-card,
+.contact-card,
+.profile-card,
+.panel,
+.box {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+.card,
+.feature-card,
+.service-card,
+.support-card,
+.problem-card,
+.case-card,
+.price-card,
+.pricing-card,
+.plan,
+.metric-card,
+.flow-card,
+.step-card,
+.info-card,
+.summary-card,
+.contact-card,
+.profile-card,
+.panel,
+.box {
+  border-color: var(--hdn-rule) !important;
+}
+
+/* Cards that are only wrappers should visually merge into the page. */
+.grid-3 > .card,
+.grid-4 > .card,
+.cards > .card,
+.service-grid > .card,
+.feature-grid > .card {
+  background: transparent !important;
+}
+
+.grid-3 > .card,
+.grid-4 > .card,
+.cards > .card {
+  border-width: 1px 0 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Break the machine-perfect rhythm: left align and use rules instead of equal tiles. */
+.grid-3,
+.grid-4,
+.cards,
+.feature-grid,
+.service-grid,
+.support-grid {
+  align-items: start !important;
+}
+
+.grid-3 > :nth-child(even),
+.grid-4 > :nth-child(even),
+.cards > :nth-child(even) {
+  transform: translateY(10px);
+}
+
+/* Pricing remains comparable but should read like a business proposal, not a SaaS template. */
+#pricing .pricing-grid,
+.pricing-grid {
+  gap: 0 !important;
+  border-top: 1px solid var(--hdn-rule);
+  border-bottom: 1px solid var(--hdn-rule);
+}
+
+#pricing .pricing-card,
+.pricing-grid .pricing-card,
+.pricing-grid .plan {
+  border: 0 !important;
+  border-right: 1px solid var(--hdn-rule) !important;
+  background: transparent !important;
+}
+
+#pricing .pricing-card:last-child,
+.pricing-grid .pricing-card:last-child,
+.pricing-grid .plan:last-child {
+  border-right: 0 !important;
+}
+
+#pricing .pricing-card .plan-head,
+.pricing-grid .plan-head {
+  background: transparent !important;
+  border-bottom: 1px solid var(--hdn-rule) !important;
+}
+
+#pricing .success-fee,
+#pricing .fee-cap,
+#pricing .note {
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+/* Photos and screenshots should feel like evidence, not decorative AI illustration cards. */
+img {
+  border-radius: 0;
+}
+
+.hero img,
+.visual img,
+.media img,
+.profile-photo img,
+.figure img,
+.screenshot img {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+figure,
+.figure,
+.visual,
+.media,
+.screenshot {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+figure figcaption,
+.caption {
+  color: var(--hdn-muted) !important;
+  font-size: 12px !important;
+  border-top: 1px solid var(--hdn-rule);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+/* Tables and operational diagrams: print-like clarity. */
+table {
+  border-collapse: collapse !important;
+  background: transparent !important;
+}
+
+th,
+td {
+  border-color: var(--hdn-rule) !important;
+  border-radius: 0 !important;
+}
+
+th {
+  background: var(--hdn-paper-2) !important;
+}
+
+/* Quotes, notes and warnings should resemble editorial annotations. */
+.note,
+.notice,
+.callout,
+.annotation,
+.quote,
+blockquote {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+blockquote {
+  margin-left: 0;
+  border-left: 3px solid var(--hdn-red);
+  padding: 10px 0 10px 22px;
+  background: transparent !important;
+}
+
+/* Human authorship and profile sections get stronger visual priority. */
+body.page-profile .hero-inner,
+body.page-home .profile-section .container,
+.author,
+.profile {
+  align-items: start !important;
+}
+
+body.page-profile img[src*="hadano-profile"],
+img[src*="hadano-profile"] {
+  object-fit: cover;
+  border: 1px solid var(--hdn-rule);
+}
+
+/* LHub keeps its own product identity, but loses glassmorphism and floating-card styling. */
+body.page-lhub .lhub-brand-card,
+body.page-en-lhub .lhub-brand-card {
+  box-shadow: none !important;
+  border-radius: 2px !important;
+}
+
+body.page-lhub .card,
+body.page-en-lhub .card,
+body.page-lhub .feature-card,
+body.page-en-lhub .feature-card {
+  box-shadow: none !important;
+}
+
+/* Consultation should feel like a direct business conversation. */
+body.page-consultation .hero,
+body.page-consultation .contact,
+body.page-consultation .consultation {
+  background-image: none !important;
+}
+
+body.page-consultation form,
+body.page-consultation .form,
+body.page-consultation .contact-card {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* English pages use the same editorial language, not a separate generic template. */
+body.page-en-home,
+body.page-en-self-pay,
+body.page-en-lhub {
+  background: var(--hdn-paper) !important;
+}
+
+/* Mobile: remove the dashboard-tile feeling from navigation and cards. */
+@media (max-width: 900px) {
+  .mobile-nav,
+  .mobile-nav-inner {
+    background: var(--hdn-paper) !important;
+  }
+
+  .mobile-nav a,
+  .mobile-language-switch {
+    border-radius: 1px !important;
+    background: transparent !important;
+  }
+
+  .hero-inner {
+    padding-top: 52px !important;
+    padding-bottom: 56px !important;
+  }
+
+  .grid-3 > :nth-child(even),
+  .grid-4 > :nth-child(even),
+  .cards > :nth-child(even) {
+    transform: none;
+  }
+
+  #pricing .pricing-grid,
+  .pricing-grid {
+    border: 0;
+  }
+
+  #pricing .pricing-card,
+  .pricing-grid .pricing-card,
+  .pricing-grid .plan {
+    border-right: 0 !important;
+    border-top: 1px solid var(--hdn-rule) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

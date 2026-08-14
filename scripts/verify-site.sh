@@ -18,6 +18,7 @@ assets/self-pay.css
 assets/self-pay-og.jpg
 assets/medical-sns.css
 assets/site-shell.css
+assets/editorial.css
 assets/site-shell.js
 "
 
@@ -67,5 +68,7 @@ grep -q '医療SNS・YouTube戦略' tsuyoshi-hadano.html
 grep -q 'medical-sns.html' tsuyoshi-hadano.html
 grep -q "medical-sns.html" assets/site-shell.js
 grep -q "SNS・動画戦略" assets/site-shell.js
+
+grep -q 'HDN editorial design layer' assets/editorial.css
 
 echo "Site verification passed."
