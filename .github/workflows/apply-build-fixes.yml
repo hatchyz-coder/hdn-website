@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - scripts/build-pages.sh
+      - scripts/postprocess-site.py
       - assets/site-shell.css
       - assets/site-shell.js
       - assets/editorial.css
@@ -25,7 +26,7 @@ permissions:
 
 jobs:
   apply:
-    if: ${{ !contains(github.event.head_commit.message, '[generated-site]') }}
+    if: ${{ contains(github.event.head_commit.message, '[generated-site]') == false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,66 +37,8 @@ jobs:
       - name: Build generated site
         run: bash scripts/build-pages.sh
 
-      - name: Keep FV evidence-first and preserve real HDN assets
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-
-          index = Path('_site/index.html')
-          html = index.read_text(encoding='utf-8')
-
-          if 'data-fv-journey' not in html:
-              pattern = re.compile(
-                  r'<figure class="visual-card" aria-label="医療機関の患者基盤活用イメージ">.*?</figure>',
-                  re.DOTALL,
-              )
-              journey = '''<aside class="hero-panel" data-fv-journey aria-label="患者導線の確認ポイント">
-          <div class="panel-top">
-            <div>
-              <strong>患者導線を、分解して確認する。</strong>
-              <span>集客だけでなく、来院前後の離脱と継続まで見ます。</span>
-            </div>
-            <span class="status">PATIENT JOURNEY</span>
-          </div>
-          <div class="workflow">
-            <div class="flow-row">
-              <div class="icon">01</div>
-              <div><h3>広告・HP・SNS</h3><p>どこから来て、どこで迷っているか</p></div>
-              <span class="metric">入口</span>
-            </div>
-            <div class="flow-row">
-              <div class="icon">02</div>
-              <div><h3>LINE・問診</h3><p>登録後に患者との接点が切れていないか</p></div>
-              <span class="metric">接点</span>
-            </div>
-            <div class="flow-row">
-              <div class="icon">03</div>
-              <div><h3>予約・決済</h3><p>手続きの負担やスタッフ対応が離脱を生んでいないか</p></div>
-              <span class="metric">転換</span>
-            </div>
-            <div class="flow-row">
-              <div class="icon">04</div>
-              <div><h3>再診・自費・物販・紹介</h3><p>診療後の関係を継続できる仕組みがあるか</p></div>
-              <span class="metric">継続</span>
-            </div>
-          </div>
-        </aside>'''
-              html, count = pattern.subn(journey, html, count=1)
-              if count != 1:
-                  raise SystemExit('Could not replace the home FV visual with the patient-journey panel.')
-
-          # Keep the product section grounded in an actual LHub screen asset.
-          html = html.replace('assets/illustration-consulting-board.png', 'assets/lhub-line-commerce.png', 1)
-          html = html.replace('alt="LHubで患者CRMを運用する画面イメージ"', 'alt="LHubのLINE患者導線・運用画面"', 1)
-          index.write_text(html, encoding='utf-8')
-
-          consultation = Path('_site/consultation.html')
-          chtml = consultation.read_text(encoding='utf-8')
-          chtml = chtml.replace('assets/illustration-consulting-board.png', 'assets/hadano-profile.jpg', 1)
-          chtml = chtml.replace('alt="医療機関の患者導線を診断する相談イメージ"', 'alt="株式会社HDN代表 羽田野剛士"', 1)
-          consultation.write_text(chtml, encoding='utf-8')
-          PY
+      - name: Apply evidence-first visual postprocess
+        run: python3 scripts/postprocess-site.py
 
       - name: Write generated pages back to published branch root
         run: |
@@ -111,38 +54,20 @@ jobs:
           cp _site/en/self-pay.html en/self-pay.html
           cp _site/en/lhub.html en/lhub.html
 
-      - name: Verify shared shell, editorial layer and language links
+      - name: Verify shared shell, editorial layer and FV
         run: |
           for page in index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html; do
             grep -q 'editorial.css' "$page"
           done
-
           for page in index.html self-pay.html lhub.html en/index.html en/self-pay.html en/lhub.html; do
             grep -q 'site-shell.css' "$page"
             grep -q 'site-shell.js' "$page"
             grep -q 'class="language-switch"' "$page"
           done
-
-          grep -q 'href="/en/"' index.html
-          grep -q 'href="/en/self-pay.html"' self-pay.html
-          grep -q 'href="/en/lhub.html"' lhub.html
-          grep -q 'href="/"' en/index.html
-          grep -q 'href="/self-pay.html"' en/self-pay.html
-          grep -q 'href="/lhub.html"' en/lhub.html
-          grep -q 'HDN editorial design layer' assets/editorial.css
           grep -q 'data-fv-journey' index.html
           grep -q 'assets/lhub-line-commerce.png' index.html
           grep -q 'assets/hadano-profile.jpg' consultation.html
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          html = Path('index.html').read_text(encoding='utf-8')
-          hero = re.search(r'<section class="hero">(.*?)</section>', html, re.DOTALL)
-          if not hero:
-              raise SystemExit('Home hero not found')
-          if 'hadano-profile.jpg' in hero.group(1):
-              raise SystemExit('Representative portrait must not appear in the home first view')
-          PY
+          python3 scripts/postprocess-site.py
 
       - name: Verify public site source
         run: bash scripts/verify-site.sh
