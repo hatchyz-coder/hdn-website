@@ -51,6 +51,51 @@ def replace_home_fv() -> None:
     index.write_text(html, encoding='utf-8')
 
 
+def add_home_deliverables() -> None:
+    path = Path('_site/index.html')
+    html = path.read_text(encoding='utf-8')
+    if 'data-deliverables' in html:
+        return
+
+    anchor = '<section id="services" class="section alt">'
+    if anchor not in html:
+        raise SystemExit('Could not find services section for deliverables insertion')
+
+    section = '''<section class="section deliverables-section" data-deliverables aria-labelledby="deliverables-title">
+      <div class="container">
+        <div class="deliverables-head">
+          <div>
+            <p class="eyebrow">Working Documents</p>
+            <h2 class="section-title" id="deliverables-title">支援で実際に整理するもの。</h2>
+          </div>
+          <p class="section-copy">きれいな提案書だけではなく、院内でそのまま使える導線・手順・確認項目まで落とし込みます。</p>
+        </div>
+        <div class="deliverables-list">
+          <article><span>01</span><div><h3>患者導線図</h3><p>広告・HP・SNSからLINE、問診、予約、決済、診療後フォローまでを一枚の流れに整理します。</p></div></article>
+          <article><span>02</span><div><h3>LINE・予約・問診・決済フロー</h3><p>患者が次に何をするか、スタッフがどこで対応するかを実運用に合わせて定義します。</p></div></article>
+          <article><span>03</span><div><h3>院内運用ルール・スタッフ手順</h3><p>誰が、いつ、何を確認するか。属人化しやすい対応を日々回せる手順へ落とします。</p></div></article>
+          <article><span>04</span><div><h3>計測項目・改善リスト</h3><p>登録、問診、予約、決済など、どこで患者が止まっているかを確認する指標と改善候補を整理します。</p></div></article>
+        </div>
+      </div>
+    </section>\n\n    '''
+    html = html.replace(anchor, section + anchor, 1)
+
+    style = '''<style id="deliverables-style">
+    .deliverables-section{background:#f7f5f1!important}
+    .deliverables-head{display:grid;grid-template-columns:minmax(0,.8fr) minmax(280px,.55fr);gap:44px;align-items:start;margin-bottom:30px}
+    .deliverables-list{border-top:1px solid #d9d3cb}
+    .deliverables-list article{display:grid;grid-template-columns:52px minmax(0,1fr);gap:18px;padding:22px 0;border-bottom:1px solid #d9d3cb}
+    .deliverables-list article>span{font-size:12px;font-weight:800;color:#a82019;letter-spacing:.06em;padding-top:4px}
+    .deliverables-list h3{margin:0;font-size:19px;line-height:1.45}
+    .deliverables-list p{max-width:760px;margin:7px 0 0;color:#6d6660;font-size:14px;line-height:1.8}
+    @media(max-width:760px){.deliverables-head{grid-template-columns:1fr;gap:16px}.deliverables-list article{grid-template-columns:38px 1fr;gap:10px}}
+  </style>'''
+    if 'id="deliverables-style"' not in html:
+        html = html.replace('</head>', style + '\n</head>', 1)
+
+    path.write_text(html, encoding='utf-8')
+
+
 def preserve_consultation_real_photo() -> None:
     consultation = Path('_site/consultation.html')
     html = consultation.read_text(encoding='utf-8')
@@ -103,6 +148,8 @@ def verify_home_fv() -> None:
         raise SystemExit('Representative portrait must not appear in the home first view')
     if 'data-fv-journey' not in hero.group(1):
         raise SystemExit('Patient journey panel is missing from the home first view')
+    if 'data-deliverables' not in html:
+        raise SystemExit('Concrete deliverables section is missing from the home page')
 
 
 def verify_no_fake_product_visuals() -> None:
@@ -119,6 +166,7 @@ def verify_no_fake_product_visuals() -> None:
 
 if __name__ == '__main__':
     replace_home_fv()
+    add_home_deliverables()
     preserve_consultation_real_photo()
     replace_lhub_placeholders()
     verify_home_fv()
