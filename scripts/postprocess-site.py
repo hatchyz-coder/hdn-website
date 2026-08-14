@@ -59,6 +59,29 @@ def preserve_consultation_real_photo() -> None:
     consultation.write_text(html, encoding='utf-8')
 
 
+def replace_lhub_placeholders() -> None:
+    path = Path('_site/lhub-lp.html')
+    html = path.read_text(encoding='utf-8')
+
+    mock = '<div class="mock"><div class="phone"><div class="phone-top">LHub 患者フロー</div><div class="step"><span class="num">1</span><div><strong>LINE登録</strong><small>迷わない入口</small></div></div><div class="step"><span class="num">2</span><div><strong>問診・予約</strong><small>必要情報を先に取得</small></div></div><div class="step"><span class="num">3</span><div><strong>診療・決済</strong><small>案内を一つの流れに</small></div></div><div class="step"><span class="num">4</span><div><strong>継続フォロー</strong><small>再診・再購入につなぐ</small></div></div></div></div>'
+    hero_evidence = '''<figure class="product-evidence lhub-evidence" data-product-evidence>
+      <img src="assets/lhub-line-commerce.png" alt="LHubのLINE患者導線・運用画面">
+      <figcaption><strong>実際のLHub画面</strong><span>LINE上の患者接点と、予約・問診・決済・継続案内をつなぐ運用イメージです。</span></figcaption>
+    </figure>'''
+    if mock in html:
+        html = html.replace(mock, hero_evidence, 1)
+
+    placeholder = '<div class="video-placeholder"><div><div class="play">▶</div><strong>デモ動画掲載予定</strong><br><small>実際の操作画面を30秒で紹介</small></div></div>'
+    demo_evidence = '''<figure class="product-evidence demo-evidence" data-demo-evidence>
+      <img src="assets/lhub-line-commerce.png" alt="LHubの実際の操作画面">
+      <figcaption><strong>デモは実画面でご案内します</strong><span>画面構成と患者導線を確認しながら、自院での使い方を具体的にご説明します。</span></figcaption>
+    </figure>'''
+    if placeholder in html:
+        html = html.replace(placeholder, demo_evidence, 1)
+
+    path.write_text(html, encoding='utf-8')
+
+
 def verify_home_fv() -> None:
     html = Path('_site/index.html').read_text(encoding='utf-8')
     hero = re.search(r'<section class="hero">(.*?)</section>', html, re.DOTALL)
@@ -70,7 +93,19 @@ def verify_home_fv() -> None:
         raise SystemExit('Patient journey panel is missing from the home first view')
 
 
+def verify_no_fake_product_visuals() -> None:
+    html = Path('_site/lhub-lp.html').read_text(encoding='utf-8')
+    if '<div class="mock">' in html or '<div class="video-placeholder">' in html:
+        raise SystemExit('Synthetic LHub mock or empty video placeholder remains')
+    if 'data-product-evidence' not in html or 'data-demo-evidence' not in html:
+        raise SystemExit('LHub product evidence blocks are missing')
+    if html.count('assets/lhub-line-commerce.png') < 2:
+        raise SystemExit('Real LHub screen evidence is not present in both key locations')
+
+
 if __name__ == '__main__':
     replace_home_fv()
     preserve_consultation_real_photo()
+    replace_lhub_placeholders()
     verify_home_fv()
+    verify_no_fake_product_visuals()
