@@ -1,0 +1,220 @@
+/* HDN final mobile UI audit layer */
+html, body { max-width: 100%; overflow-x: clip; }
+img, video, iframe, table { max-width: 100%; }
+
+@media (max-width: 900px) {
+  .header-inner,
+  .site-header .header-inner {
+    min-height: 60px !important;
+  }
+
+  .hero-inner,
+  .hero-grid,
+  .section-head,
+  .section-header,
+  .split,
+  .band,
+  .contact-inner {
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-inner,
+  .hero-grid {
+    gap: 28px !important;
+  }
+
+  .section,
+  section.section {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+
+  .hero h1,
+  .hero-title,
+  .page-hero h1 {
+    max-width: 18ch !important;
+    font-size: clamp(34px, 8.8vw, 48px) !important;
+    line-height: 1.14 !important;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .hero .lead,
+  .hero p.lead,
+  .hero-copy,
+  .page-hero p {
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+  }
+
+  .section-head,
+  .section-header,
+  .deliverables-head {
+    gap: 14px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .section-title,
+  .section h2,
+  .section-head h2,
+  .section-header h2,
+  section > .container > h2 {
+    font-size: clamp(28px, 7.4vw, 38px) !important;
+    line-height: 1.28 !important;
+  }
+
+  .hero-actions,
+  .actions {
+    gap: 9px !important;
+  }
+
+  .hero-actions .button,
+  .actions .button,
+  .contact .button,
+  .cta .button {
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 46px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .card,
+  .feature-card,
+  .service-card,
+  .support-card,
+  .problem-card,
+  .case-card,
+  .pricing-card,
+  .plan,
+  .hero-card,
+  .hero-panel,
+  .panel,
+  .box {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .pricing-grid,
+  .pricing,
+  .grid,
+  .grid-3,
+  .grid-4,
+  .cards,
+  .feature-grid,
+  .service-grid,
+  .support-grid,
+  .problem-grid,
+  .case-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th, td {
+    min-width: 120px;
+  }
+
+  .flow,
+  .journey,
+  .scenario-compare,
+  .case-support-list {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .trust-before-contact,
+  [data-trust-before-contact] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-inner,
+  .site-header .header-inner,
+  .container,
+  .hero-inner,
+  .hero-grid,
+  .contact-inner,
+  .footer-inner {
+    width: min(100% - 28px, 1120px) !important;
+  }
+
+  .brand img,
+  .brand-logo {
+    max-width: 96px !important;
+  }
+
+  .brand small {
+    display: none !important;
+  }
+
+  .hero-inner,
+  .hero-grid {
+    padding-top: 42px !important;
+    padding-bottom: 48px !important;
+  }
+
+  .hero h1,
+  .hero-title,
+  .page-hero h1 {
+    font-size: clamp(32px, 9.2vw, 42px) !important;
+  }
+
+  .hero-actions,
+  .actions {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .hero-actions .button,
+  .actions .button,
+  .contact .button,
+  .cta .button {
+    width: 100% !important;
+  }
+
+  .eyebrow,
+  .kicker,
+  .overline,
+  .section-label {
+    font-size: 12px !important;
+  }
+
+  .card,
+  .feature-card,
+  .service-card,
+  .support-card,
+  .problem-card,
+  .case-card,
+  .pricing-card,
+  .plan,
+  .panel,
+  .box {
+    padding: 18px 0 !important;
+  }
+
+  .hero-panel,
+  .hero-card {
+    padding: 0 !important;
+  }
+
+  .deliverables-list article,
+  .en-evidence-row {
+    min-width: 0;
+  }
+
+  .deliverables-list h3,
+  .card h3,
+  .feature-card h3,
+  .service-card h3 {
+    overflow-wrap: anywhere;
+  }
+}
