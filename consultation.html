@@ -552,6 +552,20 @@
     @media(max-width:760px){.precontact-inner{width:min(100% - 28px,1120px);grid-template-columns:1fr;gap:14px}.precontact-points{grid-template-columns:1fr}.precontact-inner p{grid-column:1}.precontact-points span{padding:9px 0}}
   </style>
   <link rel="stylesheet" href="assets/mobile-audit.css">
+<style id="trust-pages-style">
+  .trust-detail{padding:72px 0;border-top:1px solid #d9d3cb;background:#f7f5f1}
+  .trust-detail-inner{width:min(1040px,calc(100% - 40px));margin:auto}
+  .trust-detail-head{display:grid;grid-template-columns:minmax(220px,.58fr) minmax(0,1fr);gap:28px 54px;align-items:start;margin-bottom:28px}
+  .trust-detail-head h2{margin:0;font-size:clamp(28px,4vw,40px);line-height:1.3}
+  .trust-detail-head p{margin:2px 0 0;color:#6d6660;line-height:1.9;font-weight:600}
+  .trust-detail-list{border-top:1px solid #cfc8bf}
+  .trust-detail-row{display:grid;grid-template-columns:minmax(210px,.55fr) minmax(0,1.25fr);gap:24px 48px;padding:22px 0;border-bottom:1px solid #cfc8bf}
+  .trust-detail-row strong{font-size:17px;line-height:1.55}
+  .trust-detail-row p{margin:0;color:#5f5954;line-height:1.85}
+  .consultation-output{background:#f1eee8}
+  .consultation-output .trust-detail-row strong{color:#8f201b}
+  @media(max-width:760px){.trust-detail{padding:50px 0}.trust-detail-inner{width:min(100% - 28px,1040px)}.trust-detail-head,.trust-detail-row{grid-template-columns:1fr;gap:10px}.trust-detail-row{padding:18px 0}}
+</style>
 </head>
 <body class="page-consultation">
   <header class="site-header">
@@ -724,7 +738,20 @@
         </div>
       </div>
     </section>
-  <section class="precontact-trust" data-precontact-trust aria-label="ご相談前に確認すること">
+  <section class="trust-detail consultation-output" data-consultation-output aria-labelledby="consultation-output-title">
+  <div class="trust-detail-inner">
+    <div class="trust-detail-head">
+      <h2 id="consultation-output-title">相談後に整理できること</h2>
+      <p>初回相談では、サービス説明より先に「どこで患者が止まり、何から直すべきか」を整理します。</p>
+    </div>
+    <div class="trust-detail-list">
+      <div class="trust-detail-row"><strong>現在の患者導線</strong><p>広告・ホームページ・SNSからLINE、問診、予約、決済、診療、再診までを並べ、分断や離脱ポイントを確認します。</p></div>
+      <div class="trust-detail-row"><strong>改善の優先順位</strong><p>売上への影響、患者の分かりにくさ、スタッフ負荷の3方向から、先に直す項目と後回しにできる項目を分けます。</p></div>
+      <div class="trust-detail-row"><strong>次にやること</strong><p>ページ修正、LINE導線、問診・決済、院内ルール、計測項目など、次のアクションを実務単位で整理します。</p></div>
+    </div>
+  </div>
+</section>
+<section class="precontact-trust" data-precontact-trust aria-label="ご相談前に確認すること">
       <div class="precontact-inner">
         <strong>まず、今ある仕組みを確認します。</strong>
         <div class="precontact-points"><span>現在の患者導線</span><span>既存システムと院内運用</span><span>本当に必要な変更だけを整理</span></div>
