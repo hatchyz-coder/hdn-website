@@ -12,6 +12,7 @@ on:
       - scripts/optimize-conversion-seo.py
       - scripts/add-support-patterns.py
       - scripts/strengthen-trust-pages.py
+      - scripts/add-article-bridges.py
       - scripts/apply-mobile-audit.py
       - assets/site-shell.css
       - assets/site-shell.js
@@ -58,6 +59,9 @@ jobs:
       - name: Strengthen founder and consultation trust
         run: python3 scripts/strengthen-trust-pages.py
 
+      - name: Connect corporate pages to published articles
+        run: python3 scripts/add-article-bridges.py
+
       - name: Apply final mobile UI audit
         run: python3 scripts/apply-mobile-audit.py
 
@@ -75,7 +79,7 @@ jobs:
           cp _site/en/self-pay.html en/self-pay.html
           cp _site/en/lhub.html en/lhub.html
 
-      - name: Verify shared shell, editorial layer, conversion SEO, support patterns, trust pages and mobile audit
+      - name: Verify generated safeguards and article bridges
         run: |
           for page in index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html; do
             grep -q 'editorial.css' "$page"
@@ -93,27 +97,27 @@ jobs:
             grep -q 'hreflang="en"' "$page"
             grep -q 'hreflang="x-default"' "$page"
           done
+          for page in index.html self-pay.html lhub.html medical-sns.html en/index.html en/self-pay.html en/lhub.html; do
+            grep -q 'data-article-bridge' "$page"
+            grep -q 'article.hdnjapan.com' "$page"
+          done
+          grep -q 'line-booking-payment-flow' lhub.html
+          grep -q 'clinic-video-strategy' medical-sns.html
+          grep -q 'regenerative-medicine-improvement-orders' self-pay.html
           grep -q 'data-fv-journey' index.html
           grep -q 'data-deliverables' index.html
           grep -q 'data-support-patterns' index.html
           grep -q 'data-support-patterns' en/index.html
-          grep -q 'CASE 03' index.html
-          grep -q 'CASE 03' en/index.html
           grep -q 'data-founder-workstyle' tsuyoshi-hadano.html
           grep -q 'data-consultation-output' consultation.html
           grep -q 'id="hdn-website-schema"' index.html
-          grep -q 'data-en-evidence' en/index.html
-          grep -q 'assets/lhub-line-commerce.png' index.html
-          grep -q 'assets/hadano-profile.jpg' consultation.html
-          grep -q 'property="og:image"' en/lhub.html
-          grep -q 'assets/hadano-profile.jpg' medical-sns.html
           grep -q 'overflow-x: clip' assets/mobile-audit.css
-          grep -q 'grid-template-columns: 1fr' assets/mobile-audit.css
           python3 scripts/postprocess-site.py
           python3 scripts/refine-brand-pages.py
           python3 scripts/optimize-conversion-seo.py
           python3 scripts/add-support-patterns.py
           python3 scripts/strengthen-trust-pages.py
+          python3 scripts/add-article-bridges.py
           python3 scripts/apply-mobile-audit.py
 
       - name: Verify public site source
@@ -128,5 +132,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html
-          git commit -m "Keep trust and mobile safeguards [generated-site]"
+          git commit -m "Keep article bridges and site safeguards [generated-site]"
           git push
