@@ -38,8 +38,11 @@ def ensure_head_metadata(source: str, rule: dict) -> str:
     locale = "en_US" if rule["lang"] == "en" else "ja_JP"
     site_name = "HDN Inc." if rule["lang"] == "en" else "株式会社HDN"
 
-    if 'rel="canonical"' not in source:
-        source = source.replace("</title>", f'</title>\n  <link rel="canonical" href="{url}">', 1)
+    canonical = f'<link rel="canonical" href="{url}">'
+    if re.search(r'<link\s+rel="canonical"\s+href="[^"]*"\s*/?>', source, re.I):
+        source = re.sub(r'<link\s+rel="canonical"\s+href="[^"]*"\s*/?>', canonical, source, count=1, flags=re.I)
+    else:
+        source = source.replace("</title>", f'</title>\n  {canonical}', 1)
 
     pair = rule.get("pair")
     if pair and 'hreflang="ja"' not in source:
@@ -105,7 +108,6 @@ def add_precontact_trust(source: str, lang: str) -> str:
     if 'data-precontact-trust' in source:
         return source
     block = trust_block(lang)
-    # Keep the trust material close to conversion without hiding page-specific CTA copy.
     if '</main>' in source:
         source = source.replace('</main>', block + '\n</main>', 1)
     else:
