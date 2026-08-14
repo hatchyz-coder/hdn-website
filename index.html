@@ -1663,8 +1663,20 @@
   
   
   
+  
+  
   <link rel="stylesheet" href="assets/site-shell.css">
   <script src="assets/site-shell.js" defer></script>
+<style id="deliverables-style">
+    .deliverables-section{background:#f7f5f1!important}
+    .deliverables-head{display:grid;grid-template-columns:minmax(0,.8fr) minmax(280px,.55fr);gap:44px;align-items:start;margin-bottom:30px}
+    .deliverables-list{border-top:1px solid #d9d3cb}
+    .deliverables-list article{display:grid;grid-template-columns:52px minmax(0,1fr);gap:18px;padding:22px 0;border-bottom:1px solid #d9d3cb}
+    .deliverables-list article>span{font-size:12px;font-weight:800;color:#a82019;letter-spacing:.06em;padding-top:4px}
+    .deliverables-list h3{margin:0;font-size:19px;line-height:1.45}
+    .deliverables-list p{max-width:760px;margin:7px 0 0;color:#6d6660;font-size:14px;line-height:1.8}
+    @media(max-width:760px){.deliverables-head{grid-template-columns:1fr;gap:16px}.deliverables-list article{grid-template-columns:38px 1fr;gap:10px}}
+  </style>
 </head>
 <body class="page-home">
   <header class="site-header">
@@ -1815,6 +1827,24 @@
       <div class="standard-model"><span>標準モデル</span><strong>15名 × 25,000円</strong><div class="revenue-totals"><p>月間売上<b>375,000円</b></p><p>年間売上<b>4,500,000円</b></p></div></div>
       <div class="scenario-compare" aria-label="保守、標準、成長モデルの月間売上"><p><span>保守</span>5名・月間125,000円</p><p class="is-standard"><span>標準</span>15名・月間375,000円</p><p><span>成長</span>30名・月間750,000円</p></div>
     </article></div><div class="simulation-notes" aria-label="シミュレーションの注意事項"><p>※掲載している数値は、一定の条件を置いた一般的な試算例であり、実績値ではありません。</p><p>※実際の売上・利益は、診療科、地域、患者構成、提供内容、価格、施設、人員、集客、運用体制等により異なります。</p><p>※本シミュレーションは、売上、利益、患者数等の成果を保証するものではありません。</p><p>一般公開モデルはHDNによる試算です。個別提案では公式情報とヒアリング内容を反映し、確認できない内容は推定として区別します。</p></div><div class="simulation-more"><p>詳しい前提条件と個別試算の方法は、自費診療導入支援ページでご案内しています。</p><a class="button secondary" href="self-pay.html#simulation">試算の考え方を詳しく見る</a></div></div></section>
+
+    <section class="section deliverables-section" data-deliverables aria-labelledby="deliverables-title">
+      <div class="container">
+        <div class="deliverables-head">
+          <div>
+            <p class="eyebrow">Working Documents</p>
+            <h2 class="section-title" id="deliverables-title">支援で実際に整理するもの。</h2>
+          </div>
+          <p class="section-copy">きれいな提案書だけではなく、院内でそのまま使える導線・手順・確認項目まで落とし込みます。</p>
+        </div>
+        <div class="deliverables-list">
+          <article><span>01</span><div><h3>患者導線図</h3><p>広告・HP・SNSからLINE、問診、予約、決済、診療後フォローまでを一枚の流れに整理します。</p></div></article>
+          <article><span>02</span><div><h3>LINE・予約・問診・決済フロー</h3><p>患者が次に何をするか、スタッフがどこで対応するかを実運用に合わせて定義します。</p></div></article>
+          <article><span>03</span><div><h3>院内運用ルール・スタッフ手順</h3><p>誰が、いつ、何を確認するか。属人化しやすい対応を日々回せる手順へ落とします。</p></div></article>
+          <article><span>04</span><div><h3>計測項目・改善リスト</h3><p>登録、問診、予約、決済など、どこで患者が止まっているかを確認する指標と改善候補を整理します。</p></div></article>
+        </div>
+      </div>
+    </section>
 
     <section id="services" class="section alt">
       <div class="container">
