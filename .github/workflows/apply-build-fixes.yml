@@ -8,6 +8,7 @@ on:
     paths:
       - scripts/build-pages.sh
       - scripts/postprocess-site.py
+      - scripts/refine-brand-pages.py
       - assets/site-shell.css
       - assets/site-shell.js
       - assets/editorial.css
@@ -40,6 +41,9 @@ jobs:
       - name: Apply evidence-first visual postprocess
         run: python3 scripts/postprocess-site.py
 
+      - name: Refine brand pages and social metadata
+        run: python3 scripts/refine-brand-pages.py
+
       - name: Write generated pages back to published branch root
         run: |
           cp _site/index.html index.html
@@ -65,9 +69,14 @@ jobs:
             grep -q 'class="language-switch"' "$page"
           done
           grep -q 'data-fv-journey' index.html
+          grep -q 'data-deliverables' index.html
+          grep -q 'data-en-evidence' en/index.html
           grep -q 'assets/lhub-line-commerce.png' index.html
           grep -q 'assets/hadano-profile.jpg' consultation.html
+          grep -q 'property="og:image"' en/lhub.html
+          grep -q 'assets/hadano-profile.jpg' medical-sns.html
           python3 scripts/postprocess-site.py
+          python3 scripts/refine-brand-pages.py
 
       - name: Verify public site source
         run: bash scripts/verify-site.sh
@@ -81,5 +90,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html
-          git commit -m "Keep home FV evidence-first [generated-site]"
+          git commit -m "Keep brand pages evidence-first [generated-site]"
           git push
