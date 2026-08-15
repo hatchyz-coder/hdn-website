@@ -1,4 +1,89 @@
 (() => {
+  const GA_MEASUREMENT_ID = 'G-687Y8YTR90';
+
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function gtag() {
+    window.dataLayer.push(arguments);
+  };
+
+  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}"]`)) {
+    const analyticsScript = document.createElement('script');
+    analyticsScript.async = true;
+    analyticsScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+    document.head.appendChild(analyticsScript);
+  }
+
+  if (!window.__hdnGa4Initialized) {
+    window.gtag('js', new Date());
+    window.gtag('config', GA_MEASUREMENT_ID);
+    window.__hdnGa4Initialized = true;
+  }
+
+  const articleReferrer = (() => {
+    try {
+      return document.referrer && new URL(document.referrer).hostname === 'article.hdnjapan.com';
+    } catch {
+      return false;
+    }
+  })();
+
+  if (articleReferrer) {
+    window.gtag('event', 'article_referral_landing', {
+      landing_path: window.location.pathname,
+      referrer_url: document.referrer,
+      content_language: document.documentElement.lang || 'ja',
+    });
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    const link = target instanceof Element ? target.closest('a[href]') : null;
+    if (!link) return;
+
+    const destination = new URL(link.href, window.location.href);
+    const linkText = (link.textContent || '').trim().slice(0, 100);
+    const common = {
+      source_path: window.location.pathname,
+      link_url: destination.href,
+      link_text: linkText,
+      traffic_origin: articleReferrer ? 'hdn_articles' : 'other',
+      content_language: document.documentElement.lang || 'ja',
+    };
+
+    if (destination.hostname === 'article.hdnjapan.com') {
+      window.gtag('event', 'hdn_to_article_click', {
+        ...common,
+        destination_key: 'articles',
+      });
+      return;
+    }
+
+    if (destination.hostname !== window.location.hostname) return;
+
+    if (destination.pathname.includes('consultation')) {
+      window.gtag('event', 'hdn_consultation_click', {
+        ...common,
+        destination_key: 'consultation',
+      });
+      return;
+    }
+
+    const destinationKey = destination.pathname.includes('lhub')
+      ? 'lhub'
+      : destination.pathname.includes('self-pay')
+        ? 'self-pay'
+        : destination.pathname.includes('medical-sns')
+          ? 'medical-sns'
+          : null;
+
+    if (destinationKey) {
+      window.gtag('event', 'hdn_service_click', {
+        ...common,
+        destination_key: destinationKey,
+      });
+    }
+  });
+
   const isJapanese = (document.documentElement.lang || '').toLowerCase().startsWith('ja');
   const currentPath = window.location.pathname;
 
