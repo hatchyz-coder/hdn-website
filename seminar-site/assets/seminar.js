@@ -8,7 +8,7 @@
   if (!form) return;
 
   const status = document.getElementById('form-status');
-  const endpoint = document.querySelector('meta[name="hdn-form-endpoint"]')?.content || '';
+  const endpoint = 'https://tnooknfyshieujolwtem.supabase.co/functions/v1/register-seminar';
   const qs = new URLSearchParams(location.search);
 
   const attribution = {
@@ -50,10 +50,8 @@
       return;
     }
 
-    if (!endpoint) {
-      show('現在、申込受付システムの接続準備中です。公開前に受付先を設定してください。');
-      return;
-    }
+    const submissionKey = form.dataset.submissionKey || createSubmissionKey();
+    form.dataset.submissionKey = submissionKey;
 
     const payload = {
       seminar_slug: form.dataset.seminar || 'furuta-01',
@@ -67,7 +65,8 @@
       learning_topic: String(data.get('learning_topic') || '').trim(),
       advance_question: String(data.get('advance_question') || '').trim(),
       privacy_consent: data.get('privacy_consent') === 'yes',
-      submission_key: createSubmissionKey(),
+      submission_key: submissionKey,
+      company_website: '',
       ...attribution
     };
 
@@ -99,8 +98,9 @@
         if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { event_category: 'seminar', event_label: 'furuta-01' });
       } catch (_) { /* analytics must never block registration */ }
 
+      delete form.dataset.submissionKey;
       form.reset();
-      show('お申し込みを受け付けました。ご登録のメールアドレスへ受付完了メールをお送りします。', 'success');
+      show('お申し込みを受け付けました。参加方法は、ご登録のメールアドレスへ改めてご案内します。', 'success');
     } catch (error) {
       console.warn('Seminar submission failed:', error?.message || 'UNKNOWN');
       show('送信を完了できませんでした。通信環境をご確認のうえ、時間をおいてもう一度お試しください。');
