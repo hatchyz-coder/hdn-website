@@ -8,9 +8,11 @@ SITE = ROOT / "seminar-site"
 EVENT = SITE / "furuta-01" / "index.html"
 CSS = SITE / "assets" / "seminar.css"
 JS = SITE / "assets" / "seminar.js"
+FURUTA = SITE / "assets" / "furuta-kazunori.jpg"
+OGP = SITE / "assets" / "furuta-ogp.jpg"
 
 errors = []
-for path in (SITE / "index.html", EVENT, CSS, JS, SITE / "README.md"):
+for path in (SITE / "index.html", EVENT, CSS, JS, SITE / "README.md", FURUTA, OGP):
     if not path.exists() or path.stat().st_size == 0:
         errors.append(f"missing or empty: {path.relative_to(ROOT)}")
 
@@ -24,6 +26,10 @@ if EVENT.exists():
         "患者さんの個人情報は入力しないでください",
         "https://forms.hdnjapan.com/api/seminar",
         "https://seminar.hdnjapan.com/furuta-01/",
+        "../assets/furuta-kazunori.jpg",
+        "https://seminar.hdnjapan.com/assets/furuta-ogp.jpg",
+        'meta property="og:image"',
+        'meta name="twitter:image"',
     ]
     for needle in required:
         if needle not in html:
@@ -57,6 +63,8 @@ if CSS.exists():
     css = CSS.read_text(encoding="utf-8")
     if "@media(max-width:600px)" not in css:
         errors.append("mobile CSS breakpoint missing")
+    if ".speaker-photo-furuta" not in css:
+        errors.append("Furuta portrait styling missing")
 
 if errors:
     print("Seminar site verification failed:")
