@@ -13,6 +13,7 @@ on:
       - scripts/add-support-patterns.py
       - scripts/strengthen-trust-pages.py
       - scripts/add-article-bridges.py
+      - scripts/add-legal-pages.py
       - scripts/apply-mobile-audit.py
       - assets/site-shell.css
       - assets/site-shell.js
@@ -25,6 +26,11 @@ on:
       - medical-sns.html
       - tsuyoshi-hadano.html
       - consultation.html
+      - privacy.html
+      - terms.html
+      - cookie-policy.html
+      - security.html
+      - disclaimer.html
       - en/**
       - .github/workflows/apply-build-fixes.yml
 
@@ -62,6 +68,9 @@ jobs:
       - name: Connect corporate pages to published articles
         run: python3 scripts/add-article-bridges.py
 
+      - name: Add legal policy pages and footer navigation
+        run: python3 scripts/add-legal-pages.py
+
       - name: Apply final mobile UI audit
         run: python3 scripts/apply-mobile-audit.py
 
@@ -74,10 +83,20 @@ jobs:
           cp _site/medical-sns.html medical-sns.html
           cp _site/tsuyoshi-hadano.html tsuyoshi-hadano.html
           cp _site/consultation.html consultation.html
+          cp _site/privacy.html privacy.html
+          cp _site/terms.html terms.html
+          cp _site/cookie-policy.html cookie-policy.html
+          cp _site/security.html security.html
+          cp _site/disclaimer.html disclaimer.html
           mkdir -p en
           cp _site/en/index.html en/index.html
           cp _site/en/self-pay.html en/self-pay.html
           cp _site/en/lhub.html en/lhub.html
+          cp _site/en/privacy.html en/privacy.html
+          cp _site/en/terms.html en/terms.html
+          cp _site/en/cookie-policy.html en/cookie-policy.html
+          cp _site/en/security.html en/security.html
+          cp _site/en/disclaimer.html en/disclaimer.html
 
       - name: Verify generated safeguards and article bridges
         run: |
@@ -88,7 +107,23 @@ jobs:
             grep -q 'property="og:title"' "$page"
             grep -q 'name="twitter:card"' "$page"
             grep -q 'data-precontact-trust' "$page"
+            grep -q 'data-legal-footer' "$page"
+            grep -q 'privacy.html' "$page"
+            grep -q 'terms.html' "$page"
+            grep -q 'cookie-policy.html' "$page"
+            grep -q 'security.html' "$page"
+            grep -q 'disclaimer.html' "$page"
           done
+          for page in privacy.html terms.html cookie-policy.html security.html disclaimer.html en/privacy.html en/terms.html en/cookie-policy.html en/security.html en/disclaimer.html; do
+            test -s "$page"
+            grep -q 'rel="canonical"' "$page"
+            grep -q 'data-legal-footer' "$page"
+          done
+          grep -q '個人情報保護方針' privacy.html
+          grep -q '保有個人データの開示等' privacy.html
+          grep -q 'Google Analytics 4' cookie-policy.html
+          grep -q '情報セキュリティ基本方針' security.html
+          grep -q '支援例・試算・数値' disclaimer.html
           for page in index.html self-pay.html lhub.html en/index.html en/self-pay.html en/lhub.html; do
             grep -q 'site-shell.css' "$page"
             grep -q 'site-shell.js' "$page"
@@ -118,6 +153,7 @@ jobs:
           python3 scripts/add-support-patterns.py
           python3 scripts/strengthen-trust-pages.py
           python3 scripts/add-article-bridges.py
+          python3 scripts/add-legal-pages.py
           python3 scripts/apply-mobile-audit.py
 
       - name: Verify public site source
@@ -131,6 +167,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html en/index.html en/self-pay.html en/lhub.html
-          git commit -m "Keep article bridges and site safeguards [generated-site]"
+          git add index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html privacy.html terms.html cookie-policy.html security.html disclaimer.html en/index.html en/self-pay.html en/lhub.html en/privacy.html en/terms.html en/cookie-policy.html en/security.html en/disclaimer.html
+          git commit -m "Keep legal policies and site safeguards [generated-site]"
           git push
