@@ -1,4 +1,18 @@
 (() => {
+  const furutaPortrait = document.querySelector('.speaker-photo-furuta');
+  if (furutaPortrait) {
+    const fallbackPortrait = 'https://raw.githubusercontent.com/hatchyz-coder/hdn-website/main/seminar-site/assets/furuta-kazunori.jpg';
+    const useFallback = () => {
+      if (furutaPortrait.src !== fallbackPortrait) furutaPortrait.src = fallbackPortrait;
+    };
+    furutaPortrait.addEventListener('error', useFallback, { once: true });
+    if (!furutaPortrait.complete || furutaPortrait.naturalWidth === 0) {
+      requestAnimationFrame(() => {
+        if (furutaPortrait.complete && furutaPortrait.naturalWidth === 0) useFallback();
+      });
+    }
+  }
+
   const form = document.getElementById('seminar-form');
   if (!form) return;
 
