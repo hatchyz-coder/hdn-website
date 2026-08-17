@@ -1,1 +1,0 @@
-Furuta portrait fallback is handled in seminar.js via raw.githubusercontent.com when the local Cloudflare asset fails to load.
