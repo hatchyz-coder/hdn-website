@@ -1,0 +1,1 @@
+Force Cloudflare Workers build for seminar-site after Furuta portrait update.
