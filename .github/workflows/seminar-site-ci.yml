@@ -19,9 +19,9 @@ jobs:
       - name: Verify seminar-specific invariants
         run: python3 scripts/verify-seminar-site.py
       - name: Verify existing corporate site
-        run: ./scripts/verify-site.sh
+        run: bash scripts/verify-site.sh
       - name: Build existing corporate site
-        run: ./scripts/build-pages.sh
+        run: bash scripts/build-pages.sh
       - name: Confirm seminar source is isolated from corporate Pages output
         run: |
           test ! -e _site/seminar-site
