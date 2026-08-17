@@ -1,0 +1,35 @@
+name: Verify seminar site
+
+on:
+  pull_request:
+    paths:
+      - 'seminar-site/**'
+      - 'scripts/verify-seminar-site.py'
+      - '.github/workflows/seminar-site-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify seminar-specific invariants
+        run: python3 scripts/verify-seminar-site.py
+      - name: Verify existing corporate site
+        run: ./scripts/verify-site.sh
+      - name: Build existing corporate site
+        run: ./scripts/build-pages.sh
+      - name: Confirm seminar source is isolated from corporate Pages output
+        run: |
+          test ! -e _site/seminar-site
+          test -s seminar-site/furuta-01/index.html
+          echo 'Static seminar source is isolated and valid.'
+
+# lint: seminar-specific static validation is performed by verify-seminar-site.py
+# typecheck: N/A (plain HTML/CSS/JS; no typed runtime)
+# tests: verify-seminar-site.py + existing verify-site.sh
+# build: existing corporate build-pages.sh is required to remain green
+# migration check: N/A (no database/schema change in this repository)
