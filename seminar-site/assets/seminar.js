@@ -1,4 +1,8 @@
 (() => {
+  const TURNSTILE_SITE_KEY = '0x4AAAAAAESziEFBo263ZEbw';
+  const TURNSTILE_ACTION = 'furuta_seminar';
+  const endpoint = 'https://tnooknfyshieujolwtem.supabase.co/functions/v1/register-seminar';
+
   const furutaPortrait = document.querySelector('.speaker-photo-furuta');
   if (furutaPortrait) {
     furutaPortrait.src = '../assets/furuta-kazunori.svg?v=20260817-1905';
@@ -8,8 +12,11 @@
   if (!form) return;
 
   const status = document.getElementById('form-status');
-  const endpoint = 'https://tnooknfyshieujolwtem.supabase.co/functions/v1/register-seminar';
+  const button = form.querySelector('button[type="submit"]');
   const qs = new URLSearchParams(location.search);
+
+  let turnstileWidgetId = null;
+  let turnstileToken = '';
 
   const attribution = {
     utm_source: qs.get('utm_source') || '',
@@ -37,6 +44,45 @@
     return `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
   }
 
+  function resetTurnstile() {
+    turnstileToken = '';
+    if (turnstileWidgetId !== null && window.turnstile) {
+      window.turnstile.reset(turnstileWidgetId);
+    }
+  }
+
+  const turnstileMount = document.createElement('div');
+  turnstileMount.id = 'seminar-turnstile';
+  turnstileMount.style.margin = '8px 0 18px';
+  if (button) button.parentNode.insertBefore(turnstileMount, button);
+  else form.appendChild(turnstileMount);
+
+  window.hdnTurnstileReady = () => {
+    if (!window.turnstile || turnstileWidgetId !== null) return;
+    turnstileWidgetId = window.turnstile.render('#seminar-turnstile', {
+      sitekey: TURNSTILE_SITE_KEY,
+      action: TURNSTILE_ACTION,
+      theme: 'auto',
+      callback: (token) => {
+        turnstileToken = token;
+        clearStatus();
+      },
+      'expired-callback': () => {
+        turnstileToken = '';
+      },
+      'error-callback': () => {
+        turnstileToken = '';
+        show('本人確認の読み込みに失敗しました。ページを再読み込みしてお試しください。');
+      }
+    });
+  };
+
+  const turnstileScript = document.createElement('script');
+  turnstileScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=hdnTurnstileReady&render=explicit';
+  turnstileScript.async = true;
+  turnstileScript.defer = true;
+  document.head.appendChild(turnstileScript);
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     clearStatus();
@@ -47,6 +93,11 @@
     if (String(data.get('company_website') || '').trim()) {
       show('送信を受け付けました。', 'success');
       form.reset();
+      return;
+    }
+
+    if (!turnstileToken) {
+      show('本人確認が完了していません。確認欄が表示されるまで少し待ってから、もう一度お試しください。');
       return;
     }
 
@@ -67,13 +118,13 @@
       privacy_consent: data.get('privacy_consent') === 'yes',
       submission_key: submissionKey,
       company_website: '',
+      turnstile_token: turnstileToken,
       ...attribution
     };
 
     form.classList.add('is-loading');
-    const button = form.querySelector('button[type="submit"]');
-    const original = button.textContent;
-    button.textContent = '送信しています…';
+    const original = button?.textContent || '';
+    if (button) button.textContent = '送信しています…';
 
     try {
       const response = await fetch(endpoint, {
@@ -103,10 +154,11 @@
       show('お申し込みを受け付けました。参加方法は、ご登録のメールアドレスへ改めてご案内します。', 'success');
     } catch (error) {
       console.warn('Seminar submission failed:', error?.message || 'UNKNOWN');
-      show('送信を完了できませんでした。通信環境をご確認のうえ、時間をおいてもう一度お試しください。');
+      show('送信を完了できませんでした。通信環境をご確認のうえ、もう一度お試しください。');
     } finally {
+      resetTurnstile();
       form.classList.remove('is-loading');
-      button.textContent = original;
+      if (button) button.textContent = original;
     }
   });
 })();
