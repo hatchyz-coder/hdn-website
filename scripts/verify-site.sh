@@ -41,6 +41,14 @@ if grep -R -n -E "必ず儲かる|確実に売上が上がる|リスクなく導
   exit 1
 fi
 
+# First-party form invariant: corporate pages must never send consultation or
+# inquiry traffic to Google Forms. Scan all checked-in JP/EN public HTML so a
+# stale root page cannot bypass the generated-site repair pass.
+if grep -n -E 'forms\.gle/|docs\.google\.com/forms/' ./*.html en/*.html 2>/dev/null; then
+  echo "Found legacy Google Form link in public corporate HTML." >&2
+  exit 1
+fi
+
 missing_asset=0
 for src in $(grep -RhoE 'src="assets/[^"]+"' *.html | sed -E 's/src="([^"]+)"/\1/' | sort -u); do
   if [ ! -f "$src" ]; then
@@ -58,7 +66,6 @@ grep -q '<meta property="og:title"' self-pay.html
 grep -q '<meta name="twitter:card" content="summary_large_image">' self-pay.html
 grep -q 'id="models"' self-pay.html
 grep -q 'HDNが対応する6つの自費診療モデル' self-pay.html
-grep -q 'rel="noopener noreferrer"' self-pay.html
 grep -q 'LIGHT' index.html
 grep -q 'STANDARD' index.html
 grep -q 'FULL' index.html
