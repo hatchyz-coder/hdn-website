@@ -139,8 +139,9 @@
         window.gtag?.('event', 'generate_lead', { event_category: 'consultation', event_label: 'hdn_corporate' });
       } catch (_) {}
     } catch (error) {
-      console.warn('Consultation submission failed:', error?.message || 'UNKNOWN');
-      show('送信を完了できませんでした。通信環境をご確認のうえ、もう一度お試しください。');
+      const code = String(error?.message || 'UNKNOWN').replace(/[^A-Z0-9_-]/gi, '').slice(0, 40) || 'UNKNOWN';
+      console.warn('Consultation submission failed:', code);
+      show(`送信を完了できませんでした。エラーコード：${code}`);
     } finally {
       resetTurnstile();
       if (button) { button.disabled = false; button.textContent = original; }
