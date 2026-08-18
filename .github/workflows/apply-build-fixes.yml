@@ -14,6 +14,7 @@ on:
       - scripts/strengthen-trust-pages.py
       - scripts/add-article-bridges.py
       - scripts/add-legal-pages.py
+      - scripts/fix-legal-and-contact-links.py
       - scripts/apply-mobile-audit.py
       - assets/site-shell.css
       - assets/site-shell.js
@@ -70,6 +71,9 @@ jobs:
 
       - name: Add legal policy pages and footer navigation
         run: python3 scripts/add-legal-pages.py
+
+      - name: Repair legal and first-party contact links
+        run: python3 scripts/fix-legal-and-contact-links.py
 
       - name: Apply final mobile UI audit
         run: python3 scripts/apply-mobile-audit.py
@@ -147,6 +151,15 @@ jobs:
           grep -q 'data-consultation-output' consultation.html
           grep -q 'id="hdn-website-schema"' index.html
           grep -q 'overflow-x: clip' assets/mobile-audit.css
+          ! grep -R -q 'https://forms.gle/148jgfSnDgDZ2HsEA' index.html self-pay.html lhub.html lhub-lp.html medical-sns.html tsuyoshi-hadano.html consultation.html privacy.html terms.html cookie-policy.html security.html disclaimer.html en/index.html en/self-pay.html en/lhub.html en/privacy.html en/terms.html en/cookie-policy.html en/security.html en/disclaimer.html
+          for page in en/privacy.html en/terms.html en/cookie-policy.html en/security.html en/disclaimer.html; do
+            ! grep -q 'href="../privacy.html"' "$page"
+            ! grep -q 'href="../terms.html"' "$page"
+            ! grep -q 'href="../cookie-policy.html"' "$page"
+            ! grep -q 'href="../security.html"' "$page"
+            ! grep -q 'href="../disclaimer.html"' "$page"
+            ! grep -q 'href="/en/#company"' "$page"
+          done
           python3 scripts/postprocess-site.py
           python3 scripts/refine-brand-pages.py
           python3 scripts/optimize-conversion-seo.py
@@ -154,6 +167,7 @@ jobs:
           python3 scripts/strengthen-trust-pages.py
           python3 scripts/add-article-bridges.py
           python3 scripts/add-legal-pages.py
+          python3 scripts/fix-legal-and-contact-links.py
           python3 scripts/apply-mobile-audit.py
 
       - name: Verify public site source
