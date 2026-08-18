@@ -1,59 +1,89 @@
 from pathlib import Path
 import re
 
-SITE = Path('_site')
-LEGACY_FORM = 'https://forms.gle/148jgfSnDgDZ2HsEA'
 CUSTOM_FORM = '/consultation-form.html'
+GOOGLE_FORM_HOST_PATTERNS = (
+    r'https://forms\.gle/[^"\'\s<>]+',
+    r'https://docs\.google\.com/forms/[^"\'\s<>]+',
+)
+
+ROOT_PUBLIC = [
+    *Path('.').glob('*.html'),
+    *Path('en').glob('*.html'),
+]
+SITE = Path('_site')
 
 
-def replace_legacy_contact(html: str) -> str:
-    pattern = rf'href="{re.escape(LEGACY_FORM)}"(?:\s+target="_blank")?(?:\s+rel="noopener(?: noreferrer)?")?'
-    return re.sub(pattern, f'href="{CUSTOM_FORM}"', html)
+def replace_google_form_links(html: str) -> str:
+    """Route every public Google Form link to HDN's first-party consultation form."""
+    for url_pattern in GOOGLE_FORM_HOST_PATTERNS:
+        href_pattern = rf'href="{url_pattern}"(?:\s+target="_blank")?(?:\s+rel="noopener(?: noreferrer)?")?'
+        html = re.sub(href_pattern, f'href="{CUSTOM_FORM}"', html, flags=re.IGNORECASE)
+    return html
 
 
 def repair_english_legal_footer(html: str) -> str:
-    # English legal pages live under /en/. Their legal links must remain in /en/
-    # rather than climbing to the Japanese root policy pages.
     for name in ('privacy.html', 'terms.html', 'cookie-policy.html', 'security.html', 'disclaimer.html'):
         html = html.replace(f'href="../{name}"', f'href="{name}"')
-    # The English homepage currently has no stable #company anchor.
     html = html.replace('href="/en/#company"', 'href="/en/"')
     return html
 
 
 def repair_footer_replacement_compatibility(html: str) -> str:
-    # Normalize the generated legal footer opening tag so future replacement
-    # passes can match it even when data attributes are already present.
-    html = html.replace(
+    return html.replace(
         '<footer class="footer legal-footer" data-legal-footer>',
         '<footer class="footer legal-footer" data-legal-footer="true">',
     )
-    return html
+
+
+def is_english(path: Path) -> bool:
+    return 'en' in path.parts
 
 
 def process(path: Path) -> None:
+    if not path.exists() or not path.is_file():
+        return
     html = path.read_text(encoding='utf-8')
-    html = replace_legacy_contact(html)
-    if '/en/' in f'/{path.relative_to(SITE).as_posix()}':
+    html = replace_google_form_links(html)
+    if is_english(path):
         html = repair_english_legal_footer(html)
     html = repair_footer_replacement_compatibility(html)
     path.write_text(html, encoding='utf-8')
 
 
-for path in SITE.rglob('*.html'):
+# Repair the checked-in GitHub Pages source as well as the generated build tree.
+# This closes the gap where _site was clean but the branch root—and therefore the
+# live Pages source—could still contain legacy Google Form CTAs.
+for path in ROOT_PUBLIC:
     process(path)
 
-# Guardrails: no current corporate page should send consultation traffic to the
-# legacy Google Form after the first-party form has been launched.
-for path in SITE.rglob('*.html'):
-    html = path.read_text(encoding='utf-8')
-    if LEGACY_FORM in html:
-        raise SystemExit(f'Legacy Google Form link remains: {path}')
+if SITE.exists():
+    for path in SITE.rglob('*.html'):
+        process(path)
 
-for name in ('privacy.html', 'terms.html', 'cookie-policy.html', 'security.html', 'disclaimer.html'):
-    path = SITE / 'en' / name
-    html = path.read_text(encoding='utf-8')
-    if f'href="../{name}"' in html:
-        raise SystemExit(f'English legal footer escaped to JP root: {path}')
-    if 'href="/en/#company"' in html:
-        raise SystemExit(f'Broken English company anchor remains: {path}')
+
+def assert_no_google_form(path: Path) -> None:
+    html = path.read_text(encoding='utf-8').lower()
+    if 'forms.gle/' in html or 'docs.google.com/forms/' in html:
+        raise SystemExit(f'Google Form link remains in public corporate page: {path}')
+
+
+for path in ROOT_PUBLIC:
+    assert_no_google_form(path)
+
+if SITE.exists():
+    for path in SITE.rglob('*.html'):
+        assert_no_google_form(path)
+
+for base in (Path('en'), SITE / 'en'):
+    if not base.exists():
+        continue
+    for name in ('privacy.html', 'terms.html', 'cookie-policy.html', 'security.html', 'disclaimer.html'):
+        path = base / name
+        if not path.exists():
+            continue
+        html = path.read_text(encoding='utf-8')
+        if f'href="../{name}"' in html:
+            raise SystemExit(f'English legal footer escaped to JP root: {path}')
+        if 'href="/en/#company"' in html:
+            raise SystemExit(f'Broken English company anchor remains: {path}')
