@@ -9,6 +9,8 @@ lhub-lp.html
 medical-sns.html
 tsuyoshi-hadano.html
 consultation.html
+consultation-form.html
+assets/consultation-form.js
 assets/hdn-logo.png
 assets/hadano-profile.jpg
 assets/illustration-patient-assets.jpg
@@ -68,6 +70,17 @@ grep -q '医療SNS・YouTube戦略' tsuyoshi-hadano.html
 grep -q 'medical-sns.html' tsuyoshi-hadano.html
 grep -q "medical-sns.html" assets/site-shell.js
 grep -q "SNS・動画戦略" assets/site-shell.js
+
+grep -q '<meta name="robots" content="noindex,follow">' consultation-form.html
+grep -q 'id="consultation-form"' consultation-form.html
+grep -q 'privacy_consent' consultation-form.html
+grep -q '患者氏名、診断名、治療歴、検査結果' consultation-form.html
+grep -q 'register-consultation' assets/consultation-form.js
+grep -q 'consultation_form_submit' assets/consultation-form.js
+if grep -q 'consultation-form.html' sitemap.xml; then
+  echo "Transactional consultation form must not be included in sitemap.xml." >&2
+  exit 1
+fi
 
 grep -q 'HDN editorial design layer' assets/editorial.css
 

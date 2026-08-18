@@ -1,7 +1,10 @@
 from pathlib import Path
+import re
 
 PROFILE = Path('_site/tsuyoshi-hadano.html')
 CONSULTATION = Path('_site/consultation.html')
+LEGACY_CONSULTATION_FORM = 'https://forms.gle/148jgfSnDgDZ2HsEA'
+CUSTOM_CONSULTATION_FORM = 'consultation-form.html'
 
 STYLE = '''<style id="trust-pages-style">
   .trust-detail{padding:72px 0;border-top:1px solid #d9d3cb;background:#f7f5f1}
@@ -73,10 +76,32 @@ def process(path: Path, block: str, marker: str) -> None:
     path.write_text(source, encoding='utf-8')
 
 
+def route_consultation_ctas(path: Path) -> None:
+    if not path.exists():
+        return
+    source = path.read_text(encoding='utf-8')
+    source = re.sub(
+        rf'href="{re.escape(LEGACY_CONSULTATION_FORM)}"(?:\s+target="_blank")?(?:\s+rel="noopener(?: noreferrer)?")?',
+        f'href="{CUSTOM_CONSULTATION_FORM}"',
+        source,
+    )
+    path.write_text(source, encoding='utf-8')
+
+
 process(PROFILE, PROFILE_BLOCK, 'data-founder-workstyle')
 process(CONSULTATION, CONSULTATION_BLOCK, 'data-consultation-output')
+
+# The corporate site previously sent consultation traffic to Google Forms.
+# Keep the indexed consultation landing page and route every generated Japanese
+# corporate CTA into the first-party transactional form instead.
+for path in Path('_site').glob('*.html'):
+    route_consultation_ctas(path)
 
 for path, marker in ((PROFILE, 'data-founder-workstyle'), (CONSULTATION, 'data-consultation-output')):
     source = path.read_text(encoding='utf-8')
     if marker not in source or 'id="trust-pages-style"' not in source:
         raise SystemExit(f'Trust-page enhancement missing: {path}')
+
+for path in Path('_site').glob('*.html'):
+    if LEGACY_CONSULTATION_FORM in path.read_text(encoding='utf-8'):
+        raise SystemExit(f'Legacy consultation form link remains: {path}')

@@ -87,6 +87,19 @@
   const isJapanese = (document.documentElement.lang || '').toLowerCase().startsWith('ja');
   const currentPath = window.location.pathname;
 
+  // Keep consultation traffic on the HDN domain. Legacy Google Form CTAs are
+  // progressively rewritten here so pages do not need to be migrated all at once.
+  if (isJapanese) {
+    document.querySelectorAll('a[href*="forms.gle/"]').forEach((link) => {
+      const text = (link.textContent || '').trim();
+      if (!/相談|診断|問い合わせ|問合せ|Contact|Discuss|Book/i.test(text) && !link.classList.contains('button')) return;
+      link.href = '/consultation-form.html';
+      link.removeAttribute('target');
+      link.removeAttribute('rel');
+      link.dataset.hdnConsultationCta = 'custom-form';
+    });
+  }
+
   const desktopNav = document.querySelector('.site-header .nav, .header .nav, .nav');
   const mobileNavInner = document.querySelector('.mobile-nav-inner');
 
