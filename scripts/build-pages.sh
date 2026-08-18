@@ -11,6 +11,7 @@ cp lhub-lp.html _site/
 cp medical-sns.html _site/
 cp tsuyoshi-hadano.html _site/
 cp consultation.html _site/
+cp consultation-form.html _site/
 cp -R assets _site/assets
 if [ -d en ]; then
   cp -R en _site/en
@@ -158,6 +159,7 @@ required = [
     Path("_site/lhub-lp.html"),
     Path("_site/medical-sns.html"),
     Path("_site/tsuyoshi-hadano.html"),
+    Path("_site/consultation-form.html"),
     Path("_site/en/index.html"),
     Path("_site/en/self-pay.html"),
     Path("_site/en/lhub.html"),
@@ -192,6 +194,11 @@ for filename in editorial_classes:
     html = path.read_text(encoding='utf-8')
     if 'assets/editorial.css' not in html:
         raise SystemExit(f'Editorial design layer is missing: {path}')
+
+consultation_form = Path('_site/consultation-form.html').read_text(encoding='utf-8')
+for required_text in ('id="consultation-form"', 'privacy_consent', 'consultation_topics', 'assets/consultation-form.js'):
+    if required_text not in consultation_form:
+        raise SystemExit(f'Missing consultation form invariant: {required_text}')
 PY
 
 touch _site/.nojekyll
