@@ -37,6 +37,7 @@
 
   const currentPath = window.location.pathname;
   const isJapanese = (document.documentElement.lang || '').toLowerCase().startsWith('ja');
+  const consultationFormPath = isJapanese ? '/consultation-form.html' : '/en/consultation-form.html';
 
   const pageKey = (() => {
     if (currentPath.includes('lhub-lp')) return 'lhub_lp';
@@ -83,6 +84,7 @@
       const url = new URL(link.href, window.location.href);
       const intent = consultationIntent(link);
       const position = consultationPosition(link, index);
+      url.pathname = consultationFormPath;
       url.searchParams.set('cta_source', pageKey);
       url.searchParams.set('cta_intent', intent);
       url.searchParams.set('cta_position', position);
@@ -96,7 +98,7 @@
 
   // Runtime safety net: no corporate CTA may leave HDN for Google Forms.
   document.querySelectorAll('a[href*="forms.gle/"], a[href*="docs.google.com/forms/"]').forEach((link) => {
-    link.href = '/consultation-form.html';
+    link.href = consultationFormPath;
     link.removeAttribute('target');
     link.removeAttribute('rel');
     link.dataset.hdnConsultationCta = 'custom-form';
