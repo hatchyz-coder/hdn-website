@@ -170,6 +170,7 @@
       submission_key: submissionKey,
       company_website: '',
       turnstile_token: turnstileToken,
+      language,
       ...attribution
     };
 
