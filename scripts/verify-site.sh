@@ -10,6 +10,7 @@ medical-sns.html
 tsuyoshi-hadano.html
 consultation.html
 consultation-form.html
+en/consultation-form.html
 assets/consultation-form.js
 assets/hdn-logo.png
 assets/hadano-profile.jpg
@@ -83,13 +84,36 @@ grep -q '<meta name="robots" content="noindex,follow">' consultation-form.html
 grep -q 'id="consultation-form"' consultation-form.html
 grep -q 'privacy_consent' consultation-form.html
 grep -q '患者氏名、診断名、治療歴、検査結果' consultation-form.html
+
+grep -q '<meta name="robots" content="noindex,follow">' en/consultation-form.html
+grep -q '<html lang="en">' en/consultation-form.html
+grep -q 'id="consultation-form"' en/consultation-form.html
+grep -q 'privacy_consent' en/consultation-form.html
+grep -q 'Do not enter patient-identifying or clinical information' en/consultation-form.html
+grep -q '../assets/consultation-form.js' en/consultation-form.html
+
 grep -q 'register-consultation' assets/consultation-form.js
 grep -q 'consultation_form_submit' assets/consultation-form.js
+grep -q 'content_language' assets/consultation-form.js
+grep -q 'language,' assets/consultation-form.js
 grep -q 'cta_source' assets/site-shell.js
 grep -q 'cta_intent' assets/site-shell.js
 grep -q 'cta_position' assets/site-shell.js
 grep -q 'intentTopicMap' assets/consultation-form.js
 grep -q 'ctaContext' assets/consultation-form.js
+grep -q "'/en/consultation-form.html'" assets/site-shell.js
+
+# Static links must match the page language even before the runtime safety net runs.
+for page in en/index.html en/self-pay.html en/lhub.html en/privacy.html en/terms.html en/cookie-policy.html en/security.html en/disclaimer.html; do
+  if grep -q 'href="/consultation-form.html' "$page"; then
+    echo "English page points to Japanese consultation form: $page" >&2
+    exit 1
+  fi
+done
+for page in en/index.html en/self-pay.html en/lhub.html; do
+  grep -q 'href="/en/consultation-form.html' "$page"
+done
+
 if grep -q 'consultation-form.html' sitemap.xml; then
   echo "Transactional consultation form must not be included in sitemap.xml." >&2
   exit 1
