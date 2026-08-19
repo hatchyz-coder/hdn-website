@@ -22,6 +22,7 @@ assets/medical-sns.css
 assets/site-shell.css
 assets/editorial.css
 assets/site-shell.js
+scripts/audit-links.py
 "
 
 for file in $required_files; do
@@ -90,5 +91,7 @@ if grep -q 'consultation-form.html' sitemap.xml; then
 fi
 
 grep -q 'HDN editorial design layer' assets/editorial.css
+
+python3 scripts/audit-links.py
 
 echo "Site verification passed."
