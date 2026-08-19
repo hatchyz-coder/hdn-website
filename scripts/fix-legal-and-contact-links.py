@@ -3,7 +3,6 @@ import re
 from html import unescape
 from urllib.parse import urlencode
 
-CUSTOM_FORM = '/consultation-form.html'
 GOOGLE_FORM_HOST_PATTERNS = (
     r'https://forms\.gle/[^"\'\s<>]+',
     r'https://docs\.google\.com/forms/[^"\'\s<>]+',
@@ -16,11 +15,20 @@ ROOT_PUBLIC = [
 SITE = Path('_site')
 
 
-def replace_google_form_links(html: str) -> str:
-    """Route every public Google Form link to HDN's first-party consultation form."""
+def is_english(path: Path) -> bool:
+    return 'en' in path.parts
+
+
+def custom_form_for(path: Path) -> str:
+    return '/en/consultation-form.html' if is_english(path) else '/consultation-form.html'
+
+
+def replace_google_form_links(html: str, path: Path) -> str:
+    """Route every public Google Form link to the language-matched HDN first-party form."""
+    target = custom_form_for(path)
     for url_pattern in GOOGLE_FORM_HOST_PATTERNS:
         href_pattern = rf'href="{url_pattern}"(?:\s+target="_blank")?(?:\s+rel="noopener(?: noreferrer)?")?'
-        html = re.sub(href_pattern, f'href="{CUSTOM_FORM}"', html, flags=re.IGNORECASE)
+        html = re.sub(href_pattern, f'href="{target}"', html, flags=re.IGNORECASE)
     return html
 
 
@@ -67,9 +75,9 @@ def consultation_intent(path: Path, anchor_text: str, attrs: str) -> str:
 
 
 def add_consultation_attribution(html: str, path: Path) -> str:
-    """Persist CTA source/intent/position in the link itself for pages without site-shell.js."""
+    """Persist CTA source/intent/position and enforce a language-matched form URL."""
     pattern = re.compile(
-        r'<a(?P<attrs>[^>]*?)href="(?P<href>(?:/)?consultation-form\.html(?:\?[^\"]*)?)"(?P<after>[^>]*)>(?P<body>.*?)</a>',
+        r'<a(?P<attrs>[^>]*?)href="(?P<href>(?:(?:/en/)|/)?consultation-form\.html(?:\?[^\"]*)?)"(?P<after>[^>]*)>(?P<body>.*?)</a>',
         flags=re.IGNORECASE | re.DOTALL,
     )
     occurrence = 0
@@ -88,7 +96,7 @@ def add_consultation_attribution(html: str, path: Path) -> str:
             'cta_intent': intent,
             'cta_position': position,
         })
-        href = f'{CUSTOM_FORM}?{query}'
+        href = f'{custom_form_for(path)}?{query}'
         return f'<a{match.group("attrs")}href="{href}"{match.group("after")}>{body}</a>'
 
     return pattern.sub(repl, html)
@@ -108,15 +116,11 @@ def repair_footer_replacement_compatibility(html: str) -> str:
     )
 
 
-def is_english(path: Path) -> bool:
-    return 'en' in path.parts
-
-
 def process(path: Path) -> None:
     if not path.exists() or not path.is_file():
         return
     html = path.read_text(encoding='utf-8')
-    html = replace_google_form_links(html)
+    html = replace_google_form_links(html, path)
     html = add_consultation_attribution(html, path)
     if is_english(path):
         html = repair_english_legal_footer(html)
@@ -126,7 +130,7 @@ def process(path: Path) -> None:
 
 # Repair the checked-in GitHub Pages source as well as the generated build tree.
 # This closes the gap where _site was clean but the branch root—and therefore the
-# live Pages source—could still contain legacy Google Form CTAs.
+# live Pages source—could still contain legacy or wrong-language contact CTAs.
 for path in ROOT_PUBLIC:
     process(path)
 
@@ -148,6 +152,10 @@ def assert_attributed_consultation_links(path: Path) -> None:
     for href in re.findall(r'href="([^\"]*consultation-form\.html[^\"]*)"', html, flags=re.IGNORECASE):
         if not all(token in href for token in ('cta_source=', 'cta_intent=', 'cta_position=')):
             raise SystemExit(f'Unattributed consultation link remains: {path}: {href}')
+        if is_english(path) and not href.startswith('/en/consultation-form.html'):
+            raise SystemExit(f'English page points to non-English consultation form: {path}: {href}')
+        if not is_english(path) and href.startswith('/en/consultation-form.html'):
+            raise SystemExit(f'Japanese page points to English consultation form: {path}: {href}')
 
 
 for path in ROOT_PUBLIC:
