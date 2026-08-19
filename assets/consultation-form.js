@@ -9,8 +9,29 @@
   const status = document.getElementById('form-status');
   const button = form.querySelector('button[type="submit"]');
   const qs = new URLSearchParams(location.search);
+  const language = (document.documentElement.lang || 'ja').toLowerCase().startsWith('en') ? 'en' : 'ja';
   let turnstileWidgetId = null;
   let turnstileToken = '';
+
+  const copy = language === 'en'
+    ? {
+        verifyLoadError: 'The verification check could not be loaded. Reload the page and try again.',
+        accepted: 'Your submission has been received.',
+        topicRequired: 'Select at least one consultation topic.',
+        verifyRequired: 'Verification is not complete yet. Wait for the verification field to appear, then try again.',
+        sending: 'Sending…',
+        success: 'Your consultation request has been received. HDN will review the details and contact you when needed.',
+        failure: (code) => `We could not complete the submission. Error code: ${code}`,
+      }
+    : {
+        verifyLoadError: '本人確認の読み込みに失敗しました。ページを再読み込みしてお試しください。',
+        accepted: '送信を受け付けました。',
+        topicRequired: '相談したい内容を1つ以上選択してください。',
+        verifyRequired: '本人確認が完了していません。確認欄が表示されるまで少し待ってから、もう一度お試しください。',
+        sending: '送信しています…',
+        success: 'ご相談を受け付けました。内容を確認のうえ、HDNよりご連絡します。',
+        failure: (code) => `送信を完了できませんでした。エラーコード：${code}`,
+      };
 
   const ctaContext = {
     cta_source: qs.get('cta_source') || 'direct',
@@ -28,6 +49,7 @@
     referrer: document.referrer || ''
   };
 
+  // Keep stable internal values across JP/EN so CRM and reporting stay comparable.
   const intentTopicMap = {
     lhub: 'LINE・LHub・予約・問診・決済導線',
     sns: '集患・広告・SNS・動画',
@@ -75,11 +97,12 @@
       sitekey: TURNSTILE_SITE_KEY,
       action: TURNSTILE_ACTION,
       theme: 'auto',
+      language: language === 'en' ? 'en' : 'ja',
       callback: (token) => { turnstileToken = token; clearStatus(); },
       'expired-callback': () => { turnstileToken = ''; },
       'error-callback': () => {
         turnstileToken = '';
-        show('本人確認の読み込みに失敗しました。ページを再読み込みしてお試しください。');
+        show(copy.verifyLoadError);
       }
     });
   };
@@ -93,6 +116,7 @@
   try {
     window.gtag?.('event', 'consultation_form_view', {
       form_name: 'hdn_consultation',
+      content_language: language,
       ...ctaContext,
     });
   } catch (_) {}
@@ -104,6 +128,7 @@
     try {
       window.gtag?.('event', 'consultation_form_start', {
         form_name: 'hdn_consultation',
+        content_language: language,
         ...ctaContext,
       });
     } catch (_) {}
@@ -116,18 +141,18 @@
 
     const data = new FormData(form);
     if (String(data.get('company_website') || '').trim()) {
-      show('送信を受け付けました。', 'success');
+      show(copy.accepted, 'success');
       form.reset();
       return;
     }
 
     const topics = data.getAll('consultation_topics').map((value) => String(value).trim()).filter(Boolean);
     if (topics.length === 0) {
-      show('相談したい内容を1つ以上選択してください。');
+      show(copy.topicRequired);
       return;
     }
     if (!turnstileToken) {
-      show('本人確認が完了していません。確認欄が表示されるまで少し待ってから、もう一度お試しください。');
+      show(copy.verifyRequired);
       return;
     }
 
@@ -149,7 +174,7 @@
     };
 
     const original = button?.textContent || '';
-    if (button) { button.disabled = true; button.textContent = '送信しています…'; }
+    if (button) { button.disabled = true; button.textContent = copy.sending; }
 
     try {
       const response = await fetch(endpoint, {
@@ -164,22 +189,24 @@
 
       delete form.dataset.submissionKey;
       form.reset();
-      show('ご相談を受け付けました。内容を確認のうえ、HDNよりご連絡します。', 'success');
+      show(copy.success, 'success');
       try {
         window.gtag?.('event', 'consultation_form_submit', {
           form_name: 'hdn_consultation',
+          content_language: language,
           ...ctaContext,
         });
         window.gtag?.('event', 'generate_lead', {
           event_category: 'consultation',
           event_label: 'hdn_corporate',
+          content_language: language,
           ...ctaContext,
         });
       } catch (_) {}
     } catch (error) {
       const code = String(error?.message || 'UNKNOWN').replace(/[^A-Z0-9_-]/gi, '').slice(0, 40) || 'UNKNOWN';
       console.warn('Consultation submission failed:', code);
-      show(`送信を完了できませんでした。エラーコード：${code}`);
+      show(copy.failure(code));
     } finally {
       resetTurnstile();
       if (button) { button.disabled = false; button.textContent = original; }
