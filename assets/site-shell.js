@@ -35,6 +35,75 @@
     });
   }
 
+  const currentPath = window.location.pathname;
+  const isJapanese = (document.documentElement.lang || '').toLowerCase().startsWith('ja');
+
+  const pageKey = (() => {
+    if (currentPath.includes('lhub-lp')) return 'lhub_lp';
+    if (currentPath.includes('lhub')) return 'lhub';
+    if (currentPath.includes('self-pay')) return 'self_pay';
+    if (currentPath.includes('medical-sns')) return 'medical_sns';
+    if (currentPath.includes('consultation')) return 'consultation';
+    if (currentPath.includes('privacy')) return 'privacy';
+    if (currentPath.startsWith('/en/')) return 'en_home';
+    return 'home';
+  })();
+
+  function consultationIntent(link) {
+    const text = `${link.textContent || ''} ${link.dataset.cta || ''}`.toLowerCase();
+    if (/lhub|line|デモ/.test(text) || pageKey.startsWith('lhub')) return 'lhub';
+    if (/sns|動画|youtube|social/.test(text) || pageKey === 'medical_sns') return 'sns';
+    if (/自費|private care|private medical/.test(text) || pageKey === 'self_pay') return 'self_pay';
+    if (/導線|診断|patient journey/.test(text)) return 'journey_review';
+    if (/問い合わせ|inquiry|privacy|個人情報/.test(text) || pageKey === 'privacy') return 'inquiry';
+    return 'general';
+  }
+
+  function consultationPosition(link, index) {
+    if (link.dataset.cta) return String(link.dataset.cta).slice(0, 48);
+    if (link.closest('header, .site-header, .header')) return 'header';
+    if (link.closest('.hero')) return 'hero';
+    if (link.closest('.mobile-cta')) return 'mobile_fixed';
+    if (link.closest('footer, .footer')) return 'footer';
+    if (link.closest('.final')) return 'final';
+    return `body_${index + 1}`;
+  }
+
+  function annotateConsultationLinks() {
+    const links = Array.from(document.querySelectorAll('a[href]')).filter((link) => {
+      try {
+        const url = new URL(link.href, window.location.href);
+        return url.hostname === window.location.hostname && url.pathname.endsWith('/consultation-form.html');
+      } catch {
+        return false;
+      }
+    });
+
+    links.forEach((link, index) => {
+      const url = new URL(link.href, window.location.href);
+      const intent = consultationIntent(link);
+      const position = consultationPosition(link, index);
+      url.searchParams.set('cta_source', pageKey);
+      url.searchParams.set('cta_intent', intent);
+      url.searchParams.set('cta_position', position);
+      link.href = `${url.pathname}${url.search}${url.hash}`;
+      link.dataset.hdnConsultationCta = 'attributed';
+      link.dataset.hdnCtaSource = pageKey;
+      link.dataset.hdnCtaIntent = intent;
+      link.dataset.hdnCtaPosition = position;
+    });
+  }
+
+  // Runtime safety net: no corporate CTA may leave HDN for Google Forms.
+  document.querySelectorAll('a[href*="forms.gle/"], a[href*="docs.google.com/forms/"]').forEach((link) => {
+    link.href = '/consultation-form.html';
+    link.removeAttribute('target');
+    link.removeAttribute('rel');
+    link.dataset.hdnConsultationCta = 'custom-form';
+  });
+
+  annotateConsultationLinks();
+
   document.addEventListener('click', (event) => {
     const target = event.target;
     const link = target instanceof Element ? target.closest('a[href]') : null;
@@ -64,6 +133,9 @@
       window.gtag('event', 'hdn_consultation_click', {
         ...common,
         destination_key: 'consultation',
+        cta_source: link.dataset.hdnCtaSource || destination.searchParams.get('cta_source') || pageKey,
+        cta_intent: link.dataset.hdnCtaIntent || destination.searchParams.get('cta_intent') || 'general',
+        cta_position: link.dataset.hdnCtaPosition || destination.searchParams.get('cta_position') || 'unknown',
       });
       return;
     }
@@ -82,17 +154,6 @@
         destination_key: destinationKey,
       });
     }
-  });
-
-  const isJapanese = (document.documentElement.lang || '').toLowerCase().startsWith('ja');
-  const currentPath = window.location.pathname;
-
-  // Runtime safety net: no corporate CTA may leave HDN for Google Forms.
-  document.querySelectorAll('a[href*="forms.gle/"], a[href*="docs.google.com/forms/"]').forEach((link) => {
-    link.href = '/consultation-form.html';
-    link.removeAttribute('target');
-    link.removeAttribute('rel');
-    link.dataset.hdnConsultationCta = 'custom-form';
   });
 
   const desktopNav = document.querySelector('.site-header .nav, .header .nav, .nav');

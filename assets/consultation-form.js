@@ -12,6 +12,12 @@
   let turnstileWidgetId = null;
   let turnstileToken = '';
 
+  const ctaContext = {
+    cta_source: qs.get('cta_source') || 'direct',
+    cta_intent: qs.get('cta_intent') || 'general',
+    cta_position: qs.get('cta_position') || 'unknown',
+  };
+
   const attribution = {
     utm_source: qs.get('utm_source') || '',
     utm_medium: qs.get('utm_medium') || '',
@@ -21,6 +27,21 @@
     landing_page: location.href,
     referrer: document.referrer || ''
   };
+
+  const intentTopicMap = {
+    lhub: 'LINE・LHub・予約・問診・決済導線',
+    sns: '集患・広告・SNS・動画',
+    self_pay: '自費診療・オンライン診療',
+    journey_review: '既存業務・患者導線の改善',
+  };
+
+  const preferredTopic = intentTopicMap[ctaContext.cta_intent];
+  if (preferredTopic) {
+    const topic = Array.from(form.querySelectorAll('input[name="consultation_topics"]')).find(
+      (input) => input.value === preferredTopic
+    );
+    if (topic) topic.checked = true;
+  }
 
   function show(message, type = 'error') {
     status.className = `form-status is-${type}`;
@@ -69,13 +90,23 @@
   turnstileScript.defer = true;
   document.head.appendChild(turnstileScript);
 
-  try { window.gtag?.('event', 'consultation_form_view', { form_name: 'hdn_consultation' }); } catch (_) {}
+  try {
+    window.gtag?.('event', 'consultation_form_view', {
+      form_name: 'hdn_consultation',
+      ...ctaContext,
+    });
+  } catch (_) {}
 
   let started = false;
   form.addEventListener('input', () => {
     if (started) return;
     started = true;
-    try { window.gtag?.('event', 'consultation_form_start', { form_name: 'hdn_consultation' }); } catch (_) {}
+    try {
+      window.gtag?.('event', 'consultation_form_start', {
+        form_name: 'hdn_consultation',
+        ...ctaContext,
+      });
+    } catch (_) {}
   }, { once: true });
 
   form.addEventListener('submit', async (event) => {
@@ -135,8 +166,15 @@
       form.reset();
       show('ご相談を受け付けました。内容を確認のうえ、HDNよりご連絡します。', 'success');
       try {
-        window.gtag?.('event', 'consultation_form_submit', { form_name: 'hdn_consultation' });
-        window.gtag?.('event', 'generate_lead', { event_category: 'consultation', event_label: 'hdn_corporate' });
+        window.gtag?.('event', 'consultation_form_submit', {
+          form_name: 'hdn_consultation',
+          ...ctaContext,
+        });
+        window.gtag?.('event', 'generate_lead', {
+          event_category: 'consultation',
+          event_label: 'hdn_corporate',
+          ...ctaContext,
+        });
       } catch (_) {}
     } catch (error) {
       const code = String(error?.message || 'UNKNOWN').replace(/[^A-Z0-9_-]/gi, '').slice(0, 40) || 'UNKNOWN';
