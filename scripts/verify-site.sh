@@ -85,6 +85,11 @@ grep -q 'privacy_consent' consultation-form.html
 grep -q '患者氏名、診断名、治療歴、検査結果' consultation-form.html
 grep -q 'register-consultation' assets/consultation-form.js
 grep -q 'consultation_form_submit' assets/consultation-form.js
+grep -q 'cta_source' assets/site-shell.js
+grep -q 'cta_intent' assets/site-shell.js
+grep -q 'cta_position' assets/site-shell.js
+grep -q 'intentTopicMap' assets/consultation-form.js
+grep -q 'ctaContext' assets/consultation-form.js
 if grep -q 'consultation-form.html' sitemap.xml; then
   echo "Transactional consultation form must not be included in sitemap.xml." >&2
   exit 1
