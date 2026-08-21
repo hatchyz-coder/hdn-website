@@ -459,3 +459,215 @@ body.page-en-lhub {
     animation: none !important;
   }
 }
+
+
+/* Issue #46: final editorial refinement.
+   Keep the corporate site recognisably HDN, while removing the remaining
+   generated-SaaS motifs from typography, labels, panels and grid rhythm. */
+:root {
+  --hdn-display: "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", Georgia, serif;
+  --hdn-body: "BIZ UDPGothic", "Yu Gothic", Meiryo, sans-serif;
+}
+
+body {
+  font-family: var(--hdn-body);
+  font-size: 16px;
+  line-height: 1.82;
+}
+
+:focus-visible {
+  outline: 3px solid #b06a22 !important;
+  outline-offset: 4px !important;
+}
+
+.hero h1,
+.hero-title,
+.page-hero h1,
+.section-title,
+.section h2,
+.section-head h2,
+.section-header h2,
+section > .container > h2,
+.wide-band h2,
+.contact h2,
+.cta h2,
+body.page-profile h1,
+body.page-profile h2 {
+  font-family: var(--hdn-display) !important;
+  font-weight: 600 !important;
+  letter-spacing: -.025em !important;
+  text-wrap: balance;
+}
+
+.hero h1,
+.hero-title,
+.page-hero h1 {
+  line-height: 1.22 !important;
+}
+
+.hero-panel,
+.hero-card,
+.visual-card,
+.lhub-brand-card,
+.diagnosis-box,
+.hero-models {
+  background-image: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body:not(.page-lhub):not(.page-en-lhub) .hero-panel,
+body:not(.page-lhub):not(.page-en-lhub) .hero-card,
+body:not(.page-lhub):not(.page-en-lhub) .diagnosis-box,
+body:not(.page-lhub):not(.page-en-lhub) .hero-models {
+  background: transparent !important;
+  border: 0 !important;
+  border-top: 3px solid var(--hdn-ink) !important;
+  padding: 24px 0 0 !important;
+}
+
+.hero-note {
+  max-width: 42rem;
+  padding: 16px 0 0 !important;
+  border: 0 !important;
+  border-top: 1px solid var(--hdn-rule) !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--hdn-muted) !important;
+  font-size: 13px !important;
+}
+
+.tag,
+.badge,
+.pill,
+.status,
+.model-label,
+.promise-label {
+  display: inline-block;
+  padding: 0 0 4px !important;
+  border: 0 !important;
+  border-bottom: 1px solid currentColor !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: .06em;
+}
+
+/* Deliberate hierarchy comes from measure and rules, not random card offsets. */
+.grid-3 > :nth-child(even),
+.grid-4 > :nth-child(even),
+.cards > :nth-child(even) {
+  transform: none !important;
+}
+
+.grid-3,
+.grid-4,
+.cards,
+.feature-grid,
+.service-grid,
+.support-grid,
+.problem-grid {
+  gap: clamp(18px, 3vw, 34px) !important;
+}
+
+.grid-3 > .card,
+.grid-4 > .card,
+.cards > .card,
+.feature-grid > .card,
+.service-grid > .card {
+  min-height: 0 !important;
+  border-bottom: 1px solid var(--hdn-rule) !important;
+}
+
+.card h3,
+.feature-card h3,
+.service-card h3,
+.support-card h3,
+.problem-card h3,
+.case-card h3 {
+  line-height: 1.5 !important;
+  text-wrap: balance;
+}
+
+.wide-band,
+.contact,
+.cta,
+.precontact-trust,
+.trust-detail,
+.article-bridge {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.wide-band,
+.precontact-trust,
+.trust-detail,
+.article-bridge {
+  background-image: none !important;
+}
+
+.contact,
+.cta {
+  background-image: none !important;
+}
+
+body.page-profile .definition,
+body.page-profile .case,
+body.page-profile .card {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.page-lhub .hero-panel,
+body.page-en-lhub .hero-panel,
+body.page-lhub .lhub-brand-card,
+body.page-en-lhub .lhub-brand-card {
+  border: 1px solid rgba(255,255,255,.28) !important;
+  background: transparent !important;
+}
+
+body.page-lhub .tag,
+body.page-en-lhub .tag {
+  color: var(--hdn-green) !important;
+}
+
+@media (max-width: 900px) {
+  .hero h1,
+  .hero-title,
+  .page-hero h1 {
+    max-width: 20ch !important;
+  }
+
+  .grid-3,
+  .grid-4,
+  .cards,
+  .feature-grid,
+  .service-grid,
+  .support-grid,
+  .problem-grid {
+    gap: 0 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+
+  .hero h1,
+  .hero-title,
+  .page-hero h1 {
+    line-height: 1.25 !important;
+  }
+
+  .grid-3 > .card,
+  .grid-4 > .card,
+  .cards > .card,
+  .feature-grid > .card,
+  .service-grid > .card {
+    padding: 24px 0 !important;
+  }
+}
