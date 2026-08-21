@@ -1,0 +1,68 @@
+name: Corporate site CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: corporate-site-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint
+        run: |
+          bash -n scripts/build-pages.sh
+          bash -n scripts/verify-site.sh
+          git diff --check
+          ! grep -R --exclude-dir=.git --exclude-dir=_site '<<<<<<<' .
+          ! grep -R --exclude-dir=.git --exclude-dir=_site '>>>>>>> ' .
+
+      - name: Typecheck
+        run: echo "Not applicable — static HTML/CSS/JavaScript site without a TypeScript toolchain."
+
+      - name: Tests
+        run: bash scripts/verify-site.sh
+
+      - name: Build
+        run: bash scripts/build-pages.sh
+
+      - name: Verify built output
+        run: |
+          test -s _site/index.html
+          test -s _site/self-pay.html
+          test -s _site/lhub.html
+          test -s _site/consultation.html
+          test -s _site/assets/editorial.css
+          python3 scripts/audit-links.py
+          python3 - <<'PY'
+          from pathlib import Path
+
+          css = Path("_site/assets/editorial.css").read_text(encoding="utf-8")
+          if css.count("{") != css.count("}"):
+              raise SystemExit("Unbalanced braces in editorial.css")
+          required = (
+              "HDN editorial design layer",
+              "Issue #46",
+              "prefers-reduced-motion",
+              ":focus-visible",
+          )
+          missing = [token for token in required if token not in css]
+          if missing:
+              raise SystemExit(f"Missing editorial safeguards: {missing}")
+          print("Built editorial CSS safeguards verified.")
+          PY
+
+      - name: Migration check
+        run: echo "Not applicable — this repository has no database or migration layer."
