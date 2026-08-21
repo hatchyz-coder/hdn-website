@@ -26,8 +26,8 @@ jobs:
           bash -n scripts/build-pages.sh
           bash -n scripts/verify-site.sh
           git diff --check
-          ! grep -R --exclude-dir=.git --exclude-dir=_site '<<<<<<<' .
-          ! grep -R --exclude-dir=.git --exclude-dir=_site '>>>>>>>' .
+          ! grep -R --include='*.html' --include='*.css' --include='*.js' --include='*.py' --include='*.sh' --exclude-dir=.git --exclude-dir=_site '<<<<<<<' .
+          ! grep -R --include='*.html' --include='*.css' --include='*.js' --include='*.py' --include='*.sh' --exclude-dir=.git --exclude-dir=_site '>>>>>>>' .
 
       - name: Typecheck
         run: echo "Not applicable — static HTML/CSS/JavaScript site without a TypeScript toolchain."
