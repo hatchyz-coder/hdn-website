@@ -20,7 +20,9 @@ if EVENT.exists():
     html = EVENT.read_text(encoding="utf-8")
     required = [
         "自費診療、",
-        "8月27日（木）20:00–21:00",
+        "9月10日（木）20:00–21:00",
+        "2026-09-10T20:00:00+09:00",
+        "2026-09-10T21:00:00+09:00",
         'id="seminar-form"',
         'name="privacy_consent"',
         "患者さんの個人情報は入力しないでください",
@@ -36,6 +38,8 @@ if EVENT.exists():
             errors.append(f"event page missing required content: {needle}")
 
     forbidden = [
+        "8月27日",
+        "2026-08-27",
         "zoom.us/j/",
         "SUPABASE_SERVICE_ROLE_KEY",
         "RESEND_API_KEY",
@@ -45,7 +49,7 @@ if EVENT.exists():
     ]
     for needle in forbidden:
         if needle.lower() in html.lower():
-            errors.append(f"event page exposes forbidden value/reference: {needle}")
+            errors.append(f"event page exposes forbidden/stale value/reference: {needle}")
 
     emails = re.findall(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}", html)
     if emails:

@@ -16,7 +16,7 @@ This directory is intentionally excluded from the existing corporate-site GitHub
 ## Current event
 
 - `furuta-01/`
-- 2026-08-27 20:00 JST
+- 2026-09-10 20:00 JST
 - Zoom online seminar
 
 ## Form integration
