@@ -14,6 +14,8 @@
   const status = document.getElementById('form-status');
   const button = form.querySelector('button[type="submit"]');
   const qs = new URLSearchParams(location.search);
+  const roles = new Set(['院長', '医師', '医療法人経営者', '事務長', 'その他医療機関関係者']);
+  const selfPayStatuses = new Set(['まだ導入していない', '検討・情報収集中', '一部導入している', 'すでに複数メニューを運用している']);
 
   let turnstileWidgetId = null;
   let turnstileToken = '';
@@ -42,6 +44,14 @@
   function createSubmissionKey() {
     if (crypto?.randomUUID) return crypto.randomUUID();
     return `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`;
+  }
+
+  function validateRegistration(payload) {
+    if (payload.name.length < 3) return 'お名前は3文字以上で正確に入力してください。';
+    if (payload.organization_name.length < 4) return '医療機関名・法人名は4文字以上で正確に入力してください。';
+    if (!roles.has(payload.role)) return '役職を選択してください。';
+    if (!selfPayStatuses.has(payload.self_pay_status)) return '現在の自費診療の状況を選択してください。';
+    return '';
   }
 
   function resetTurnstile() {
@@ -122,6 +132,12 @@
       ...attribution
     };
 
+    const validationMessage = validateRegistration(payload);
+    if (validationMessage) {
+      show(validationMessage);
+      return;
+    }
+
     form.classList.add('is-loading');
     const original = button?.textContent || '';
     if (button) button.textContent = '送信しています…';
@@ -141,7 +157,8 @@
       try { body = await response.json(); } catch (_) { /* no-op */ }
 
       if (!response.ok || body.ok !== true) {
-        throw new Error(body.error_code || `HTTP_${response.status}`);
+        const message = typeof body.message === 'string' ? body.message : '';
+        throw new Error(message || body.error_code || `HTTP_${response.status}`);
       }
 
       try {
@@ -154,7 +171,10 @@
       show('お申し込みを受け付けました。参加方法は、ご登録のメールアドレスへ改めてご案内します。', 'success');
     } catch (error) {
       console.warn('Seminar submission failed:', error?.message || 'UNKNOWN');
-      show('送信を完了できませんでした。通信環境をご確認のうえ、もう一度お試しください。');
+      const message = String(error?.message || '');
+      show(message.startsWith('VALIDATION_') || message.startsWith('HTTP_') || message === 'TURNSTILE_FAILED'
+        ? '送信を完了できませんでした。通信環境をご確認のうえ、もう一度お試しください。'
+        : message || '送信を完了できませんでした。通信環境をご確認のうえ、もう一度お試しください。');
     } finally {
       resetTurnstile();
       form.classList.remove('is-loading');
