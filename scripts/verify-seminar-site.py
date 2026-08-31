@@ -24,6 +24,9 @@ if EVENT.exists():
         "2026-09-10T20:00:00+09:00",
         "2026-09-10T21:00:00+09:00",
         'id="seminar-form"',
+        'name="name" autocomplete="name" required minlength="3"',
+        'name="organization_name" autocomplete="organization" required minlength="4"',
+        'name="self_pay_status" required',
         'name="privacy_consent"',
         "患者さんの個人情報は入力しないでください",
         "https://forms.hdnjapan.com/api/seminar",
@@ -57,7 +60,7 @@ if EVENT.exists():
 
 if JS.exists():
     js = JS.read_text(encoding="utf-8")
-    for needle in ("submission_key", "privacy_consent", "utm_source", "response.ok", "body.ok !== true"):
+    for needle in ("submission_key", "privacy_consent", "utm_source", "response.ok", "body.ok !== true", "validateRegistration", "selfPayStatuses"):
         if needle not in js:
             errors.append(f"form script missing guard/field: {needle}")
     if "fbq('track', 'Lead')" not in js:
