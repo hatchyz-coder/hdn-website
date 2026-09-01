@@ -1,0 +1,80 @@
+name: Corporate site CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: corporate-site-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Lint repository scripts and conflict markers
+        run: |
+          bash -n scripts/build-pages.sh
+          bash -n scripts/verify-site.sh
+          git diff --check
+          ! grep -R --include='*.html' --include='*.css' --include='*.js' --include='*.py' --include='*.sh' --exclude-dir=.git --exclude-dir=_site '<<<<<<<' .
+          ! grep -R --include='*.html' --include='*.css' --include='*.js' --include='*.py' --include='*.sh' --exclude-dir=.git --exclude-dir=_site '>>>>>>>' .
+
+      - name: Repository verification
+        run: bash scripts/verify-site.sh
+
+      - name: Build
+        run: bash scripts/build-pages.sh
+
+      - name: Verify built output and links
+        run: |
+          test -s _site/index.html
+          test -s _site/self-pay.html
+          test -s _site/lhub.html
+          test -s _site/consultation.html
+          test -s _site/consultation-form.html
+          test -s _site/en/index.html
+          test -s _site/en/consultation-form.html
+          test -s _site/assets/editorial.css
+          python3 scripts/audit-links.py
+
+      - name: Verify consultation and editorial safeguards
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          public = [*Path('.').glob('*.html'), *Path('en').glob('*.html')]
+          errors = []
+          for path in public:
+              text = path.read_text(encoding='utf-8')
+              low = text.lower()
+              if 'forms.gle/' in low or 'docs.google.com/forms/' in low:
+                  errors.append(f'{path}: Google Form URL remains')
+              if path.parts and path.parts[0] == 'en' and path.name != 'consultation-form.html':
+                  for href in __import__('re').findall(r'href="([^"]*consultation-form\.html[^"]*)"', text, flags=__import__('re').I):
+                      if not href.startswith('/en/consultation-form.html'):
+                          errors.append(f'{path}: English CTA leaves English consultation journey: {href}')
+          css = Path('_site/assets/editorial.css').read_text(encoding='utf-8')
+          for token in ('HDN editorial design layer', 'prefers-reduced-motion'):
+              if token not in css:
+                  errors.append(f'editorial.css: missing safeguard {token}')
+          if css.count('{') != css.count('}'):
+              errors.append('editorial.css: unbalanced braces')
+          if errors:
+              raise SystemExit('\n'.join(errors))
+          print('Corporate site safeguards verified.')
+          PY
+
+      - name: Typecheck and migration scope
+        run: |
+          echo "Typecheck: not applicable — static HTML/CSS/JavaScript site without TypeScript toolchain."
+          echo "Migration check: not applicable — no database layer in this repository."
