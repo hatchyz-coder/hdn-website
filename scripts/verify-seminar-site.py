@@ -10,9 +10,10 @@ CSS = SITE / "assets" / "seminar.css"
 JS = SITE / "assets" / "seminar.js"
 FURUTA = SITE / "assets" / "furuta-kazunori.jpg"
 OGP = SITE / "assets" / "furuta-ogp.jpg"
+LLMS = SITE / "llms.txt"
 
 errors = []
-for path in (SITE / "index.html", EVENT, CSS, JS, SITE / "README.md", FURUTA, OGP):
+for path in (SITE / "index.html", EVENT, CSS, JS, SITE / "README.md", FURUTA, OGP, LLMS):
     if not path.exists() or path.stat().st_size == 0:
         errors.append(f"missing or empty: {path.relative_to(ROOT)}")
 
@@ -72,6 +73,16 @@ if CSS.exists():
         errors.append("mobile CSS breakpoint missing")
     if ".speaker-photo-furuta" not in css:
         errors.append("Furuta portrait styling missing")
+
+if LLMS.exists():
+    llms = LLMS.read_text(encoding="utf-8")
+    for needle in (
+        "# HDN Seminar",
+        "https://seminar.hdnjapan.com/furuta-01/",
+        "https://hdnjapan.com/privacy.html",
+    ):
+        if needle not in llms:
+            errors.append(f"seminar llms.txt missing required content: {needle}")
 
 if errors:
     print("Seminar site verification failed:")
