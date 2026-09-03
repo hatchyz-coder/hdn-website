@@ -26,6 +26,7 @@ jobs:
         run: |
           test ! -e _site/seminar-site
           test -s seminar-site/furuta-01/index.html
+          test -s seminar-site/llms.txt
           echo 'Static seminar source is isolated and valid.'
 
 # lint: seminar-specific static validation is performed by verify-seminar-site.py
