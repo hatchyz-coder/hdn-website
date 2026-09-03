@@ -1,0 +1,32 @@
+# 株式会社HDN / HDN Inc.
+
+> 株式会社HDNは、医療機関とヘルスケア事業者向けに、自費診療の導入・改善、患者導線、LINEを起点とした患者CRM、予約・問診・決済・継続フォローの運用設計を支援する日本の事業者です。公式情報は日本語を正本とし、主要ページには英語版があります。
+
+このファイルは https://hdnjapan.com/ 配下の公式案内を要約したものです。診療上の助言、個別の法務判断、医療広告・薬機法・景品表示法の適法性判断は提供しません。個別案件の条件や価格は相談時に確認してください。
+
+## 会社・サービス
+
+- [HDN トップページ](https://hdnjapan.com/): 支援対象、提供価値、相談導線の概要。
+- [自費診療導入・運用支援](https://hdnjapan.com/self-pay.html): サービス設計、価格、患者コミュニケーション、運用、集患・継続導線の支援範囲。
+- [LHub](https://hdnjapan.com/lhub.html): 医療機関向けのLINE患者CRM、予約、問診、決済案内、配信、顧客管理の運用支援。
+- [SNS・動画戦略](https://hdnjapan.com/medical-sns.html): 医療機関向けのSNS、動画、患者導線を一体で考える支援。
+- [無料相談・患者導線診断](https://hdnjapan.com/consultation.html): 相談で扱うテーマと進め方。
+- [代表プロフィール](https://hdnjapan.com/tsuyoshi-hadano.html): 代表・羽田野剛士の経歴と支援領域。
+
+## 英語版
+
+- [HDN Inc.](https://hdnjapan.com/en/): Patient journey design and healthcare operations overview.
+- [Private Medical Services](https://hdnjapan.com/en/self-pay.html): English overview of private-care service development support.
+- [LHub for Clinics](https://hdnjapan.com/en/lhub.html): English overview of LINE-based patient engagement support.
+
+## 公式コンテンツとポリシー
+
+- [HDN Articles](https://article.hdnjapan.com/): HDNの医療経営、制度、患者導線、LINE・業務改善に関する記事基盤。
+- [プライバシーポリシー](https://hdnjapan.com/privacy.html): 個人情報の取扱い。
+- [利用規約](https://hdnjapan.com/terms.html): サイト利用に関する条件。
+- [サイトマップ](https://hdnjapan.com/sitemap.xml): 検索対象のページ一覧。
+
+## Optional
+
+- [英語版プライバシーポリシー](https://hdnjapan.com/en/privacy.html): English privacy policy.
+- [セキュリティ](https://hdnjapan.com/security.html): Security-related information for the corporate site.
