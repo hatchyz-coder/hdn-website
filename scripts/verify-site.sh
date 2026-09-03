@@ -2,6 +2,7 @@
 set -eu
 
 required_files="
+llms.txt
 index.html
 self-pay.html
 lhub.html
@@ -32,6 +33,17 @@ for file in $required_files; do
     exit 1
   fi
 done
+
+grep -q '^# 株式会社HDN / HDN Inc\.$' llms.txt
+grep -q 'https://hdnjapan.com/sitemap.xml' llms.txt
+grep -q 'https://article.hdnjapan.com/' llms.txt
+
+if [ ! -s seminar-site/llms.txt ]; then
+  echo "Missing or empty seminar-site/llms.txt" >&2
+  exit 1
+fi
+grep -q '^# HDN Seminar$' seminar-site/llms.txt
+grep -q 'https://seminar.hdnjapan.com/furuta-01/' seminar-site/llms.txt
 
 if grep -R -n -E "ROOTSと足並み|実名掲載|匿名の想定|制作上|仮で|とりあえず|初回はこの構成|見せる構成" *.html; then
   echo "Found internal-facing copy in public HTML." >&2

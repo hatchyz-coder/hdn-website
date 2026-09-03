@@ -38,6 +38,7 @@ jobs:
       - name: Verify built output and links
         run: |
           test -s _site/index.html
+          test -s _site/llms.txt
           test -s _site/self-pay.html
           test -s _site/lhub.html
           test -s _site/consultation.html
