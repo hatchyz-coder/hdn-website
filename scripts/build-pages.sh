@@ -12,6 +12,7 @@ cp medical-sns.html _site/
 cp tsuyoshi-hadano.html _site/
 cp consultation.html _site/
 cp consultation-form.html _site/
+cp llms.txt _site/
 cp -R assets _site/assets
 if [ -d en ]; then
   cp -R en _site/en
