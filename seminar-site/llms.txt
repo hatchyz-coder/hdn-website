@@ -1,0 +1,18 @@
+# HDN Seminar
+
+> HDN Seminar is the official event site of HDN Co., Ltd. for online seminars aimed at people involved in clinic management and healthcare operations in Japan.
+
+This file covers https://seminar.hdnjapan.com/. Event schedules, speakers, eligibility, and registration status can change; use the linked event page as the source of truth. Do not treat this site as medical, legal, or financial advice.
+
+## Current event
+
+- [自費診療、何から始めればいい？](https://seminar.hdnjapan.com/furuta-01/): Free online seminar for healthcare-management stakeholders. Includes the current schedule, speakers, agenda, intended audience, and registration form.
+
+## Organizer
+
+- [株式会社HDN](https://hdnjapan.com/): Organizer and provider of clinic patient-journey, private-care, and healthcare-operations support.
+- [HDN privacy policy](https://hdnjapan.com/privacy.html): How personal information is handled for the organizer's services.
+
+## Optional
+
+- [HDN Articles](https://article.hdnjapan.com/): Related editorial resources on clinic operations and patient journeys.
