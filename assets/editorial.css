@@ -480,10 +480,10 @@ body.page-en-lhub {
 
 #pricing .pricing-card.featured .plan-head span,
 .pricing-grid .pricing-card.featured .plan-head span {
-  color: rgba(255, 255, 255, .92) !important;
+  color: #ffffff !important;
 }
 
 #pricing .pricing-card.dark .plan-head span,
 .pricing-grid .pricing-card.dark .plan-head span {
-  color: rgba(255, 255, 255, .88) !important;
+  color: #ffffff !important;
 }
