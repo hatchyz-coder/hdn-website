@@ -70,6 +70,15 @@ jobs:
                   errors.append(f'editorial.css: missing safeguard {token}')
           if css.count('{') != css.count('}'):
               errors.append('editorial.css: unbalanced braces')
+          required_contrast_rules = (
+              '#pricing .pricing-card.featured .plan-head',
+              '#pricing .pricing-card.dark .plan-head',
+              'background: var(--red, #d7352a) !important',
+              'background: #282525 !important',
+          )
+          for rule in required_contrast_rules:
+              if rule not in css:
+                  errors.append(f'editorial.css: missing pricing contrast rule {rule}')
           if errors:
               raise SystemExit('\n'.join(errors))
           print('Corporate site safeguards verified.')
