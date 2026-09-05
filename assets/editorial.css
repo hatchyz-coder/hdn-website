@@ -459,3 +459,31 @@ body.page-en-lhub {
     animation: none !important;
   }
 }
+
+
+/* Preserve semantic emphasis and readable contrast in plan headers.
+   The editorial layer may simplify card surfaces, but it must not remove
+   the background that carries white plan-header text. */
+#pricing .pricing-card.featured .plan-head,
+.pricing-grid .pricing-card.featured .plan-head {
+  background: var(--red, #d7352a) !important;
+  border-bottom-color: var(--red, #d7352a) !important;
+  color: #ffffff !important;
+}
+
+#pricing .pricing-card.dark .plan-head,
+.pricing-grid .pricing-card.dark .plan-head {
+  background: #282525 !important;
+  border-bottom-color: #282525 !important;
+  color: #ffffff !important;
+}
+
+#pricing .pricing-card.featured .plan-head span,
+.pricing-grid .pricing-card.featured .plan-head span {
+  color: rgba(255, 255, 255, .92) !important;
+}
+
+#pricing .pricing-card.dark .plan-head span,
+.pricing-grid .pricing-card.dark .plan-head span {
+  color: rgba(255, 255, 255, .88) !important;
+}
