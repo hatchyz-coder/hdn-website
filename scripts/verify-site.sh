@@ -11,6 +11,8 @@ medical-sns.html
 tsuyoshi-hadano.html
 consultation.html
 consultation-form.html
+pricing.html
+article-service.html
 en/consultation-form.html
 assets/consultation-form.js
 assets/hdn-logo.png
@@ -84,6 +86,10 @@ grep -q 'LIGHT' index.html
 grep -q 'STANDARD' index.html
 grep -q 'FULL' index.html
 grep -q 'id="profile"' index.html
+grep -q '<link rel="canonical" href="https://hdnjapan.com/pricing.html">' pricing.html
+grep -q '公開・契約用の最終価格ではありません' pricing.html
+grep -q '<link rel="canonical" href="https://hdnjapan.com/article-service.html">' article-service.html
+grep -q 'AIが作成した文章を無確認で公開するサービスではありません' article-service.html
 
 grep -q '<link rel="canonical" href="https://hdnjapan.com/medical-sns.html">' medical-sns.html
 grep -q 'SNS・動画戦略' medical-sns.html
