@@ -12,6 +12,8 @@ cp medical-sns.html _site/
 cp tsuyoshi-hadano.html _site/
 cp consultation.html _site/
 cp consultation-form.html _site/
+cp pricing.html _site/
+cp article-service.html _site/
 cp llms.txt _site/
 cp -R assets _site/assets
 if [ -d en ]; then
@@ -34,6 +36,8 @@ pages = {
     "index.html": "page-home",
     "self-pay.html": "page-self-pay",
     "consultation.html": "page-consultation",
+    "pricing.html": "page-pricing",
+    "article-service.html": "page-article-service",
 }
 
 for filename, body_class in pages.items():
@@ -125,6 +129,8 @@ editorial_classes = {
     "medical-sns.html": "page-medical-sns",
     "tsuyoshi-hadano.html": "page-profile",
     "consultation.html": "page-consultation",
+    "pricing.html": "page-pricing",
+    "article-service.html": "page-article-service",
     "en/index.html": "page-en-home",
     "en/self-pay.html": "page-en-self-pay",
     "en/lhub.html": "page-en-lhub",
@@ -161,6 +167,8 @@ required = [
     Path("_site/medical-sns.html"),
     Path("_site/tsuyoshi-hadano.html"),
     Path("_site/consultation-form.html"),
+    Path("_site/pricing.html"),
+    Path("_site/article-service.html"),
     Path("_site/en/index.html"),
     Path("_site/en/self-pay.html"),
     Path("_site/en/lhub.html"),
