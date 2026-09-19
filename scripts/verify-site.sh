@@ -82,12 +82,19 @@ grep -q '<meta property="og:title"' self-pay.html
 grep -q '<meta name="twitter:card" content="summary_large_image">' self-pay.html
 grep -q 'id="models"' self-pay.html
 grep -q 'HDNが対応する6つの自費診療モデル' self-pay.html
-grep -q 'LIGHT' index.html
-grep -q 'STANDARD' index.html
-grep -q 'FULL' index.html
+grep -q 'LHubとHDN Articlesを、必要に応じて選べます' index.html
+grep -q '月額30,000円' lhub.html
+grep -q '記事作成・編集・公開本数に制限なし' article-service.html
 grep -q 'id="profile"' index.html
 grep -q '<link rel="canonical" href="https://hdnjapan.com/pricing.html">' pricing.html
-grep -q '公開・契約用の最終価格ではありません' pricing.html
+grep -q '初期110,000円（税込）' pricing.html
+grep -q '月額システム利用料55,000円（税込）' pricing.html
+grep -q '11,000円／本（税込）' pricing.html
+grep -q '22,000円／本（税込）から' pricing.html
+if grep -R -n -E '月額 3万円程度|月額 8万円程度|月2本|追加記事1本|LIGHT、STANDARD、FULL|LIGHT / STANDARD / FULL' ./*.html; then
+  echo "Found superseded pricing or plan copy in public HTML." >&2
+  exit 1
+fi
 grep -q '<link rel="canonical" href="https://hdnjapan.com/article-service.html">' article-service.html
 grep -q 'AIが作成した文章を無確認で公開するサービスではありません' article-service.html
 
