@@ -58,9 +58,10 @@ The site should speak to:
 
 ## Pricing
 
-- Keep the 3-plan structure: LIGHT, STANDARD, FULL.
-- Make differences between plans clear and practical.
-- Avoid dumping every item from sales decks. Reconstruct only what the target personas need to compare plans.
+- LHub is an independent service at JPY 30,000 per month. Never discount, bundle, or describe it as effectively cheaper.
+- HDN Articles is an independent service: JPY 110,000 initial setup and JPY 55,000 monthly, tax included.
+- HDN Articles has no limit on article creation, editing, or publishing counts; quality-based scheduling may still be coordinated.
+- Do not invent plan tiers, bundle prices, discounts, setup fees, or performance fees. Unconfirmed implementation support is individually quoted.
 
 ## Verification
 

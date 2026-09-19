@@ -40,6 +40,8 @@
   const consultationFormPath = isJapanese ? '/consultation-form.html' : '/en/consultation-form.html';
 
   const pageKey = (() => {
+    if (currentPath.includes('article-service')) return 'article_service';
+    if (currentPath.includes('pricing')) return 'pricing';
     if (currentPath.includes('lhub-lp')) return 'lhub_lp';
     if (currentPath.includes('lhub')) return 'lhub';
     if (currentPath.includes('self-pay')) return 'self_pay';
@@ -50,9 +52,16 @@
     return 'home';
   })();
 
+  if (pageKey === 'pricing') window.gtag('event', 'pricing_page_view');
+  if (['lhub', 'article_service', 'self_pay'].includes(pageKey)) {
+    window.gtag('event', 'service_detail_view', { service_name: pageKey });
+  }
+
   function consultationIntent(link) {
     const text = `${link.textContent || ''} ${link.dataset.cta || ''}`.toLowerCase();
     if (/lhub|line|デモ/.test(text) || pageKey.startsWith('lhub')) return 'lhub';
+    if (/articles|記事サイト|記事サービス|記事更新/.test(text) || pageKey === 'article_service') return 'content';
+    if (/資料請求/.test(text)) return 'document_request';
     if (/sns|動画|youtube|social/.test(text) || pageKey === 'medical_sns') return 'sns';
     if (/自費|private care|private medical/.test(text) || pageKey === 'self_pay') return 'self_pay';
     if (/導線|診断|patient journey/.test(text)) return 'journey_review';
@@ -156,6 +165,17 @@
         destination_key: destinationKey,
       });
     }
+  });
+
+  document.querySelectorAll('details').forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (!details.open) return;
+      const summary = details.querySelector('summary');
+      window.gtag('event', 'faq_expand', {
+        source_path: window.location.pathname,
+        question: (summary?.textContent || '').trim().slice(0, 120),
+      });
+    });
   });
 
   const desktopNav = document.querySelector('.site-header .nav, .header .nav, .nav');

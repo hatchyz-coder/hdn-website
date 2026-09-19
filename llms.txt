@@ -9,6 +9,8 @@
 - [HDN トップページ](https://hdnjapan.com/): 支援対象、提供価値、相談導線の概要。
 - [自費診療導入・運用支援](https://hdnjapan.com/self-pay.html): サービス設計、価格、患者コミュニケーション、運用、集患・継続導線の支援範囲。
 - [LHub](https://hdnjapan.com/lhub.html): 医療機関向けのLINE患者CRM、予約、問診、決済案内、配信、顧客管理の運用支援。
+- [料金](https://hdnjapan.com/pricing.html): LHub（月額30,000円）とHDN Articles（初期110,000円・月額55,000円、いずれも税込）の独立した料金、追加対応、FAQ。
+- [HDN Articles](https://hdnjapan.com/article-service.html): 医師の知識を記事へ変え、Google検索・AI検索から見つけられる記事サイトを制作・運用・保守する月額システム。記事作成・編集・公開本数に制限なし。
 - [SNS・動画戦略](https://hdnjapan.com/medical-sns.html): 医療機関向けのSNS、動画、患者導線を一体で考える支援。
 - [無料相談・患者導線診断](https://hdnjapan.com/consultation.html): 相談で扱うテーマと進め方。
 - [代表プロフィール](https://hdnjapan.com/tsuyoshi-hadano.html): 代表・羽田野剛士の経歴と支援領域。
