@@ -52,6 +52,8 @@
   // Keep stable internal values across JP/EN so CRM and reporting stay comparable.
   const intentTopicMap = {
     lhub: 'LINE・LHub・予約・問診・決済導線',
+    content: 'HDN Articles・医療記事サイト',
+    document_request: '資料請求',
     sns: '集患・広告・SNS・動画',
     self_pay: '自費診療・オンライン診療',
     journey_review: '既存業務・患者導線の改善',
@@ -200,6 +202,20 @@
         window.gtag?.('event', 'generate_lead', {
           event_category: 'consultation',
           event_label: 'hdn_corporate',
+          content_language: language,
+          ...ctaContext,
+        });
+        const conversionEvent = ctaContext.cta_intent === 'lhub'
+          ? 'lhub_consultation_complete'
+          : ctaContext.cta_intent === 'content'
+            ? 'article_service_consultation_complete'
+            : ctaContext.cta_intent === 'document_request'
+              ? 'document_request_complete'
+              : ctaContext.cta_intent === 'self_pay'
+                ? 'self_pay_consultation_complete'
+                : 'general_consultation_complete';
+        window.gtag?.('event', conversionEvent, {
+          form_name: 'hdn_consultation',
           content_language: language,
           ...ctaContext,
         });
