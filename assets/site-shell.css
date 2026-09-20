@@ -123,3 +123,117 @@ p.promise-foot {
   font-weight: 800 !important;
   box-shadow: none !important;
 }
+
+/* Explicit layout for standalone service pages; these pages do not inherit index.html's inline header CSS. */
+body.page-pricing .site-header,
+body.page-article-service .site-header {
+  position: relative;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid #e6ddda;
+}
+body.page-pricing .site-header .header-inner,
+body.page-article-service .site-header .header-inner {
+  box-sizing: border-box;
+  width: min(1180px, calc(100% - 40px));
+  min-height: 78px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+body.page-pricing .site-header .brand,
+body.page-article-service .site-header .brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  color: #252222;
+  font-weight: 900;
+  font-size: 15px;
+  line-height: 1.35;
+  text-decoration: none;
+}
+body.page-pricing .site-header .brand-logo,
+body.page-article-service .site-header .brand-logo {
+  display: block;
+  width: 106px;
+  max-width: 106px;
+  height: auto;
+  max-height: 42px;
+  object-fit: contain;
+}
+body.page-pricing .site-header .brand span,
+body.page-article-service .site-header .brand span {
+  display: block;
+  color: #252222;
+}
+body.page-pricing .site-header .brand small,
+body.page-article-service .site-header .brand small {
+  display: block;
+  font-size: 11px;
+  color: #655b58;
+  font-weight: 600;
+}
+body.page-pricing .site-header .nav,
+body.page-article-service .site-header .nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(10px, 1.5vw, 22px);
+  min-width: 0;
+}
+body.page-pricing .site-header .nav > a,
+body.page-article-service .site-header .nav > a {
+  color: #252222;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.45;
+  white-space: nowrap;
+  text-decoration: none;
+}
+body.page-pricing .site-header .nav > a.button,
+body.page-article-service .site-header .nav > a.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 17px;
+  border-radius: 6px;
+  background: #c92d24;
+  color: #fff;
+}
+@media(max-width: 920px) {
+  body.page-pricing .site-header .header-inner,
+  body.page-article-service .site-header .header-inner {
+    width: min(100% - 28px, 1180px);
+    min-height: 66px;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    padding: 10px 0;
+  }
+  body.page-pricing .site-header .brand-logo,
+  body.page-article-service .site-header .brand-logo {
+    width: 90px;
+    max-width: 90px;
+    max-height: 35px;
+  }
+  body.page-pricing .site-header .nav,
+  body.page-article-service .site-header .nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 8px 16px;
+  }
+  body.page-pricing .site-header .nav > a,
+  body.page-article-service .site-header .nav > a { font-size: 12px; }
+}
+@media(max-width: 520px) {
+  body.page-pricing .site-header .header-inner,
+  body.page-article-service .site-header .header-inner { display: block; }
+  body.page-pricing .site-header .nav,
+  body.page-article-service .site-header .nav { margin-top: 12px; }
+  body.page-pricing .site-header .brand small,
+  body.page-article-service .site-header .brand small { display: none; }
+}
