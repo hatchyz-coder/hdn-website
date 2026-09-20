@@ -87,10 +87,10 @@ grep -q '月額30,000円' lhub.html
 grep -q '記事作成・編集・公開本数に制限なし' article-service.html
 grep -q 'id="profile"' index.html
 grep -q '<link rel="canonical" href="https://hdnjapan.com/pricing.html">' pricing.html
-grep -q '初期導入費</span><strong>110,000円</strong>' pricing.html
-grep -q 'システム月額</span><strong>55,000円</strong>' pricing.html
-grep -q '11,000円／本（税別）' pricing.html
-grep -q '22,000円／本（税別）から' pricing.html
+grep -q '初期導入費</span><strong>110,000円<small>（税別）</small></strong>' pricing.html
+grep -q 'システム月額</span><strong>55,000円<small>（税別）</small></strong>' pricing.html
+! grep -q '記事サービスの追加対応' pricing.html
+! grep -q '個別見積り' pricing.html
 if grep -R -n -E '月額 3万円程度|月額 8万円程度|月2本|追加記事1本|LIGHT、STANDARD、FULL|LIGHT / STANDARD / FULL' ./*.html; then
   echo "Found superseded pricing or plan copy in public HTML." >&2
   exit 1
@@ -155,7 +155,7 @@ grep -q 'pricing-support-price' index.html
 grep -q '月額95,000円' index.html
 grep -q '95,000円' pricing.html
 grep -q '表示金額はすべて税別' index.html
-grep -q '表示金額はすべて税別' pricing.html
+grep -q '200,000円<small>（税別）</small>' pricing.html
 if grep -q '値引きしません' index.html pricing.html; then echo 'Client-facing discount disclaimer found' >&2; exit 1; fi
 if grep -q 'valueAddedTaxIncluded":true' pricing.html; then echo 'Tax-inclusive schema found' >&2; exit 1; fi
 
@@ -165,3 +165,11 @@ grep -q 'body class="page-article-service"' article-service.html
 grep -q 'assets/hdn-fixes.css' pricing.html
 grep -q 'body.page-pricing .site-header .header-inner' assets/site-shell.css
 grep -q 'max-width: 106px' assets/site-shell.css
+
+# Pricing-page full rebuild gate: each price carries adjacent tax label; both services have inclusion sections.
+grep -q 'LHubの料金に含まれる内容' pricing.html
+grep -q '記事サービスの料金に含まれる内容' pricing.html
+grep -q '運用まで任せたい場合は' pricing.html
+grep -q 'pricing-layout-critical' pricing.html
+if grep -q 'HDN Articles.*別の顧客向けサービス' pricing.html; then exit 1; fi
+if grep -q '追加10万文字\|11,000円／本\|22,000円／本' pricing.html; then exit 1; fi
