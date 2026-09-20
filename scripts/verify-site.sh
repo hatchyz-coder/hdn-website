@@ -175,10 +175,19 @@ if grep -q 'HDN Articles.*別の顧客向けサービス' pricing.html; then exi
 if grep -q '追加10万文字\|11,000円／本\|22,000円／本' pricing.html; then exit 1; fi
 
 # Article-service completeness and price presentation gate.
-grep -q '医療記事の制作・公開・保守を、継続して支援します' article-service.html
+grep -q 'メモや音声を預けるだけ。医療記事の制作から公開・保守まで。' article-service.html
 grep -q '110,000円<small>（税別）</small>' article-service.html
 grep -q '55,000円<small>（税別）</small>' article-service.html
 grep -q 'article-service-critical' article-service.html
 grep -q '記事の制作・編集・公開' article-service.html
 if grep -q 'ADDITIONAL SERVICES\|個別見積り\|11,000円／本\|22,000円／本' article-service.html; then echo 'Superseded article add-on pricing' >&2; exit 1; fi
 if grep -q 'valueAddedTaxIncluded":true' article-service.html; then echo 'Incorrect article VAT schema' >&2; exit 1; fi
+
+# Input-to-article experience and fictional sample regression checks.
+grep -q '導入費と月額料金はこちら' article-service.html
+grep -q 'article-demo-flow' article-service.html
+grep -q 'article-example-grid' article-service.html
+grep -q 'シリーズ記事' article-service.html
+grep -q 'AIに「もっとやさしく」' article-service.html
+grep -q '架空の医療機関・架空の入力素材' article-service.html
+if grep -q '導入費と月額料金は、次の2つです' article-service.html; then exit 1; fi
