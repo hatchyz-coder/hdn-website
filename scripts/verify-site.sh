@@ -158,3 +158,10 @@ grep -q '表示金額はすべて税別' index.html
 grep -q '表示金額はすべて税別' pricing.html
 if grep -q '値引きしません' index.html pricing.html; then echo 'Client-facing discount disclaimer found' >&2; exit 1; fi
 if grep -q 'valueAddedTaxIncluded":true' pricing.html; then echo 'Tax-inclusive schema found' >&2; exit 1; fi
+
+# Standalone pages must include a scoped responsive header; pricing must load its card CSS.
+grep -q 'body class="page-pricing"' pricing.html
+grep -q 'body class="page-article-service"' article-service.html
+grep -q 'assets/hdn-fixes.css' pricing.html
+grep -q 'body.page-pricing .site-header .header-inner' assets/site-shell.css
+grep -q 'max-width: 106px' assets/site-shell.css
