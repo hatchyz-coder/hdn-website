@@ -268,3 +268,37 @@ body.page-self-pay .grid-3 .card p {
   #pricing .pricing-card .fee-row strong { text-align: right !important; font-size: clamp(19px, 5.4vw, 26px) !important; }
   #pricing .pricing-card .plan-head, #pricing .pricing-card .plan-body { padding: 20px !important; }
 }
+
+/* Client-first pricing: prevent legacy featured-card colors and expose support cost. */
+#pricing .pricing-card .plan-head,
+#pricing .pricing-card.featured .plan-head,
+#pricing .pricing-card .plan-head strong,
+#pricing .pricing-card.featured .plan-head strong,
+#pricing .pricing-card .plan-head span,
+#pricing .pricing-card.featured .plan-head span {
+  background: #fff !important;
+  color: #252222 !important;
+  -webkit-text-fill-color: #252222 !important;
+  text-shadow: none !important;
+}
+#pricing .pricing-card .pricing-support-label,
+#pricing .pricing-card .pricing-support-price,
+#pricing .pricing-card .pricing-support-detail { display:block !important; }
+#pricing .pricing-card .pricing-support-label { margin-top:14px !important; font-weight:800 !important; color:#252222 !important; }
+#pricing .pricing-card .pricing-support-price { font-size:18px !important; font-weight:800 !important; color:#252222 !important; }
+#pricing .pricing-card .pricing-support-price strong { font-size:clamp(22px,2.4vw,29px) !important; color:#a82019 !important; }
+#pricing .pricing-card .pricing-support-detail { margin-top:6px !important; font-size:13px !important; line-height:1.75 !important; color:#554a49 !important; }
+body.page-pricing .pricing-overview .plans { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:24px !important; align-items:stretch !important; }
+body.page-pricing .pricing-overview .pricing-service-plan { display:flex !important; flex-direction:column !important; min-width:0 !important; padding:28px !important; background:#fff !important; color:#252222 !important; border:1px solid #ded5cd !important; }
+body.page-pricing .pricing-overview .pricing-service-plan .eyebrow { color:#8c241d !important; font-size:14px !important; line-height:1.5 !important; }
+body.page-pricing .pricing-overview .pricing-service-plan h3 { font-size:clamp(19px,2vw,24px) !important; line-height:1.5 !important; margin:8px 0 22px !important; color:#252222 !important; }
+body.page-pricing .pricing-overview .pricing-fee { display:flex !important; flex-wrap:wrap !important; align-items:baseline !important; justify-content:space-between !important; gap:8px 16px !important; padding:16px 0 !important; border-bottom:1px solid #ded5cd !important; }
+body.page-pricing .pricing-overview .pricing-fee span { color:#252222 !important; font-size:15px !important; font-weight:800 !important; }
+body.page-pricing .pricing-overview .pricing-fee strong { color:#a82019 !important; font-size:clamp(23px,2.6vw,32px) !important; white-space:nowrap !important; line-height:1.3 !important; }
+body.page-pricing .pricing-overview .pricing-support { margin:24px 0 12px !important; padding:20px !important; background:#fff7f4 !important; border-left:4px solid #a82019 !important; }
+body.page-pricing .pricing-overview .pricing-support-title { margin:0 !important; color:#252222 !important; font-size:17px !important; font-weight:900 !important; }
+body.page-pricing .pricing-overview .pricing-combined { margin:16px 0 8px !important; font-weight:800 !important; color:#252222 !important; }
+body.page-pricing .pricing-overview .pricing-combined strong { font-size:23px !important; color:#a82019 !important; }
+body.page-pricing .pricing-overview .pricing-intro { margin-bottom:26px !important; color:#554a49 !important; }
+body.page-pricing .pricing-overview .pricing-service-plan .cta-row { margin-top:auto !important; padding-top:22px !important; }
+@media(max-width:760px){body.page-pricing .pricing-overview .plans{grid-template-columns:1fr !important;}body.page-pricing .pricing-overview .pricing-service-plan{padding:20px !important;}}
