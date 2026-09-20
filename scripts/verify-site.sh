@@ -87,8 +87,8 @@ grep -q '月額30,000円' lhub.html
 grep -q '記事作成・編集・公開本数に制限なし' article-service.html
 grep -q 'id="profile"' index.html
 grep -q '<link rel="canonical" href="https://hdnjapan.com/pricing.html">' pricing.html
-grep -q '初期110,000円（税別）' pricing.html
-grep -q '月額システム利用料55,000円（税別）' pricing.html
+grep -q '初期導入費</span><strong>110,000円</strong>' pricing.html
+grep -q 'システム月額</span><strong>55,000円</strong>' pricing.html
 grep -q '11,000円／本（税別）' pricing.html
 grep -q '22,000円／本（税別）から' pricing.html
 if grep -R -n -E '月額 3万円程度|月額 8万円程度|月2本|追加記事1本|LIGHT、STANDARD、FULL|LIGHT / STANDARD / FULL' ./*.html; then
@@ -149,3 +149,12 @@ grep -q 'HDN editorial design layer' assets/editorial.css
 python3 scripts/audit-links.py
 
 echo "Site verification passed."
+
+# Pricing readability and approved tax policy regression checks.
+grep -q 'pricing-support-price' index.html
+grep -q '月額95,000円' index.html
+grep -q '95,000円' pricing.html
+grep -q '表示金額はすべて税別' index.html
+grep -q '表示金額はすべて税別' pricing.html
+if grep -q '値引きしません' index.html pricing.html; then echo 'Client-facing discount disclaimer found' >&2; exit 1; fi
+if grep -q 'valueAddedTaxIncluded":true' pricing.html; then echo 'Tax-inclusive schema found' >&2; exit 1; fi
