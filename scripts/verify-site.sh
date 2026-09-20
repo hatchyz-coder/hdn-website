@@ -191,3 +191,13 @@ grep -q 'シリーズ記事' article-service.html
 grep -q 'AIに「もっとやさしく」' article-service.html
 grep -q '架空の医療機関・架空の入力素材' article-service.html
 if grep -q '導入費と月額料金は、次の2つです' article-service.html; then exit 1; fi
+
+# Article-service conversion copy and visual demo regression gate.
+grep -q '導入費と月額料金はこちら' article-service.html
+grep -q 'article-demo-flow' article-service.html
+grep -q 'article-example-grid' article-service.html
+grep -q '架空のメモ' article-service.html
+grep -q 'article-seo-title' article-service.html
+grep -q '保険診療の受診につながる接点' article-service.html
+grep -q 'シリーズ記事' article-service.html
+grep -q 'AIに「もっとやさしく」' article-service.html
