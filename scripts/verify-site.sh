@@ -82,7 +82,7 @@ grep -q '<meta property="og:title"' self-pay.html
 grep -q '<meta name="twitter:card" content="summary_large_image">' self-pay.html
 grep -q 'id="models"' self-pay.html
 grep -q 'HDNが対応する6つの自費診療モデル' self-pay.html
-grep -q 'LHubとHDN Articlesを、必要に応じて選べます' index.html
+grep -q 'LHubと医療機関向けAI記事制作・公開支援システムを、必要に応じて選べます' index.html
 grep -q '月額30,000円' lhub.html
 grep -q '記事作成・編集・公開本数に制限なし' article-service.html
 grep -q 'id="profile"' index.html
