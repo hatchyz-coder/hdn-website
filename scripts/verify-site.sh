@@ -175,7 +175,7 @@ if grep -q 'HDN Articles.*別の顧客向けサービス' pricing.html; then exi
 if grep -q '追加10万文字\|11,000円／本\|22,000円／本' pricing.html; then exit 1; fi
 
 # Article-service completeness and price presentation gate.
-grep -q '医療記事の制作・公開・保守を、継続して支援します' article-service.html
+grep -q 'メモや音声を預けるだけ。医療記事の制作から公開・保守まで。' article-service.html
 grep -q '110,000円<small>（税別）</small>' article-service.html
 grep -q '55,000円<small>（税別）</small>' article-service.html
 grep -q 'article-service-critical' article-service.html
