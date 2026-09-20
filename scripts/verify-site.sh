@@ -87,8 +87,8 @@ grep -q '月額30,000円' lhub.html
 grep -q '記事作成・編集・公開本数に制限なし' article-service.html
 grep -q 'id="profile"' index.html
 grep -q '<link rel="canonical" href="https://hdnjapan.com/pricing.html">' pricing.html
-grep -q '初期110,000円（税込）' pricing.html
-grep -q '月額システム利用料55,000円（税込）' pricing.html
+grep -q '初期110,000円（税別）' pricing.html
+grep -q '月額システム利用料55,000円（税別）' pricing.html
 grep -q '11,000円／本（税込）' pricing.html
 grep -q '22,000円／本（税込）から' pricing.html
 if grep -R -n -E '月額 3万円程度|月額 8万円程度|月2本|追加記事1本|LIGHT、STANDARD、FULL|LIGHT / STANDARD / FULL' ./*.html; then
