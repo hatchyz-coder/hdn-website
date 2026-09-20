@@ -175,7 +175,7 @@ if grep -q 'HDN Articles.*別の顧客向けサービス' pricing.html; then exi
 if grep -q '追加10万文字\|11,000円／本\|22,000円／本' pricing.html; then exit 1; fi
 
 # Article-service completeness and price presentation gate.
-grep -q 'メモや音声を預けるだけ。医療記事の制作から公開・保守まで。' article-service.html
+grep -q 'メモ・音声・資料を専用フォルダに入れるだけ' article-service.html
 grep -q '110,000円<small>（税別）</small>' article-service.html
 grep -q '55,000円<small>（税別）</small>' article-service.html
 grep -q 'article-service-critical' article-service.html
@@ -201,3 +201,13 @@ grep -q 'article-seo-title' article-service.html
 grep -q '保険診療の受診につながる接点' article-service.html
 grep -q 'シリーズ記事' article-service.html
 grep -q 'AIに「もっとやさしく」' article-service.html
+
+# Cloud-folder-first workflow and cross-page service consistency.
+grep -q '院長にお願いするのは、専用フォルダへのアップロード' article-service.html
+grep -q '院長・院内担当者が確認' article-service.html
+grep -q '自動投稿専用ドメインの取得・設定（HDNが対応）' article-service.html
+grep -q '多言語化対応・SNS原稿' article-service.html
+grep -q 'href="#article-prices">記事サービスの料金へ' article-service.html
+grep -q '専用のクラウドフォルダにアップロード' pricing.html
+grep -q '専用フォルダに入れるだけ' index.html
+if grep -q '素材を共有\|ご共有いただきます\|サブドメイン設定支援\|英語版対応' article-service.html pricing.html; then echo 'Outdated article workflow copy' >&2; exit 1; fi
