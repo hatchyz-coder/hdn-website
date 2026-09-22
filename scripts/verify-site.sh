@@ -211,3 +211,10 @@ grep -q 'href="#article-prices">記事サービスの料金へ' article-service.
 grep -q '専用のクラウドフォルダにアップロード' pricing.html
 grep -q '専用フォルダに入れるだけ' index.html
 if grep -q '素材を共有\|ご共有いただきます\|サブドメイン設定支援\|英語版対応' article-service.html pricing.html; then echo 'Outdated article workflow copy' >&2; exit 1; fi
+
+# The development rules must not revive tax-inclusive article-service pricing.
+grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, **both tax excluded**' AGENTS.md
+if grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, tax included.' AGENTS.md; then
+  echo 'Outdated tax-inclusive article service policy in AGENTS.md' >&2
+  exit 1
+fi

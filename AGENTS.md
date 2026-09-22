@@ -59,8 +59,8 @@ The site should speak to:
 ## Pricing
 
 - LHub is an independent service at JPY 30,000 per month. Never discount, bundle, or describe it as effectively cheaper.
-- HDN Articles is an independent service: JPY 110,000 initial setup and JPY 55,000 monthly, tax included.
-- HDN Articles has no limit on article creation, editing, or publishing counts; quality-based scheduling may still be coordinated.
+- The medical-institution AI article creation and publication support service is independent from LHub and from the HDN Articles editorial website: JPY 110,000 initial setup and JPY 55,000 monthly, **both tax excluded**. Preserve these prices and tax treatment across `index.html`, `pricing.html`, `article-service.html`, their structured data, and `article.hdnjapan.com/for-clinics/`; do not change them without explicit user approval.
+- The medical-institution article service has no contractual cap on article creation, editing, or publishing counts. Quality-based scheduling and medical review/approval still apply; do not imply a guaranteed daily volume or publication without approval.
 - Do not invent plan tiers, bundle prices, discounts, setup fees, or performance fees. Unconfirmed implementation support is individually quoted.
 
 ## Verification
