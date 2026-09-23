@@ -293,6 +293,35 @@ for fragment in ("pricing", "reach", "article-option", "faq", "flow"):
 print("Clinic director LP, pricing boundaries, and cross-page links verified.")
 PY
 
+# LHub clinic LP: the retail promotional graphic is not an actual product screenshot.
+python3 - <<'PY'
+from pathlib import Path
+
+lp = Path("lhub-lp.html").read_text(encoding="utf-8")
+postprocessor = Path("scripts/postprocess-site.py").read_text(encoding="utf-8")
+for phrase in (
+    'data-journey-visual',
+    'data-demo-overview',
+    '実際のLINE・管理画面のスクリーンショットではありません',
+    'https://l-hub.info/',
+    'id="clinic-visual-evidence-style"',
+):
+    if phrase not in lp:
+        raise SystemExit(f"Missing honest LP visual: {phrase}")
+for old in (
+    'assets/lhub-line-commerce.png',
+    'LHubの実際の操作画面',
+    '<strong>実際のLHub画面</strong>',
+):
+    if old in lp:
+        raise SystemExit(f"Misleading retail promo in clinic LP: {old}")
+if 'def replace_lhub_placeholders' in postprocessor:
+    raise SystemExit("Old postprocessor can reinsert a misleading image")
+if 'Retail promotion graphic cannot be used as clinic LP product evidence' not in postprocessor:
+    raise SystemExit("Missing postprocess screenshot authenticity guard")
+print("Clinic LP visual authenticity checks verified.")
+PY
+
 # The development rules must not revive tax-inclusive article-service pricing.
 grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, **both tax excluded**' AGENTS.md
 if grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, tax included.' AGENTS.md; then
