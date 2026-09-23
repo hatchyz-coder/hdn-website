@@ -79,3 +79,46 @@ jobs:
         run: |
           echo "Typecheck: not applicable — static HTML/CSS/JavaScript site without TypeScript toolchain."
           echo "Migration check: not applicable — no database layer in this repository."
+
+      - name: Live published pricing smoke test
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import time
+          import urllib.error
+          import urllib.request
+
+          pages = {
+              "https://hdnjapan.com/lhub.html": ["月額30,000円（税別）", "初期導入費は200,000円（税別）", "月額65,000円（税別・任意）", "月額95,000円（税別）"],
+              "https://hdnjapan.com/pricing.html": ["初期導入費", "200,000円", "30,000円", "65,000円", "110,000円", "55,000円", "（税別）"],
+              "https://hdnjapan.com/article-service.html": ["110,000円", "55,000円", "（税別）"],
+              "https://hdnjapan.com/en/self-pay.html": ["JPY 200,000 excl. tax", "JPY 30,000 excl. tax", "JPY 65,000 per month excl. tax", "JPY 110,000 excl. tax", "JPY 55,000 excl. tax"],
+          }
+          for url, expected in pages.items():
+              last_error = ""
+              for attempt in range(1, 4):
+                  try:
+                      req = urllib.request.Request(url, headers={"User-Agent": "HDN-site-pricing-smoke-test/1.0", "Cache-Control": "no-cache"})
+                      with urllib.request.urlopen(req, timeout=20) as response:
+                          body = response.read().decode("utf-8")
+                          status = response.status
+                          final_url = response.url
+                      missing = [part for part in expected if part not in body]
+                      old = []
+                      if "/en/self-pay.html" in url:
+                          old = [part for part in ("JPY 110,000 incl. tax", "JPY 55,000 incl. tax", "Tax treatment and contract terms are explained before agreement.") if part in body]
+                      elif "/lhub.html" in url:
+                          old = [part for part in ("税区分を含む正式な契約条件は", "税区分は契約前に案内します") if part in body]
+                      if status != 200 or missing or old:
+                          raise ValueError(f"status={status}, url={final_url}, missing={missing}, old={old}")
+                      print(f"PASS published pricing: HTTP {status} {url}", flush=True)
+                      break
+                  except (OSError, UnicodeError, ValueError) as e:
+                      last_error = str(e)
+                      print(f"Attempt {attempt}/3 for {url}: {last_error}", flush=True)
+                      if attempt < 3:
+                          time.sleep(8)
+              else:
+                  raise SystemExit(f"FAIL public pricing: {url}: {last_error}")
+          print("All four public pricing pages verified from GitHub runner.")
+          PY
