@@ -211,3 +211,35 @@ grep -q 'href="#article-prices">記事サービスの料金へ' article-service.
 grep -q '専用のクラウドフォルダにアップロード' pricing.html
 grep -q '専用フォルダに入れるだけ' index.html
 if grep -q '素材を共有\|ご共有いただきます\|サブドメイン設定支援\|英語版対応' article-service.html pricing.html; then echo 'Outdated article workflow copy' >&2; exit 1; fi
+
+# Cross-page tax and product identity must match the approved public price policy.
+python3 - <<'PY'
+from pathlib import Path
+
+checks = {
+    "index.html": ["200,000円<small>（税別）</small>", "30,000円<small>（税別）</small>", "65,000円<small>（税別）</small>", "110,000円<small>（税別）</small>", "55,000円<small>（税別）</small>"],
+    "pricing.html": ["200,000円<small>（税別）</small>", "30,000円<small>（税別）</small>", "65,000円<small>（税別）</small>", "110,000円<small>（税別）</small>", "55,000円<small>（税別）</small>"],
+    "article-service.html": ["110,000円<small>（税別）</small>", "55,000円<small>（税別）</small>", '"valueAddedTaxIncluded":false'],
+    "lhub.html": ["月額30,000円（税別）", "初期導入費は200,000円（税別）", "月額65,000円（税別・任意）", "月額95,000円（税別）", "月額料金。税別です。"],
+    "en/self-pay.html": ["JPY 200,000 excl. tax", "JPY 30,000 excl. tax", "JPY 65,000 per month excl. tax", "JPY 110,000 excl. tax", "JPY 55,000 excl. tax"],
+}
+for name, required in checks.items():
+    page = Path(name).read_text(encoding="utf-8")
+    for phrase in required:
+        if phrase not in page:
+            raise SystemExit(f"{name}: approved pricing missing: {phrase}")
+    if name == "en/self-pay.html":
+        for old in ("JPY 110,000 incl. tax", "JPY 55,000 incl. tax", "Tax treatment and contract terms are explained before agreement.", "<strong>HDN Articles</strong>"):
+            if old in page:
+                raise SystemExit(f"{name}: superseded pricing or service label: {old}")
+    if name == "lhub.html" and "税区分を含む正式な契約条件は" in page:
+        raise SystemExit("lhub.html: superseded undetermined-tax wording")
+print("Approved cross-page pricing and tax treatment verified.")
+PY
+
+# The development rules must not revive tax-inclusive article-service pricing.
+grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, **both tax excluded**' AGENTS.md
+if grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, tax included.' AGENTS.md; then
+  echo 'Outdated tax-inclusive article service policy in AGENTS.md' >&2
+  exit 1
+fi
