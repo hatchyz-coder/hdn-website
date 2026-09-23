@@ -80,7 +80,7 @@ jobs:
           echo "Typecheck: not applicable — static HTML/CSS/JavaScript site without TypeScript toolchain."
           echo "Migration check: not applicable — no database layer in this repository."
 
-      - name: Live published pricing smoke test
+      - name: Live published clinic LP and pricing smoke test
         if: github.event_name == 'push'
         run: |
           python3 - <<'PY'
@@ -89,9 +89,11 @@ jobs:
           import urllib.request
 
           pages = {
-              "https://hdnjapan.com/lhub.html": ["月額30,000円（税別）", "初期導入費は200,000円（税別）", "月額65,000円（税別・任意）", "月額95,000円（税別）"],
-              "https://hdnjapan.com/pricing.html": ["初期導入費", "200,000円", "30,000円", "65,000円", "110,000円", "55,000円", "（税別）"],
-              "https://hdnjapan.com/article-service.html": ["110,000円", "55,000円", "（税別）"],
+              "https://hdnjapan.com/": ["href=\"lhub-lp.html#reach\"", "オンライン診療・自費診療の予約・問診・決済案内・患者管理をつなぐ"],
+              "https://hdnjapan.com/lhub-lp.html": ["もっと低コストで。", "200,000円（税別）", "30,000円（税別）", "65,000円", "110,000円", "55,000円", "id=\"pricing\"", "id=\"reach\"", "id=\"article-option\"", "記事はAIが作ったまま自動公開されますか？"],
+              "https://hdnjapan.com/lhub.html": ["月額30,000円（税別）", "初期導入費は200,000円（税別）", "月額65,000円（税別・任意）", "月額95,000円（税別）", "id=\"lhub-growth\""],
+              "https://hdnjapan.com/pricing.html": ["初期導入費", "200,000円", "30,000円", "65,000円", "110,000円", "55,000円", "（税別）", "id=\"optional-growth\""],
+              "https://hdnjapan.com/article-service.html": ["110,000円", "55,000円", "（税別）", "id=\"article-patient-journey\""],
               "https://hdnjapan.com/en/self-pay.html": ["JPY 200,000 excl. tax", "JPY 30,000 excl. tax", "JPY 65,000 per month excl. tax", "JPY 110,000 excl. tax", "JPY 55,000 excl. tax"],
           }
           for url, expected in pages.items():
@@ -105,7 +107,9 @@ jobs:
                           final_url = response.url
                       missing = [part for part in expected if part not in body]
                       old = []
-                      if "/en/self-pay.html" in url:
+                      if "/lhub-lp.html" in url:
+                          old = [part for part in ("月商250万円", "月商500万円", "月商100万円超", "30秒デモ") if part in body]
+                      elif "/en/self-pay.html" in url:
                           old = [part for part in ("JPY 110,000 incl. tax", "JPY 55,000 incl. tax", "Tax treatment and contract terms are explained before agreement.") if part in body]
                       elif "/lhub.html" in url:
                           old = [part for part in ("税区分を含む正式な契約条件は", "税区分は契約前に案内します") if part in body]
@@ -120,5 +124,5 @@ jobs:
                           time.sleep(8)
               else:
                   raise SystemExit(f"FAIL public pricing: {url}: {last_error}")
-          print("All four public pricing pages verified from GitHub runner.")
+          print("All six public clinic-service and pricing pages verified from GitHub runner.")
           PY
