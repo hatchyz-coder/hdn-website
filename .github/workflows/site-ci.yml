@@ -35,6 +35,9 @@ jobs:
       - name: Build
         run: bash scripts/build-pages.sh
 
+      - name: Verify production visual postprocess preserves honest clinic LP
+        run: python3 scripts/postprocess-site.py
+
       - name: Verify built output and links
         run: |
           test -s _site/index.html
