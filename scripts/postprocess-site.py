@@ -104,38 +104,15 @@ def preserve_consultation_real_photo() -> None:
     consultation.write_text(html, encoding='utf-8')
 
 
-def replace_lhub_placeholders() -> None:
+def preserve_lhub_visual_evidence() -> None:
+    """Do not replace an honest clinic journey illustration with retail mockups."""
     path = Path('_site/lhub-lp.html')
     html = path.read_text(encoding='utf-8')
-
-    mock = '<div class="mock"><div class="phone"><div class="phone-top">LHub 患者フロー</div><div class="step"><span class="num">1</span><div><strong>LINE登録</strong><small>迷わない入口</small></div></div><div class="step"><span class="num">2</span><div><strong>問診・予約</strong><small>必要情報を先に取得</small></div></div><div class="step"><span class="num">3</span><div><strong>診療・決済</strong><small>案内を一つの流れに</small></div></div><div class="step"><span class="num">4</span><div><strong>継続フォロー</strong><small>再診・再購入につなぐ</small></div></div></div></div>'
-    hero_evidence = '''<figure class="product-evidence lhub-evidence" data-product-evidence>
-      <img src="assets/lhub-line-commerce.png" alt="LHubのLINE患者導線・運用画面">
-      <figcaption><strong>実際のLHub画面</strong><span>LINE上の患者接点と、予約・問診・決済・継続案内をつなぐ運用イメージです。</span></figcaption>
-    </figure>'''
-    if mock in html:
-        html = html.replace(mock, hero_evidence, 1)
-
-    placeholder = '<div class="video-placeholder"><div><div class="play">▶</div><strong>デモ動画掲載予定</strong><br><small>実際の操作画面を30秒で紹介</small></div></div>'
-    demo_evidence = '''<figure class="product-evidence demo-evidence" data-demo-evidence>
-      <img src="assets/lhub-line-commerce.png" alt="LHubの実際の操作画面">
-      <figcaption><strong>デモは実画面でご案内します</strong><span>画面構成と患者導線を確認しながら、自院での使い方を具体的にご説明します。</span></figcaption>
-    </figure>'''
-    if placeholder in html:
-        html = html.replace(placeholder, demo_evidence, 1)
-
-    style = '''<style id="product-evidence-style">
-    .product-evidence{margin:0;border:1px solid #d9d3cb;background:#fff;overflow:hidden;box-shadow:none}
-    .product-evidence img{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;background:#f7f5f1}
-    .product-evidence figcaption{display:grid;gap:3px;margin:0;padding:12px 14px;border-top:1px solid #d9d3cb;background:#fff;color:#6d6660;font-size:12px;line-height:1.6}
-    .product-evidence figcaption strong{color:#24211f;font-size:13px}
-    .lhub-evidence{align-self:center}
-    .demo-evidence img{max-height:390px}
-    @media(max-width:640px){.product-evidence img{max-height:360px}.demo-evidence img{max-height:300px}}
-  </style>'''
-    if 'id="product-evidence-style"' not in html:
-        html = html.replace('</head>', style + '\n</head>', 1)
-
+    if 'data-journey-visual' not in html or 'data-demo-overview' not in html:
+        raise SystemExit('Clinic LP conceptual visuals or manual overview are missing')
+    # The archived retail promotion image is not a product interface screenshot.
+    if 'assets/lhub-line-commerce.png' in html:
+        raise SystemExit('Retail promotion graphic cannot be used as clinic LP product evidence')
     path.write_text(html, encoding='utf-8')
 
 
@@ -154,20 +131,31 @@ def verify_home_fv() -> None:
 
 def verify_no_fake_product_visuals() -> None:
     html = Path('_site/lhub-lp.html').read_text(encoding='utf-8')
-    if '<div class="mock">' in html or '<div class="video-placeholder">' in html:
-        raise SystemExit('Synthetic LHub mock or empty video placeholder remains')
-    if 'data-product-evidence' not in html or 'data-demo-evidence' not in html:
-        raise SystemExit('LHub product evidence blocks are missing')
-    if html.count('assets/lhub-line-commerce.png') < 2:
-        raise SystemExit('Real LHub screen evidence is not present in both key locations')
-    if 'デモ動画掲載予定' in html:
-        raise SystemExit('Unfinished demo placeholder copy remains')
+    required = (
+        'data-journey-visual',
+        'data-demo-overview',
+        '患者とスタッフの流れを示す概念図です',
+        '実際のLINE・管理画面のスクリーンショットではありません',
+    )
+    for phrase in required:
+        if phrase not in html:
+            raise SystemExit(f'Clinic LP visual evidence guard missing: {phrase}')
+    forbidden = (
+        'assets/lhub-line-commerce.png',
+        'LHubの実際の操作画面',
+        '<strong>実際のLHub画面</strong>',
+        '<div class="video-placeholder">',
+        'デモ動画掲載予定',
+    )
+    for phrase in forbidden:
+        if phrase in html:
+            raise SystemExit(f'Misleading or unfinished clinic LP visual: {phrase}')
 
 
 if __name__ == '__main__':
     replace_home_fv()
     add_home_deliverables()
     preserve_consultation_real_photo()
-    replace_lhub_placeholders()
+    preserve_lhub_visual_evidence()
     verify_home_fv()
     verify_no_fake_product_visuals()
