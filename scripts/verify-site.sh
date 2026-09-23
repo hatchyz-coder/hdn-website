@@ -237,6 +237,62 @@ for name, required in checks.items():
 print("Approved cross-page pricing and tax treatment verified.")
 PY
 
+# B2B LP and adjacent pages must explain real service roles and independently priced options.
+python3 - <<'PY'
+from pathlib import Path
+from html.parser import HTMLParser
+
+lp = Path("lhub-lp.html").read_text(encoding="utf-8")
+lhub = Path("lhub.html").read_text(encoding="utf-8")
+articles = Path("article-service.html").read_text(encoding="utf-8")
+pricing = Path("pricing.html").read_text(encoding="utf-8")
+home = Path("index.html").read_text(encoding="utf-8")
+
+required = {
+    "lhub-lp.html": (lp, [
+        "オンライン診療を、", "もっと低コストで。", 'id="pricing"',
+        'id="reach"', 'id="article-option"', 'id="faq"',
+        "200,000円（税別）", "30,000円（税別）",
+        "65,000円", "110,000円", "55,000円",
+        "SEOは検索結果の順位や患者数の増加を保証するものではありません",
+        "診察・処方は医療機関", 'href="article-service.html"',
+        'href="/consultation-form.html?',
+    ]),
+    "lhub.html": (lhub, ['id="lhub-growth"', 'href="lhub-lp.html#pricing"', 'href="article-service.html"']),
+    "article-service.html": (articles, ['id="article-patient-journey"', 'href="lhub-lp.html#pricing"', "医療機関の確認・承認"]),
+    "pricing.html": (pricing, ['id="optional-growth"', 'href="lhub-lp.html#pricing"', "月額30,000円"]),
+    "index.html": (home, ['href="lhub-lp.html"', 'href="lhub-lp.html#reach"']),
+}
+for name, (content, phrases) in required.items():
+    for phrase in phrases:
+        if phrase not in content:
+            raise SystemExit(f"{name}: clinic director LP requirement missing: {phrase}")
+for phrase in ("月商250万円", "月商500万円", "月商100万円超", "予約システムでも、LINE配信ツールでもない。", "30秒デモ"):
+    if phrase in lp:
+        raise SystemExit(f"lhub-lp.html: unverified marketing claim remains: {phrase}")
+
+class LandmarkCheck(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.ids = set()
+        self.hrefs = []
+    def handle_starttag(self, tag, attrs):
+        attributes = dict(attrs)
+        if "id" in attributes:
+            if attributes["id"] in self.ids:
+                raise ValueError(f"Duplicate id: {attributes['id']}")
+            self.ids.add(attributes["id"])
+        if tag == "a" and "href" in attributes:
+            self.hrefs.append(attributes["href"])
+
+parser = LandmarkCheck()
+parser.feed(lp)
+for fragment in ("pricing", "reach", "article-option", "faq", "flow"):
+    if fragment not in parser.ids or f"#{fragment}" not in parser.hrefs:
+        raise SystemExit(f"LP section or navigation target missing: {fragment}")
+print("Clinic director LP, pricing boundaries, and cross-page links verified.")
+PY
+
 # The development rules must not revive tax-inclusive article-service pricing.
 grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, **both tax excluded**' AGENTS.md
 if grep -Fq 'JPY 110,000 initial setup and JPY 55,000 monthly, tax included.' AGENTS.md; then
